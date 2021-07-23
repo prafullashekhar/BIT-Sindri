@@ -27,12 +27,12 @@ public class OnBoardingActivity extends AppCompatActivity {
         Register = findViewById(R.id.register);
         mAuth = FirebaseAuth.getInstance();
 
-//        signIn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
-//            }
-//        });
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
+            }
+        });
 
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
