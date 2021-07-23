@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "461192581196",
+    "project_id": "bit-sindri-24",
+    "storage_bucket": "bit-sindri-24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461192581196:android:367907f200d571434564e9",
+        "android_client_info": {
+          "package_name": "com.bitsindri.bit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461192581196-h1paskv18cinp09m3jiadd4upk1661sn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSTowK2Ik_yzhr4UdjD2Rrub39azyDQR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461192581196-h1paskv18cinp09m3jiadd4upk1661sn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class OnBoardingActivity extends AppCompatActivity {
 
+    FirebaseAuth mAuth;
     Button signIn, Register;
 
     @Override
@@ -21,6 +25,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         // initialising
         signIn = findViewById(R.id.signin);
         Register = findViewById(R.id.register);
+        mAuth = FirebaseAuth.getInstance();
 
 //        signIn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -35,5 +40,14 @@ public class OnBoardingActivity extends AppCompatActivity {
                 startActivity(new Intent(OnBoardingActivity.this, RegisterActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null){
+            startActivity(new Intent(OnBoardingActivity.this, MainActivity.class));
+        }
     }
 }
