@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class OnBoardingActivity extends AppCompatActivity {
 
+
     FirebaseAuth mAuth;
     Button signIn, Register;
 
