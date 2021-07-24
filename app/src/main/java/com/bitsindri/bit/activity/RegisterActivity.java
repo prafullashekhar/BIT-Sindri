@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull @org.jetbrains.annotations.NotNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        Log.d("MSG", "REGISTERED SUCCESSFULLY");
+                        Toast.makeText(RegisterActivity.this, "Yor are Registered now", Toast.LENGTH_SHORT).show();
                     }else{
                         Log.e("MSG", "Not Registered - "+task.getException().getMessage());
                     }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // checks if the user data is in the database
     private void checkUser(){
         String strEmail = email.getText().toString().trim();
         String strPassword = password.getText().toString();
@@ -65,6 +67,25 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+                    }
+                    else{
+                        String errorMsg = task.getException().getMessage();
+                        Log.e("MSG", "Not Registered - "+errorMsg);
+
+                        if(errorMsg.equals("There is no user record corresponding to this identifier. The user may have been deleted.")){
+                            email.setError("This email is not a registered email \nIf you are new user first get registered");
+                            email.requestFocus();
+                        } else if(errorMsg.equals("The email address is badly formatted.")){
+                            email.setError("Enter the correct EmailId");
+                            email.requestFocus();
+                        } else if(errorMsg.equals("The password is invalid or the user does not have a password.")){
+                            password.setError("Incorrect password");
+                            password.requestFocus();
+                        } else if(errorMsg.equals("We have blocked all requests from this device due to unusual activity. Try again later. [ Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. ]")){
+                            Toast.makeText(LoginActivity.this, "Too much unsuccessful attempts,\ntry after sometime", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Check you Internet connection", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
