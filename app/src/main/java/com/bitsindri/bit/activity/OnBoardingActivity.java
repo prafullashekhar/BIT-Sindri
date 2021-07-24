@@ -21,6 +21,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_BIT);
         setContentView(R.layout.activity_on_boarding);
 
         // initialising
