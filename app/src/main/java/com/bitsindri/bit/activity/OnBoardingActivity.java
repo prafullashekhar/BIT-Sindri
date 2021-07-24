@@ -14,12 +14,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class OnBoardingActivity extends AppCompatActivity {
 
-
     FirebaseAuth mAuth;
     Button signIn, Register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_BIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_boarding);
 
