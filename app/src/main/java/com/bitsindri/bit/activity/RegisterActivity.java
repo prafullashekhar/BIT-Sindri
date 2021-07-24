@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.jetbrains.annotations.NotNull;
+
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
@@ -69,9 +71,28 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull @org.jetbrains.annotations.NotNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        Toast.makeText(RegisterActivity.this, "Yor are Registered now", Toast.LENGTH_SHORT).show();
+                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(RegisterActivity.this, "Registered successfully \nPlease check your email to verify", Toast.LENGTH_LONG).show();
+                                    email.setText("");
+                                    password.setText("");
+                                }else{
+                                    Log.e("MSG", "Unable to send verification mail - "+task.getException().getMessage());
+                                }
+                            }
+                        });
                     }else{
-                        Log.e("MSG", "Not Registered - "+task.getException().getMessage());
+                        String registerErrorMsg = task.getException().getMessage();
+                        Log.e("MSG", "Not Registered - "+registerErrorMsg);
+
+                        if(registerErrorMsg.equals("The email address is already in use by another account.")){
+                            email.setError("This email is already registered");
+                            email.requestFocus();
+                        }else{
+                            Toast.makeText(RegisterActivity.this, registerErrorMsg, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
