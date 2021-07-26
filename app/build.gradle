@@ -36,7 +36,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     // firebase
-    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation 'com.google.firebase:firebase-auth'
     implementation 'org.jetbrains:annotations:15.0'
     
     testImplementation 'junit:junit:4.+'
