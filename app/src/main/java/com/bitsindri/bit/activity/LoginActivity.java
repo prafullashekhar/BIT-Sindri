@@ -8,10 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private TextView email, password;
+    private EditText email, password;
     private TextView forgotPassword, signUp;
     private Button signIn;
 
@@ -36,10 +39,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         // initialising
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         signIn = findViewById(R.id.signIn);
         forgotPassword = findViewById(R.id.forgot_password_text);
         signUp = findViewById(R.id.signUp);
@@ -169,5 +174,24 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public void showHidePass(View view){
+
+        if(view.getId()==R.id.password_hide_toggle){
+
+            if(password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                ((ImageView)(view)).setImageResource(R.drawable.ic_password_hide);
+
+                //Show Password
+                password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                ((ImageView)(view)).setImageResource(R.drawable.ic_password_show);
+
+                //Hide Password
+                password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            }
+        }
     }
 }
