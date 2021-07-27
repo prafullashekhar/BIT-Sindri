@@ -88,11 +88,11 @@
         android:layout_marginStart="40dp"
         android:text="Don't have an account?"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/SignUp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/signUp"
         app:layout_constraintStart_toStartOf="@+id/signIn" />
 
     <TextView
-        android:id="@+id/SignUp"
+        android:id="@+id/signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
