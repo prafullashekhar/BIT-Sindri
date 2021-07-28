@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
 
         // initialising
         email = findViewById(R.id.email);
@@ -102,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // On signup click
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,19 +175,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Show password on eye click
     public void showHidePass(View view){
 
         if(view.getId()==R.id.password_hide_toggle){
 
             if(password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
                 ((ImageView)(view)).setImageResource(R.drawable.ic_password_hide);
-
                 //Show Password
                 password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             }
             else{
                 ((ImageView)(view)).setImageResource(R.drawable.ic_password_show);
-
                 //Hide Password
                 password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
