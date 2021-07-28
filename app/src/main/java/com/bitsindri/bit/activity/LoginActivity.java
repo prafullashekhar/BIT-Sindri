@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -140,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                         String errorMsg = task.getException().getMessage();
                         Log.e("MSG", "Not Registered - "+errorMsg);
 
+                        assert errorMsg != null;
                         if(errorMsg.equals("There is no user record corresponding to this identifier. The user may have been deleted.")){
                             email.setError("This email is not a registered email \nIf you are new user first get registered");
                             email.requestFocus();
@@ -192,6 +194,16 @@ public class LoginActivity extends AppCompatActivity {
                 password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
             }
+        }
+    }
+
+    // handling onStart
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null && user.isEmailVerified()){
+//            startActivity(new Intent(OnBoardingActivity.this, MainActivity.class));
         }
     }
 }

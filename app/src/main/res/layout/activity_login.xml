@@ -25,13 +25,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
-            android:layout_marginLeft="@dimen/small_margin"
-            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginRight="@dimen/medium_margin"
             android:background="@drawable/edit_text_signin"
-            android:drawableLeft="@drawable/ic_icon_email"
+            android:drawableStart="@drawable/ic_icon_email"
+            android:textColorHint="@color/text_hint"
             android:hint="@string/email"
-            android:drawablePadding="10dp"
-            android:inputType="textPersonName"
+            android:drawablePadding="15dp"
+            android:inputType="textEmailAddress"
             android:padding="13dp" />
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -39,8 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/email"
             android:layout_marginTop="@dimen/medium_margin"
-            android:layout_marginLeft="@dimen/small_margin"
-            android:layout_marginRight="@dimen/small_margin"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginRight="@dimen/medium_margin"
             android:orientation="horizontal">
             <EditText
                 android:id="@+id/password"
@@ -48,11 +49,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.95"
                 android:background="@drawable/edit_text_signin"
-                android:drawableLeft="@drawable/ic_icon_password"
+                android:drawableStart="@drawable/ic_icon_password"
+                android:textColorHint="@color/text_hint"
                 android:hint="@string/password"
                 android:drawablePadding="10dp"
                 android:inputType="textPersonName"
-                android:padding="13dp" />
+                android:padding="15dp" />
             <ImageView
                 android:id="@+id/password_hide_toggle"
                 android:layout_width="wrap_content"
@@ -69,9 +71,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/linearLayout"
             android:layout_marginTop="12dp"
-            android:layout_marginRight="@dimen/small_margin"
-            android:text="Forgot Password ?"
-            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:text="@string/forgot_pass"
+            android:layout_alignParentEnd="true"
             android:textColor="@color/app_theme"/>
         <Button
             android:id="@+id/signIn"
@@ -79,10 +81,11 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/no_account"
             android:layout_marginBottom="@dimen/small_margin"
-            android:layout_marginLeft="@dimen/big_margin"
-            android:layout_marginRight="@dimen/big_margin"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginRight="@dimen/medium_margin"
             android:padding="10dp"
             android:text="@string/sign_in"
+            android:textAllCaps="false"
             android:textStyle="bold"
             app:backgroundTint="@color/app_theme" />
         <LinearLayout
@@ -107,7 +110,8 @@
                 android:text="@string/sign_up"
                 android:textSize="@dimen/small_text_size"
                 android:textColor="@color/app_theme"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:layout_marginStart="4dp"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
