@@ -101,7 +101,7 @@
                 android:layout_marginStart="40dp"
                 android:textColor="#857F7F"
                 android:text="@string/no_account"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/signUp"
                 android:layout_width="wrap_content"
