@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context=".activity.LoginActivity">
 
+
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -125,7 +127,7 @@
             android:drawableStart="@drawable/ic_icon_password"
             android:drawablePadding="@dimen/drawable_padding_edit_text"
             android:hint="@string/password"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:padding="15dp"
             android:textColorHint="@color/text_hint" />
         <EditText
