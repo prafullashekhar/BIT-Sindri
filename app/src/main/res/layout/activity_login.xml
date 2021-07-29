@@ -31,7 +31,7 @@
             android:drawableStart="@drawable/ic_icon_email"
             android:textColorHint="@color/text_hint"
             android:hint="@string/email"
-            android:drawablePadding="15dp"
+            android:drawablePadding="@dimen/drawable_padding_edit_text"
             android:inputType="textEmailAddress"
             android:padding="13dp" />
         <LinearLayout
@@ -52,7 +52,7 @@
                 android:drawableStart="@drawable/ic_icon_password"
                 android:textColorHint="@color/text_hint"
                 android:hint="@string/password"
-                android:drawablePadding="15dp"
+                android:drawablePadding="@dimen/drawable_padding_edit_text"
                 android:inputType="textPersonName"
                 android:padding="15dp" />
             <ImageView

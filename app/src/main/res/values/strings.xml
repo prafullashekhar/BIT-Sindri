@@ -7,5 +7,12 @@
     <string name="sign_in">Sign in</string>
     <string name="register">Register</string>
     <string name="forgot_pass">Forgot Password ?</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="no_account">Don\'t have an account? </string>
+    <string name="user_name">Name</string>
+    <string name="user_batch">Batch</string>
+    <string name="user_roll">Roll No.</string>
+    <string name="user_registration">Registration No.</string>
+    <string name="user_branch">Branch</string>
+
 </resources>
