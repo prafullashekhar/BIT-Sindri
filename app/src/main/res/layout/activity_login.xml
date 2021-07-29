@@ -52,7 +52,7 @@
                 android:drawableStart="@drawable/ic_icon_password"
                 android:textColorHint="@color/text_hint"
                 android:hint="@string/password"
-                android:drawablePadding="10dp"
+                android:drawablePadding="15dp"
                 android:inputType="textPersonName"
                 android:padding="15dp" />
             <ImageView
