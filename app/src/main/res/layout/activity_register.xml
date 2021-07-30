@@ -85,20 +85,31 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/user_branch"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginRight="@dimen/medium_margin"
                 android:background="@drawable/edit_text_signin"
-                android:drawableStart="@drawable/ic_icon_email"
+                app:startIconDrawable="@drawable/ic_icon_email"
                 android:drawablePadding="@dimen/drawable_padding_edit_text"
-                android:hint="@string/user_branch"
-                android:inputType="textEmailAddress"
+
+                android:inputType="number"
                 android:padding="13dp"
-                android:textColorHint="@color/text_hint" />
+                android:textColorHint="@color/text_hint">
+
+                <AutoCompleteTextView
+                    android:id="@+id/select_branch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_signin"
+                    android:inputType="none"
+                    android:text="@string/user_branch"
+                    android:textColorHint="@color/text_hint"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <EditText
                 android:id="@+id/user_roll"

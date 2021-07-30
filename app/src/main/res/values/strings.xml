@@ -25,5 +25,14 @@
         <item>2020</item>
     </string-array>
 
+    <!--    branch list-->
+    <string-array name="branch_list">
+        <item>CSE</item>
+        <item>IT</item>
+        <item>EE</item>
+        <item>ME</item>
+        <item>ECE</item>
+    </string-array>
+
 
 </resources>

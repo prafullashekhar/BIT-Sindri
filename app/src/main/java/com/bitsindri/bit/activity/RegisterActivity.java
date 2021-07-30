@@ -34,13 +34,14 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore mStore;
     String UserId;
 
-    private TextView userName, userBranch, userRoll, userRegNo;
+    private TextView userName, userRoll, userRegNo;
     private TextView email, password;
     private Button signUp;
 
     String strUserName;
     AutoCompleteTextView selectBatch;
     String strUserBatch;
+    AutoCompleteTextView selectBranch;
     String strUserBranch;
     String strUserRoll;
     String strUserRegNo;
@@ -57,15 +58,20 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.user_password);
         signUp = findViewById(R.id.signup);
         userName = findViewById(R.id.user_name);
-        userBranch = findViewById(R.id.user_branch);
         userRoll = findViewById(R.id.user_roll);
         userRegNo = findViewById(R.id.user_registration);
 
         // setting dropdown for batches
         String[] batches = getResources().getStringArray(R.array.batch_list);
-        ArrayAdapter<String > arrayAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, batches);
+        ArrayAdapter<String > batchArrayAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, batches);
         selectBatch = (AutoCompleteTextView) findViewById(R.id.select_batch);
-        selectBatch.setAdapter(arrayAdapter);
+        selectBatch.setAdapter(batchArrayAdapter);
+
+        // setting dropdown for branches
+        String[] branches = getResources().getStringArray(R.array.branch_list);
+        ArrayAdapter<String > branchArrayAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, branches);
+        selectBranch = (AutoCompleteTextView) findViewById(R.id.select_branch);
+        selectBranch.setAdapter(branchArrayAdapter);
 
         // instantiating firebase
         mAuth = FirebaseAuth.getInstance();
@@ -84,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void checkUserData(){
         strUserName=userName.getText().toString();
         strUserBatch=selectBatch.getText().toString();
-        strUserBranch=userBranch.getText().toString();
+        strUserBranch=selectBranch.getText().toString();
         strUserRoll=userRoll.getText().toString();
         strUserRegNo=userRegNo.getText().toString();
         strUserEmail = email.getText().toString().trim();
@@ -97,8 +103,8 @@ public class RegisterActivity extends AppCompatActivity {
             selectBatch.setError("Please give Batch");
             selectBatch.requestFocus();
         }else if(TextUtils.isEmpty(strUserBranch)){
-            userBranch.setError("Please give Name");
-            userBranch.requestFocus();
+            selectBranch.setError("Please give Name");
+            selectBranch.requestFocus();
         }else if(TextUtils.isEmpty(strUserRoll)){
             userRoll.setError("Please give Name");
             userRoll.requestFocus();
