@@ -1,0 +1,9 @@
+<TextView
+    android:id="@+id/drop_down_menu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="TextView"
+    android:padding="@dimen/small_margin"
+    android:textColor="@color/black"
+    android:textSize="@dimen/medium_text_size"
+    xmlns:android="http://schemas.android.com/apk/res/android"/>

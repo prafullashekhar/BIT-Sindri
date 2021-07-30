@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,11 +34,12 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore mStore;
     String UserId;
 
-    private TextView userName, userBatch, userBranch, userRoll, userRegNo;
+    private TextView userName, userBranch, userRoll, userRegNo;
     private TextView email, password;
     private Button signUp;
 
     String strUserName;
+    AutoCompleteTextView selectBatch;
     String strUserBatch;
     String strUserBranch;
     String strUserRoll;
@@ -54,10 +57,15 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.user_password);
         signUp = findViewById(R.id.signup);
         userName = findViewById(R.id.user_name);
-        userBatch = findViewById(R.id.user_batch);
         userBranch = findViewById(R.id.user_branch);
         userRoll = findViewById(R.id.user_roll);
         userRegNo = findViewById(R.id.user_registration);
+
+        // setting dropdown for batches
+        String[] batches = getResources().getStringArray(R.array.batch_list);
+        ArrayAdapter<String > arrayAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, batches);
+        selectBatch = (AutoCompleteTextView) findViewById(R.id.select_batch);
+        selectBatch.setAdapter(arrayAdapter);
 
         // instantiating firebase
         mAuth = FirebaseAuth.getInstance();
@@ -75,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
     // function to check user data
     private void checkUserData(){
         strUserName=userName.getText().toString();
-        strUserBatch=userBatch.getText().toString();
+        strUserBatch=selectBatch.getText().toString();
         strUserBranch=userBranch.getText().toString();
         strUserRoll=userRoll.getText().toString();
         strUserRegNo=userRegNo.getText().toString();
@@ -86,8 +94,8 @@ public class RegisterActivity extends AppCompatActivity {
             userName.setError("Please give Name");
             userName.requestFocus();
         }else if(TextUtils.isEmpty(strUserBatch)){
-            userBatch.setError("Please give Batch");
-            userBatch.requestFocus();
+            selectBatch.setError("Please give Batch");
+            selectBatch.requestFocus();
         }else if(TextUtils.isEmpty(strUserBranch)){
             userBranch.setError("Please give Name");
             userBranch.requestFocus();
