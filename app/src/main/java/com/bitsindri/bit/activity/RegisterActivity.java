@@ -97,19 +97,19 @@ public class RegisterActivity extends AppCompatActivity {
         strUserPassword = password.getText().toString();
 
         if(TextUtils.isEmpty(strUserName)){
-            userName.setError("Please give Name");
+            userName.setError("Please fill this");
             userName.requestFocus();
-        }else if(TextUtils.isEmpty(strUserBatch)){
-            selectBatch.setError("Please give Batch");
+        }else if(strUserBatch.equals("Batch")){
+            selectBatch.setError("Please fill this");
             selectBatch.requestFocus();
-        }else if(TextUtils.isEmpty(strUserBranch)){
-            selectBranch.setError("Please give Name");
+        }else if(strUserBatch.equals("Branch")){
+            selectBranch.setError("Please fill this");
             selectBranch.requestFocus();
         }else if(TextUtils.isEmpty(strUserRoll)){
-            userRoll.setError("Please give Name");
+            userRoll.setError("Please fill this");
             userRoll.requestFocus();
         }else if(TextUtils.isEmpty(strUserRegNo)){
-            userRegNo.setError("Please give Name");
+            userRegNo.setError("Please fill this");
             userRegNo.requestFocus();
         }else if(TextUtils.isEmpty(strUserEmail)){
             email.setError("Email cannot be empty");
