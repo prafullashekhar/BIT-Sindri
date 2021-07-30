@@ -4,6 +4,7 @@
     <dimen name="small_margin">15dp</dimen>
     <dimen name="medium_margin">30dp</dimen>
     <dimen name="big_margin">40dp</dimen>
+    <dimen name="very_big_margin">80dp</dimen>
     <dimen name="corner_radius_container">40dp</dimen>
     <dimen name="big_text_size">24sp</dimen>
     <dimen name="medium_text_size">16sp</dimen>
