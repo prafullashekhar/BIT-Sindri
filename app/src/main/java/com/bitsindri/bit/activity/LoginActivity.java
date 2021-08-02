@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
     private TextView forgotPassword, signUp;
     private Button signIn;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,14 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // launching progress bar
+                progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_bar);
+                progressDialog.getWindow().setBackgroundDrawableResource(
+                        android.R.color.transparent
+                );
+
                 checkUser();
             }
         });
@@ -63,6 +75,14 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // launching progress bar
+                progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_bar);
+                progressDialog.getWindow().setBackgroundDrawableResource(
+                        android.R.color.transparent
+                );
+
                 Log.e("MSG", "forgot");
                 String strEmail = email.getText().toString().trim();
 
@@ -90,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                     passwordResetDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            progressDialog.dismiss();
                         }
                     });
 
@@ -120,6 +140,9 @@ public class LoginActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(strEmail)){
             email.setError("Email cannot be empty");
             email.requestFocus();
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()){
+            email.setError("Enter the correct EmailId");
+            email.requestFocus();
         }else if(TextUtils.isEmpty(strPassword)){
             password.setError("Password cannot be empty");
             password.requestFocus();
@@ -127,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                    progressDialog.dismiss();
                     if(task.isSuccessful()){
                         if(mAuth.getCurrentUser().isEmailVerified()){
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -143,8 +167,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         assert errorMsg != null;
                         if(errorMsg.equals("There is no user record corresponding to this identifier. The user may have been deleted.")){
-                            email.setError("This email is not a registered email \nIf you are new user first get registered");
-                            email.requestFocus();
+                            String er = "This email is not a registered email \nIf you are new user first get registered";
+                            Toast.makeText(LoginActivity.this, er, Toast.LENGTH_LONG ).show();
                         } else if(errorMsg.equals("The email address is badly formatted.")){
                             email.setError("Enter the correct EmailId");
                             email.requestFocus();
@@ -168,11 +192,13 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.sendPasswordResetEmail(resetEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
+                progressDialog.dismiss();
                 Toast.makeText(LoginActivity.this, "Reset link is set to your email", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
+                progressDialog.dismiss();
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

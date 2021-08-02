@@ -165,7 +165,7 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginRight="@dimen/medium_margin"
                 android:background="@drawable/edit_text_signin"
-                android:drawableStart="@drawable/ic_icon_user"
+                android:drawableStart="@drawable/ic_icon_awesome_user_lock"
                 android:drawablePadding="@dimen/drawable_padding_edit_text"
                 android:hint="@string/confirm_password"
                 android:inputType="textPassword"

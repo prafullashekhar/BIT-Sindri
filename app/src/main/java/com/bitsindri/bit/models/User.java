@@ -2,17 +2,25 @@ package com.bitsindri.bit.models;
 
 public class User {
 
-    String name, rollNo, regNo, email;
+    String name;
+    String email;
+    String batch;
+    String branch;
+    String rollNo;
+    String regNo;
 
     // empty constructor
     public User(){
     }
 
-    public User(String name, String rollNo, String regNo, String email){
+    public User(String name, String email, String batch, String branch, String rollNo, String regNo){
         this.name=name;
+        this.email=email;
+        this.batch=batch;
+        this.branch=branch;
         this.rollNo=rollNo;
         this.regNo=regNo;
-        this.email=email;
+
     }
 
     public String getName() {
@@ -45,5 +53,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 }

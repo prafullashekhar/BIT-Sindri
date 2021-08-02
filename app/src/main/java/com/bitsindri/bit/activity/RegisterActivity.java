@@ -3,6 +3,7 @@ package com.bitsindri.bit.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,9 +35,10 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore mStore;
     String UserId;
 
-    private TextView userName, userRoll, userRegNo;
+    private TextView userName, userRoll, userRegNo, confirmPassword;
     private TextView email, password;
     private Button signUp;
+    private ProgressDialog progressDialog;
 
     String strUserName;
     AutoCompleteTextView selectBatch;
@@ -60,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         userName = findViewById(R.id.user_name);
         userRoll = findViewById(R.id.user_roll);
         userRegNo = findViewById(R.id.user_registration);
+        confirmPassword = findViewById(R.id.user_confirm_password);
 
         // setting dropdown for batches
         String[] batches = getResources().getStringArray(R.array.batch_list);
@@ -123,13 +126,25 @@ public class RegisterActivity extends AppCompatActivity {
         }else if(strUserPassword.length() < 6){
             password.setError("Too short password length");
             password.requestFocus();
+        }else if(! strUserPassword.equals(confirmPassword.getText().toString())){
+            confirmPassword.setError("Password does not matched");
+            confirmPassword.requestFocus();
         }else{
+            // launching progress bar
+            progressDialog = new ProgressDialog(RegisterActivity.this);
+            progressDialog.show();
+            progressDialog.setContentView(R.layout.progress_bar);
+            progressDialog.getWindow().setBackgroundDrawableResource(
+                    android.R.color.transparent
+            );
+
             addUser();
         }
     }
 
     // function to add user to the firebase database
     private void addUser(){
+
         mAuth.createUserWithEmailAndPassword(strUserEmail, strUserPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @org.jetbrains.annotations.NotNull Task<AuthResult> task) {
@@ -137,6 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
                     mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            progressDialog.dismiss();
                             if(task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "Registered successfully \nPlease check your email to verify", Toast.LENGTH_LONG).show();
                                 UserId = mAuth.getCurrentUser().getUid();
@@ -149,6 +165,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
                 }else{
+                    progressDialog.dismiss();
                     String registerErrorMsg = task.getException().getMessage();
                     Log.e("MSG", "Not Registered - "+registerErrorMsg);
 

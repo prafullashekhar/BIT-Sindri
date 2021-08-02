@@ -2,7 +2,6 @@
     android:id="@+id/drop_down_menu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/edit_text_bg"
     android:text="TextView"
     android:padding="@dimen/small_margin"
     android:textColor="@color/black"
