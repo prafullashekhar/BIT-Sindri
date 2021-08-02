@@ -8,13 +8,16 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgotPassword, signUp;
     private Button signIn;
     private ProgressDialog progressDialog;
+    private AlertDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         signIn = findViewById(R.id.signIn);
         forgotPassword = findViewById(R.id.forgot_password_text);
         signUp = findViewById(R.id.signUp);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -75,46 +81,45 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // launching progress bar
-                progressDialog = new ProgressDialog(LoginActivity.this);
-                progressDialog.show();
-                progressDialog.setContentView(R.layout.progress_bar);
-                progressDialog.getWindow().setBackgroundDrawableResource(
-                        android.R.color.transparent
-                );
-
-                Log.e("MSG", "forgot");
                 String strEmail = email.getText().toString().trim();
 
                 // showing alert dialog if no email is provided
                 if(TextUtils.isEmpty(strEmail)){
-                    EditText resetMail = new EditText(v.getContext());
-                    final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
-                    passwordResetDialog.setTitle("Reset Password?");
-                    passwordResetDialog.setMessage("Enter your Email to receive password reset link");
-                    passwordResetDialog.setView(resetMail);
+                    EditText forgotEmail;
+                    Button forgotResetLink;
+                    final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(LoginActivity.this);
+                    LayoutInflater inflater = getLayoutInflater();
+                    View view = inflater.inflate(R.layout.forgot_pass_dialog_box, null);
 
-                    passwordResetDialog.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
+                    forgotEmail = view.findViewById(R.id.forgot_email);
+                    forgotResetLink = view.findViewById(R.id.forgot_reset_link);
+                    passwordResetDialog.setView(view);
+
+                    forgotResetLink.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if(TextUtils.isEmpty(resetMail.getText().toString().trim())){
-                                email.setError("Please enter your email Id");
-                                email.requestFocus();
+                        public void onClick(View v) {
+                            // launching progress bar
+                            progressDialog = new ProgressDialog(LoginActivity.this);
+                            progressDialog.show();
+                            progressDialog.setContentView(R.layout.progress_bar);
+                            progressDialog.getWindow().setBackgroundDrawableResource(
+                                    android.R.color.transparent
+                            );
+
+                            if(TextUtils.isEmpty(forgotEmail.getText().toString().trim())){
+                                forgotEmail.setError("Please enter your email Id");
+                                forgotEmail.requestFocus();
                             }else{
-                                sendPasswordReset(resetMail.getText().toString());
+                                sendPasswordReset(forgotEmail.getText().toString());
                             }
-
                         }
                     });
 
-                    passwordResetDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            progressDialog.dismiss();
-                        }
-                    });
-
-                    passwordResetDialog.create().show();
+                    dialog = passwordResetDialog.create();
+                    dialog.getWindow().setBackgroundDrawableResource(
+                            android.R.color.transparent
+                    );
+                    dialog.show();
 
                 }else{
                     sendPasswordReset(strEmail);
@@ -193,7 +198,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, "Reset link is set to your email", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                Toast.makeText(LoginActivity.this, "Reset link is sent to your email", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -3,46 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/splash_gradient">
+    android:gravity="center"
+    android:background="@drawable/progress_bar_bg_rad20dp">
 
 
-    <TextView
-        android:id="@+id/reset_pass_headline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-
-
-        android:text="Reset Password"
-        android:textSize="30sp"
-
-        android:textStyle="bold" />
-
-
-    <EditText
-        android:id="@+id/email"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="5dp"
-        android:ems="10"
-        android:hint="Enter Registered  email address"
-        android:inputType="textEmailAddress"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Reset Password"
+            android:textColor="@color/app_theme"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
 
-    <Button
-        android:id="@+id/forgot_password_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="150dp"
-        android:layout_marginRight="10dp"
-        android:padding="10dp"
 
-        android:text="Forgot Password"
-        android:textStyle="bold"
-        app:backgroundTint="@color/app_theme" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Registered  email address to get password reset link"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/forgot_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+        <Button
+            android:id="@+id/forgot_reset_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="Reset"
+            android:textStyle="bold"
+            android:layout_gravity="right"
+            app:backgroundTint="@color/app_theme" />
+
+
+    </LinearLayout>
+
+
+
+
+
 </RelativeLayout>
