@@ -4,11 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -17,7 +14,6 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -65,14 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // launching progress bar
-                progressDialog = new ProgressDialog(LoginActivity.this);
-                progressDialog.show();
-                progressDialog.setContentView(R.layout.progress_bar);
-                progressDialog.getWindow().setBackgroundDrawableResource(
-                        android.R.color.transparent
-                );
-
                 checkUser();
             }
         });
@@ -98,18 +86,19 @@ public class LoginActivity extends AppCompatActivity {
                     forgotResetLink.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // launching progress bar
-                            progressDialog = new ProgressDialog(LoginActivity.this);
-                            progressDialog.show();
-                            progressDialog.setContentView(R.layout.progress_bar);
-                            progressDialog.getWindow().setBackgroundDrawableResource(
-                                    android.R.color.transparent
-                            );
 
                             if(TextUtils.isEmpty(forgotEmail.getText().toString().trim())){
                                 forgotEmail.setError("Please enter your email Id");
                                 forgotEmail.requestFocus();
                             }else{
+                                // launching progress bar
+                                progressDialog = new ProgressDialog(LoginActivity.this);
+                                progressDialog.show();
+                                progressDialog.setContentView(R.layout.progress_bar);
+                                progressDialog.getWindow().setBackgroundDrawableResource(
+                                        android.R.color.transparent
+                                );
+
                                 sendPasswordReset(forgotEmail.getText().toString());
                             }
                         }
@@ -152,6 +141,14 @@ public class LoginActivity extends AppCompatActivity {
             password.setError("Password cannot be empty");
             password.requestFocus();
         }else{
+            // launching progress bar
+            progressDialog = new ProgressDialog(LoginActivity.this);
+            progressDialog.show();
+            progressDialog.setContentView(R.layout.progress_bar);
+            progressDialog.getWindow().setBackgroundDrawableResource(
+                    android.R.color.transparent
+            );
+
             mAuth.signInWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
