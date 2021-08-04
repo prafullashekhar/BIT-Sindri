@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.methods.Methods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgot_password_text);
         signUp = findViewById(R.id.signUp);
 
-
+        // instantiating firebase
         mAuth = FirebaseAuth.getInstance();
 
         // On signIn click
@@ -91,14 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                                 forgotEmail.setError("Please enter your email Id");
                                 forgotEmail.requestFocus();
                             }else{
-                                // launching progress bar
-                                progressDialog = new ProgressDialog(LoginActivity.this);
-                                progressDialog.show();
-                                progressDialog.setContentView(R.layout.progress_bar);
-                                progressDialog.getWindow().setBackgroundDrawableResource(
-                                        android.R.color.transparent
-                                );
-
                                 sendPasswordReset(forgotEmail.getText().toString());
                             }
                         }
@@ -142,12 +135,7 @@ public class LoginActivity extends AppCompatActivity {
             password.requestFocus();
         }else{
             // launching progress bar
-            progressDialog = new ProgressDialog(LoginActivity.this);
-            progressDialog.show();
-            progressDialog.setContentView(R.layout.progress_bar);
-            progressDialog.getWindow().setBackgroundDrawableResource(
-                    android.R.color.transparent
-            );
+            progressDialog = Methods.launchProgressDialog(progressDialog, LoginActivity.this);
 
             mAuth.signInWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -191,6 +179,10 @@ public class LoginActivity extends AppCompatActivity {
 
     // function to reset password
     private void sendPasswordReset(String resetEmail){
+
+        // launching progress bar
+        progressDialog = Methods.launchProgressDialog(progressDialog, LoginActivity.this);
+
         mAuth.sendPasswordResetEmail(resetEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

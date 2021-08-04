@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/splash_gradient.xml" value="0.33564814814814814" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.15672990063233966" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/forgot_pass_dialog_box.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/progress_bar.xml" value="0.359375" />
       </map>
     </option>
   </component>

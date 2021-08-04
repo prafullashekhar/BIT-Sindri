@@ -3,6 +3,7 @@ package com.bitsindri.bit.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.methods.Methods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -131,12 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
             confirmPassword.requestFocus();
         }else{
             // launching progress bar
-            progressDialog = new ProgressDialog(RegisterActivity.this);
-            progressDialog.show();
-            progressDialog.setContentView(R.layout.progress_bar);
-            progressDialog.getWindow().setBackgroundDrawableResource(
-                    android.R.color.transparent
-            );
+            progressDialog = Methods.launchProgressDialog(progressDialog, RegisterActivity.this);
 
             addUser();
         }

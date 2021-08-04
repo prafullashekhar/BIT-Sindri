@@ -20,20 +20,21 @@
         android:orientation="vertical"
         android:background="@drawable/sign_in_container_bg"
         android:layout_weight="0.60">
+
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/big_margin"
             android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
             android:layout_marginRight="@dimen/medium_margin"
             android:background="@drawable/edit_text_signin"
             android:drawableStart="@drawable/ic_icon_email"
-            android:textColorHint="@color/text_hint"
-            android:hint="@string/email"
             android:drawablePadding="@dimen/drawable_padding_edit_text"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:padding="13dp" />
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint" />
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -54,7 +55,8 @@
                 android:hint="@string/password"
                 android:drawablePadding="@dimen/drawable_padding_edit_text"
                 android:inputType="textPersonName"
-                android:padding="15dp" />
+                android:padding="15dp"
+                tools:ignore="TextFields" />
             <ImageView
                 android:id="@+id/password_hide_toggle"
                 android:layout_width="wrap_content"
@@ -63,7 +65,7 @@
                 android:onClick="showHidePass"
                 android:layout_weight="0.05"
                 android:layout_gravity="center"
-                android:layout_marginLeft="-40dp"/>
+                android:layout_marginStart="-40dp"/>
         </LinearLayout>
         <TextView
             android:id="@+id/forgot_password_text"
