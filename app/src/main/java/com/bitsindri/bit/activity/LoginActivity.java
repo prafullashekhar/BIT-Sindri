@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -153,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else{
                         String errorMsg = task.getException().getMessage();
-                        Log.e("MSG", "Not Registered - "+errorMsg);
+                        Log.e(Constants.msg, "Not Registered - "+errorMsg);
 
                         assert errorMsg != null;
                         if(errorMsg.equals("There is no user record corresponding to this identifier. The user may have been deleted.")){
