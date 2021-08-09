@@ -225,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if(user != null && user.isEmailVerified()){
-//            startActivity(new Intent(OnBoardingActivity.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
     }
 }

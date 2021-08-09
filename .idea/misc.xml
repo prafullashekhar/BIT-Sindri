@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-anydpi/ic_icon_main_home.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/edit_text_signin.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_group_36.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_awesome_user_lock.xml" value="0.37552083333333336" />
@@ -10,13 +12,17 @@
         <entry key="app/src/main/res/drawable/ic_icon_email.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_password.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_registration.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/splash_gradient.xml" value="0.33564814814814814" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/forgot_pass_dialog_box.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/progress_bar.xml" value="0.359375" />
+        <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.359375" />
       </map>
     </option>
   </component>
