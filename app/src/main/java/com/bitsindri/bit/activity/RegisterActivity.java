@@ -3,7 +3,6 @@ package com.bitsindri.bit.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -132,15 +132,15 @@ public class RegisterActivity extends AppCompatActivity {
             confirmPassword.setError("Password does not matched");
             confirmPassword.requestFocus();
         }else{
-            // launching progress bar
-            progressDialog = Methods.launchProgressDialog(progressDialog, RegisterActivity.this);
-
             addUser();
         }
     }
 
     // function to add user to the firebase database
     private void addUser(){
+
+        // launching progress bar
+        progressDialog = Methods.launchProgressDialog(progressDialog, RegisterActivity.this);
 
         mAuth.createUserWithEmailAndPassword(strUserEmail, strUserPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -157,14 +157,14 @@ public class RegisterActivity extends AppCompatActivity {
                                 registerUser();
 
                             }else{
-                                Log.e("MSG", "Unable to send verification mail - "+task.getException().getMessage());
+                                Log.e(Constants.msg, "Unable to send verification mail - "+task.getException().getMessage());
                             }
                         }
                     });
                 }else{
                     progressDialog.dismiss();
                     String registerErrorMsg = task.getException().getMessage();
-                    Log.e("MSG", "Not Registered - "+registerErrorMsg);
+                    Log.e(Constants.msg, "Not Registered - "+registerErrorMsg);
 
                     if(registerErrorMsg.equals("The email address is already in use by another account.")){
                         email.setError("This email is already registered");
@@ -178,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    // register the user information in FireStore cloud database
+    // register the user information in FireStore cloud database in collection named "user(Batch-Branch)" and document named as userid
     private void registerUser(){
         DocumentReference documentReference = mStore.collection("user(" + strUserBatch+"-"+strUserBranch+")").document(UserId);
         Map<String, Object> user = new HashMap<>();
@@ -191,12 +191,12 @@ public class RegisterActivity extends AppCompatActivity {
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Log.d("MSG", "user profile is created");
+                Log.d(Constants.msg, "user profile is created");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
-                Log.e("MSG", "user profile is not created");
+                Log.e(Constants.msg, "user profile is not created");
             }
         });
     }

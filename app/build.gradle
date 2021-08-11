@@ -1,4 +1,5 @@
 plugins {
+    id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
     id 'com.android.application'
     id 'com.google.gms.google-services'
 }
@@ -40,6 +41,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // OneSignal
+    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
