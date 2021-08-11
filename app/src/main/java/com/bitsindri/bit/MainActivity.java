@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.bitsindri.bit.fragments.ClubsFragment;
 import com.bitsindri.bit.fragments.HomeFragment;
+import com.bitsindri.bit.fragments.NotificationsFragment;
 import com.bitsindri.bit.fragments.ProfileFragment;
+import com.bitsindri.bit.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +33,18 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.nav_home:
                         fragment = new HomeFragment();
+                        break;
+
+                    case R.id.nav_search:
+                        fragment = new SearchFragment();
+                        break;
+
+                    case R.id.nav_clubs:
+                        fragment = new ClubsFragment();
+                        break;
+
+                    case R.id.nav_notifications:
+                        fragment = new NotificationsFragment();
                         break;
 
                     case R.id.nav_profile:
