@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="app_theme">#FF4ca1af</color>
+    <color name="app_theme_dark">#018786</color>
     <color name="edit_text_outline">#F6F8F8</color>
     <color name="edit_text_bg">#E6FBFB</color>
     <color name="text_hint">#878585</color>
