@@ -8,6 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="background_color">#FFFFFFFF</color>
+    <color name="light_text_color">#FF504D4D</color>
+
     <color name="app_theme">#FF4ca1af</color>
     <color name="app_theme_dark">#018786</color>
     <color name="edit_text_outline">#F6F8F8</color>
