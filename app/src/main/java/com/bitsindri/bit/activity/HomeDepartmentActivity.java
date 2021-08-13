@@ -12,13 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.custommenu.DrawerAdapter;
 import com.bitsindri.bit.custommenu.DrawerItem;
 import com.bitsindri.bit.custommenu.SimpleItem;
-import com.yarolegovich.slidingrootnav.SlidingRootNav;
-import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+import com.bitsindri.bit.department_fagments.CseFagment;
+import com.bitsindri.bit.department_fagments.EceFragment;
+import com.bitsindri.bit.department_fagments.ElectricalFagment;
+import com.bitsindri.bit.department_fagments.ItFragment;
+import com.bitsindri.bit.department_fagments.MechanicalFragment;
 
 import java.util.Arrays;
 
@@ -31,9 +35,10 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
 
     private String[] screenTitles;
     private Drawable[] screenIcons;
+    private View departmentDrawer;
 
-    private SlidingRootNav slidingRootNav;
     Toolbar toolbar;
+    Fragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +46,14 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
+        departmentDrawer=findViewById(R.id.drawer_left_menu);
 
-        slidingRootNav = new SlidingRootNavBuilder(this)
-                .withToolbarMenuToggle(toolbar)
-                .withMenuOpened(false)
-                .withContentClickableWhenMenuOpened(false)
-                .withDragDistance(40)
-                .withSavedState(savedInstanceState)
-                .withMenuLayout(R.layout.menu_left_drawer)
-                .inject();
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                departmentDrawer.setVisibility(departmentDrawer.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
+            }
+        });
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
         DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
@@ -69,16 +72,38 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
 
         adapter.setSelected(POS_CSE);
         toolbar.setTitle(screenTitles[POS_CSE]);
+        fragment=new CseFagment();
+        showFragment(fragment);
     }
     @Override
     public void onItemSelected(int position) {
-        slidingRootNav.closeMenu();
+
         toolbar.setTitle(screenTitles[position]);
+        departmentDrawer.setVisibility(View.GONE);
+        switch(position){
+            case POS_CSE:fragment=new CseFagment();
+            break;
+            case POS_IT:fragment=new ItFragment();
+            break;
+            case POS_EE:fragment=new ElectricalFagment();
+            break;
+            case POS_ME:fragment=new MechanicalFragment();
+            break;
+            case POS_ECE:fragment=new EceFragment();
+            break;
+            default:fragment=new CseFagment();
+            break;
+        }
+        showFragment(fragment);
     }
     private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
+    }
+    public void closeDrawer(View v){
+        if(departmentDrawer.getVisibility()==View.VISIBLE)
+            departmentDrawer.setVisibility(View.GONE);
     }
     private DrawerItem createItemFor(int position) {
         return new SimpleItem(screenIcons[position], screenTitles[position])

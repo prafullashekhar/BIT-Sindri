@@ -5,5 +5,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
+    app:navigationIcon="@drawable/ic_drawer"
+    app:contentInsetStart="20dp"
     android:background="@color/white" />
 
