@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.SliderAdapter;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +29,11 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    SliderView sliderView;
+    int[] images = {R.drawable.one,
+            R.drawable.two,
+            R.drawable.three,};
 
     public HomeFragment() {
         // Required empty public constructor
@@ -54,13 +63,24 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_home,container,false);
+
+        sliderView =v.findViewById(R.id.image_slider);
+
+        SliderAdapter sliderAdapter = new SliderAdapter(images);
+
+        sliderView.setSliderAdapter(sliderAdapter);
+        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+        sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
+        sliderView.startAutoCycle();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return v;
     }
 }
