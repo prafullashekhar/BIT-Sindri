@@ -20,6 +20,16 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fragment;
 
     @Override
+    public void onBackPressed() {
+        if(bottomNavigationView.getSelectedItemId()==R.id.nav_home){
+            finishAffinity();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
