@@ -46,6 +46,10 @@ dependencies {
     // OneSignal
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 
+    //imageSlider
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
