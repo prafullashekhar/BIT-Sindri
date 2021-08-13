@@ -111,6 +111,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/home_departments"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
                     app:cardElevation="@dimen/elevation_width"

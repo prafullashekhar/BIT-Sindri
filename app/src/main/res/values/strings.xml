@@ -33,6 +33,13 @@
         <item>ME</item>
         <item>ECE</item>
     </string-array>
+    <array name="branch_icon">
+        <item>@drawable/ic_icon_home_departments</item>
+        <item>@drawable/ic_icon_home_departments</item>
+        <item>@drawable/ic_icon_home_departments</item>
+        <item>@drawable/ic_icon_home_departments</item>
+        <item>@drawable/ic_icon_home_departments</item>
+    </array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dash_board">Dashboard</string>
