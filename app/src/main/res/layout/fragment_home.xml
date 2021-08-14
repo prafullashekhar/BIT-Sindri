@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="1">
         <LinearLayout
@@ -21,9 +21,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
-                android:layout_marginLeft="@dimen/small_margin"
-                android:layout_marginBottom="8dp"
-                android:textSize="@dimen/medium_text_size"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginBottom="4dp"
+                android:textSize="20sp"
                 android:text="Hii Shiwani"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -33,10 +33,10 @@
                 android:id="@+id/welcome_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/small_margin"
+                android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginBottom="8dp"
-                android:textSize="@dimen/small_text_size"
-                android:text="Welcome Back"
+                android:textSize="12sp"
+                android:text="@string/welcome_back"
                 app:layout_constraintTop_toBottomOf="@+id/userName_home_fragment"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:textColor="@color/light_text_color"/>
@@ -45,19 +45,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
-                android:layout_margin="15dp">
+                app:cardElevation="@dimen/elevation_width"
+                android:layout_margin="15dp"
+                app:layout_constraintTop_toBottomOf="@id/welcome_back"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
                 <com.smarteist.autoimageslider.SliderView
                     android:id="@+id/image_slider"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
-                    android:layout_margin="15dp"
-                    app:layout_constraintTop_toBottomOf="@id/welcome_back"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:elevation="15dp"
-                    android:layout_marginTop="@dimen/medium_margin"
-                    android:layout_marginBottom="@dimen/small_margin"
                     app:sliderAnimationDuration="600"
                     app:sliderAutoCycleDirection="back_and_forth"
                     app:sliderAutoCycleEnabled="true"
@@ -69,8 +66,8 @@
                     app:sliderIndicatorRadius="2dp"
                     app:sliderIndicatorSelectedColor="@color/app_theme_dark"
                     app:sliderIndicatorUnselectedColor="#FFF"
-                    app:sliderScrollTimeInSec="2"
-                    app:sliderStartAutoCycle="true"/>
+                    app:sliderScrollTimeInSec="3"
+                    app:sliderStartAutoCycle="true" />
 
             </androidx.cardview.widget.CardView>
 
@@ -89,8 +86,7 @@
                 android:layout_marginTop="5dp"
                 android:padding="2dp"
                 android:text="@string/dash_board"
-                android:textSize="@dimen/medium_text_size"
-                android:textStyle="bold" />
+                android:textSize="@dimen/medium_text_size" />
 
             <GridLayout
                 android:layout_width="wrap_content"
