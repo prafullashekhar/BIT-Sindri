@@ -25,7 +25,9 @@
         <entry key="app/src/main/res/drawable-anydpi/ic_icon_main_home.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/bottom_navigation_bg.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/circular_background.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/drawable/edit_text_signin.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/drawable/ic_drawer.xml" value="0.33240740740740743" />
         <entry key="app/src/main/res/drawable/ic_group_36.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_awesome_user_lock.xml" value="0.37552083333333336" />
@@ -55,10 +57,16 @@
         <entry key="app/src/main/res/layout/custom_menu_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/forgot_pass_dialog_box.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_chemical.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/fragment_civil.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_clubs.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_cse.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/fragment_department_cse.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_metallurgy.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/fragment_mining.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/fragment_production.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/menu_left_drawer.xml" value="0.359375" />
