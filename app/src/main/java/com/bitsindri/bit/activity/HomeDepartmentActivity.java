@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bitsindri.bit.R;
@@ -42,6 +43,7 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
     private LinearLayout mainContainer;
     private boolean isFirst = true;
     private boolean isDrawerOpened=false;
+    private ImageView navHeaderImage;
 
     Toolbar toolbar;
     Fragment fragment;
@@ -55,6 +57,8 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
         getSupportActionBar().setTitle(null);
         departmentDrawer = findViewById(R.id.drawer_left_menu);
         mainContainer = findViewById(R.id.department_main_container);
+        navHeaderImage=departmentDrawer.findViewById(R.id.menu_header_Image);
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

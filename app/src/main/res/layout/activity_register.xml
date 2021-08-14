@@ -5,7 +5,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,17 +15,17 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:scaleType="centerCrop"
             android:layout_height="0dp"
             android:layout_weight="0.16"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_group_36" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.60"
             android:layout_marginTop="-30dp"
+            android:layout_weight="0.60"
             android:background="@drawable/sign_in_container_bg"
             android:orientation="vertical">
 
@@ -64,18 +63,18 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
-                android:theme="@style/Theme.BIT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginRight="@dimen/medium_margin"
                 android:background="@drawable/edit_text_signin"
-                app:startIconDrawable="@drawable/ic_icon_batch"
-                app:startIconTint="@color/app_theme"
                 android:drawablePadding="@dimen/drawable_padding_edit_text"
+                android:theme="@style/Theme.BIT"
                 app:boxBackgroundColor="@color/edit_text_bg"
-                app:boxStrokeColor="@color/app_theme">
+                app:boxStrokeColor="@color/app_theme"
+                app:startIconDrawable="@drawable/ic_icon_batch"
+                app:startIconTint="@color/app_theme">
 
                 <AutoCompleteTextView
                     android:id="@+id/select_batch"
@@ -83,27 +82,27 @@
                     android:layout_height="match_parent"
                     android:inputType="none"
                     android:text="@string/user_batch"
-                    android:textColorHint="@color/text_hint"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/text_hint"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
-                android:theme="@style/Theme.BIT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginRight="@dimen/medium_margin"
                 android:background="@drawable/edit_text_signin"
-                app:startIconDrawable="@drawable/ic_icon_email"
-                app:startIconTint="@color/app_theme"
-                android:textColorHint="@color/edit_text_outline"
                 android:drawablePadding="@dimen/drawable_padding_edit_text"
+                android:textColorHint="@color/edit_text_outline"
+                android:theme="@style/Theme.BIT"
                 app:boxBackgroundColor="@color/edit_text_bg"
-                app:boxStrokeColor="@color/app_theme">
+                app:boxStrokeColor="@color/app_theme"
+                app:startIconDrawable="@drawable/ic_icon_email"
+                app:startIconTint="@color/app_theme">
 
                 <AutoCompleteTextView
                     android:id="@+id/select_branch"
@@ -112,8 +111,8 @@
                     android:background="@drawable/edit_text_signin"
                     android:inputType="none"
                     android:text="@string/user_branch"
-                    android:textColorHint="@color/text_hint"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/text_hint"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -166,6 +165,7 @@
                 android:padding="15dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/text_hint" />
+
             <EditText
                 android:id="@+id/user_confirm_password"
                 android:layout_width="match_parent"
@@ -186,10 +186,10 @@
                 android:id="@+id/signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/small_margin"
                 android:layout_marginLeft="@dimen/medium_margin"
-                android:layout_marginRight="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/very_big_margin"
+                android:layout_marginRight="@dimen/medium_margin"
+                android:layout_marginBottom="@dimen/small_margin"
                 android:padding="10dp"
                 android:text="@string/register"
                 android:textAllCaps="false"
