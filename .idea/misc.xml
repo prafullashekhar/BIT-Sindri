@@ -6,9 +6,13 @@
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_calendar.xml" value="0.24871794871794872" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_departments.xml" value="0.2064814814814815" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_main_home.xml" value="0.24871794871794872" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/circular_background.xml" value="0.19537037037037036" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.19537037037037036" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/ic_drawer.xml" value="0.19814814814814816" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_department.xml" value="0.21666666666666667" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_login.xml" value="0.2222222222222222" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_main.xml" value="0.2222222222222222" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_register.xml" value="0.115625" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/custom_menu_item.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/dropdown_item.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_cse.xml" value="0.23645833333333333" />
