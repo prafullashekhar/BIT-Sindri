@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="horizontal">
 
-    <include
+    <com.google.android.material.navigation.NavigationView
         android:id="@+id/drawer_left_menu"
+        android:background="@color/white"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:menu="@menu/menu_navigation_drawer_department"
+        android:layout_weight="0.20"
+        app:headerLayout="@layout/nav_header"
+        android:layout_gravity="center_horizontal"
+        app:itemIconPadding="4dp"
         android:visibility="gone"
-        layout="@layout/menu_left_drawer"/>
+        app:itemIconTint="@color/light_text_color"/>
+
 
     <LinearLayout
         android:id="@+id/department_main_container"
