@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -32,6 +31,7 @@ import com.bitsindri.bit.department_fagments.MechanicalFragment;
 import com.bitsindri.bit.department_fagments.MetallurgyFragment;
 import com.bitsindri.bit.department_fagments.MiningFragment;
 import com.bitsindri.bit.department_fagments.ProductionFragment;
+
 
 import java.util.Arrays;
 
@@ -69,7 +69,6 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
         mainContainer = findViewById(R.id.department_main_container);
         navHeaderImage=departmentDrawer.findViewById(R.id.menu_header_Image);
 
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,8 +76,8 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
                     closeDrawer();
                 } else {
                     departmentDrawer.setVisibility(View.VISIBLE);
-                    departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right));
                     mainContainer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right));
+                    departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right));
                     isDrawerOpened=true;
                 }
 
@@ -196,7 +195,7 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
     }
 
     private Drawable[] loadScreenIcons() {
-        TypedArray ta = getResources().obtainTypedArray(R.array.full_name_branch_list);
+        TypedArray ta = getResources().obtainTypedArray(R.array.branch_icon);
         Drawable[] icons = new Drawable[ta.length()];
         for (int i = 0; i < ta.length(); i++) {
             int id = ta.getResourceId(i, 0);
