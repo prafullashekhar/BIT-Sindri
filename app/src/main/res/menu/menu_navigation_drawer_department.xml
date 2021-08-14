@@ -1,4 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/mechanical"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/electrical"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/computer_science"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/information_tech"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/ECE"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/production"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/metallurgy"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/chemical"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/civil"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+        <item
+            android:id="@+id/mining"
+            android:icon="@drawable/ic_icon_home_departments"
+            android:title="" />
+    </group>
 </menu>

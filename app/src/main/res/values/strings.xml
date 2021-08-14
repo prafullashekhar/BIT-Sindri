@@ -47,20 +47,6 @@
         <item>Civil</item>
         <item>Mining</item>
     </string-array>
-
-    <array name="branch_icon">
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-        <item>@drawable/ic_icon_home_departments</item>
-    </array>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="dash_board">Dashboard</string>
     <string name="welcome_back">Welcome Back</string>

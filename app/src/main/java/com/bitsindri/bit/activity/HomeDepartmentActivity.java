@@ -2,6 +2,7 @@ package com.bitsindri.bit.activity;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -12,15 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bitsindri.bit.R;
-import com.bitsindri.bit.custommenu.DrawerAdapter;
-import com.bitsindri.bit.custommenu.DrawerItem;
-import com.bitsindri.bit.custommenu.SimpleItem;
 import com.bitsindri.bit.department_fagments.ChemicalFragment;
 import com.bitsindri.bit.department_fagments.CivilFragment;
 import com.bitsindri.bit.department_fagments.CseFagment;
@@ -31,32 +30,20 @@ import com.bitsindri.bit.department_fagments.MechanicalFragment;
 import com.bitsindri.bit.department_fagments.MetallurgyFragment;
 import com.bitsindri.bit.department_fagments.MiningFragment;
 import com.bitsindri.bit.department_fagments.ProductionFragment;
+import com.google.android.material.navigation.NavigationView;
 
 
-import java.util.Arrays;
+public class HomeDepartmentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-public class HomeDepartmentActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener {
-    private static final int POS_ME = 0;
-    private static final int POS_EE = 1;
-    private static final int POS_CSE = 2;
-    private static final int POS_IT = 3;
-    private static final int POS_ECE = 4;
-    private static final int POS_PRODUCTION = 5;
-    private static final int POS_METALLURGY = 6;
-    private static final int POS_CHEMICAL = 7;
-    private static final int POS_CIVIL = 8;
-    private static final int POS_MINING = 9;
-
-    private String[] screenTitles;
-    private Drawable[] screenIcons;
-    private View departmentDrawer;
+    private NavigationView departmentDrawer;
     private LinearLayout mainContainer;
     private boolean isFirst = true;
-    private boolean isDrawerOpened=false;
-    private ImageView navHeaderImage;
+    private boolean isDrawerOpened = false;
+    private String[] screenTitles;
 
     Toolbar toolbar;
     Fragment fragment;
+    private int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +54,7 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
         getSupportActionBar().setTitle(null);
         departmentDrawer = findViewById(R.id.drawer_left_menu);
         mainContainer = findViewById(R.id.department_main_container);
-        navHeaderImage=departmentDrawer.findViewById(R.id.menu_header_Image);
+        screenTitles = getResources().getStringArray(R.array.full_name_branch_list);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,99 +64,25 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
                 } else {
                     departmentDrawer.setVisibility(View.VISIBLE);
                     mainContainer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right));
-                    departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right));
-                    isDrawerOpened=true;
+                    departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right_menu));
+                    isDrawerOpened = true;
                 }
 
             }
         });
-        screenIcons = loadScreenIcons();
-        screenTitles = loadScreenTitles();
-        DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
-                createItemFor(POS_ME).setChecked(true),
-                createItemFor(POS_EE),
-                createItemFor(POS_CSE),
-                createItemFor(POS_IT),
-                createItemFor(POS_ECE),
-                createItemFor(POS_PRODUCTION),
-                createItemFor(POS_METALLURGY),
-                createItemFor(POS_CHEMICAL),
-                createItemFor(POS_CIVIL),
-                createItemFor(POS_MINING)));
-        adapter.setListener(this);
-
-        RecyclerView menuList = findViewById(R.id.menu_list);
-        menuList.setNestedScrollingEnabled(false);
-        menuList.setLayoutManager(new LinearLayoutManager(this));
-        menuList.setAdapter(adapter);
-
-        adapter.setSelected(POS_ME);
-        toolbar.setTitle(screenTitles[POS_ME]);
+        departmentDrawer.setNavigationItemSelectedListener(this);
         fragment = new MechanicalFragment();
         showFragment(fragment);
         mainContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isDrawerOpened)closeDrawer();
+                if (isDrawerOpened) closeDrawer();
             }
         });
     }
 
-    @Override
-    public void onItemSelected(int position) {
-
-        toolbar.setTitle(screenTitles[position]);
-        switch (position) {
-            case POS_ME:
-                fragment = new MechanicalFragment();
-                break;
-
-            case POS_EE:
-                fragment = new ElectricalFagment();
-                break;
-
-            case POS_CSE:
-                fragment = new CseFagment();
-                break;
-
-            case POS_IT:
-                fragment = new ItFragment();
-                break;
-
-            case POS_ECE:
-                fragment = new EceFragment();
-                break;
-
-            case POS_PRODUCTION:
-                fragment = new ProductionFragment();
-                break;
-
-            case POS_METALLURGY:
-                fragment = new MetallurgyFragment();
-                break;
-
-            case POS_CHEMICAL:
-                fragment = new ChemicalFragment();
-                break;
-
-            case POS_CIVIL:
-                fragment = new CivilFragment();
-                break;
-
-            case POS_MINING:
-                fragment = new MiningFragment();
-                break;
-
-            default:
-                break;
-        }
-        if (!isFirst)
-            closeDrawer();
-        isFirst = false;
-        showFragment(fragment);
-    }
-
     private void showFragment(Fragment fragment) {
+        toolbar.setTitle(screenTitles[position]);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
@@ -177,38 +90,59 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
 
     public void closeDrawer() {
         mainContainer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.right_to_left));
-        departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this,R.anim.right_to_left_menu));
-        isDrawerOpened=false;
+        departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.right_to_left_menu));
+        isDrawerOpened = false;
         departmentDrawer.setVisibility(View.GONE);
     }
 
-    private DrawerItem createItemFor(int position) {
-        return new SimpleItem(screenIcons[position], screenTitles[position])
-                .withIconTint(color(R.color.light_text_color))
-                .withTextTint(color(R.color.light_text_color))
-                .withSelectedIconTint(color(R.color.app_theme))
-                .withSelectedTextTint(color(R.color.app_theme));
-    }
-
-    private String[] loadScreenTitles() {
-        return getResources().getStringArray(R.array.full_name_branch_list);
-    }
-
-    private Drawable[] loadScreenIcons() {
-        TypedArray ta = getResources().obtainTypedArray(R.array.branch_icon);
-        Drawable[] icons = new Drawable[ta.length()];
-        for (int i = 0; i < ta.length(); i++) {
-            int id = ta.getResourceId(i, 0);
-            if (id != 0) {
-                icons[i] = ContextCompat.getDrawable(this, id);
-            }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mechanical:
+                fragment = new MechanicalFragment();
+                position = 0;
+                break;
+            case R.id.electrical:
+                fragment = new ElectricalFagment();
+                position = 1;
+                break;
+            case R.id.computer_science:
+                fragment = new CseFagment();
+                position = 2;
+                break;
+            case R.id.information_tech:
+                fragment = new ItFragment();
+                position = 3;
+                break;
+            case R.id.ECE:
+                fragment = new EceFragment();
+                position = 4;
+                break;
+            case R.id.production:
+                fragment = new ProductionFragment();
+                position = 5;
+                break;
+            case R.id.metallurgy:
+                fragment = new MetallurgyFragment();
+                position = 6;
+                break;
+            case R.id.chemical:
+                fragment = new ChemicalFragment();
+                position = 7;
+                break;
+            case R.id.civil:
+                fragment = new CivilFragment();
+                position = 8;
+                break;
+            case R.id.mining:
+                fragment = new MiningFragment();
+                position = 9;
+                break;
+            default:
+                new MechanicalFragment();
         }
-        ta.recycle();
-        return icons;
-    }
-
-    @ColorInt
-    private int color(@ColorRes int res) {
-        return ContextCompat.getColor(this, res);
+        showFragment(fragment);
+        closeDrawer();
+        return true;
     }
 }
