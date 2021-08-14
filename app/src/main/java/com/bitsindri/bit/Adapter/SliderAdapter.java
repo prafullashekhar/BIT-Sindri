@@ -18,9 +18,8 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
     private Context context;
     private List<String> imagesList;
 
-    public SliderAdapter(Context context, List<String> list) {
+    public SliderAdapter(Context context) {
         this.context = context;
-        this.imagesList = list;
     }
 
     public void renewItems(List<String> sliderItems) {

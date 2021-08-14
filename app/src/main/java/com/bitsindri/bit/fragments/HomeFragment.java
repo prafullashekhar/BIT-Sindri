@@ -46,12 +46,15 @@ public class HomeFragment extends Fragment {
 
         sliderView =view.findViewById(R.id.image_slider);
 
+
+
         List<String> images = new ArrayList<>();
         images.add("https://images.ctfassets.net/hrltx12pl8hq/4plHDVeTkWuFMihxQnzBSb/aea2f06d675c3d710d095306e377382f/shutterstock_554314555_copy.jpg");
         images.add("https://thumbs.dreamstime.com/z/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg");
         images.add("https://www.oberlo.com/media/1603969791-image-1.jpg?fit=max&fm=webp&w=1824");
 
-        SliderAdapter sliderAdapter = new SliderAdapter(getContext(), images);
+        SliderAdapter sliderAdapter = new SliderAdapter(getContext());
+        sliderAdapter.renewItems(images);
 
         sliderView.setSliderAdapter(sliderAdapter);
         sliderView.setAutoCycle(true);
