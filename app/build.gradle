@@ -41,6 +41,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-database'
 
 
     // OneSignal
@@ -51,6 +52,7 @@ dependencies {
 
     // ImageLoader
     implementation 'com.squareup.picasso:picasso:2.71828'
+
 
 
     testImplementation 'junit:junit:4.13.2'
