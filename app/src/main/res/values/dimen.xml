@@ -10,6 +10,6 @@
     <dimen name="medium_text_size">17sp</dimen>
     <dimen name="small_text_size">14sp</dimen>
     <dimen name="drawable_padding_edit_text">15dp</dimen>
-    <dimen name="elevation_width">7dp</dimen>
+    <dimen name="elevation_width">10dp</dimen>
     <dimen name="card_margin">5dp</dimen>
 </resources>
