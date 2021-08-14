@@ -77,7 +77,6 @@ public class HomeDepartmentActivity extends AppCompatActivity implements DrawerA
                 createItemFor(POS_IT),
                 createItemFor(POS_EE),
                 createItemFor(POS_ME),
-
                 createItemFor(POS_ECE)));
         adapter.setListener(this);
 

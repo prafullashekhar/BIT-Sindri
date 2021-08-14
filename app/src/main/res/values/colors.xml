@@ -20,4 +20,6 @@
     <color name="edit_text_bg">#E6FBFB</color>
     <color name="text_hint">#878585</color>
     <color name="blue_grey_800">#37474F</color>
+
+    <color name="department_drawer">#8E8F8D</color>
 </resources>

@@ -46,8 +46,11 @@ dependencies {
     // OneSignal
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 
-    //imageSlider
+    // ImageSlider
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
+    // ImageLoader
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
     testImplementation 'junit:junit:4.13.2'
