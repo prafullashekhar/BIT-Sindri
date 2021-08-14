@@ -48,12 +48,9 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
-<<<<<<< HEAD
+        <entry key="app/src/main/res/layout/activity_slider_adapter.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_slider_adaptor.xml" value="0.2" />
         <entry key="app/src/main/res/layout/custom_menu_item.xml" value="0.359375" />
-=======
-        <entry key="app/src/main/res/layout/activity_slider_adapter.xml" value="0.3614583333333333" />
-        <entry key="app/src/main/res/layout/activity_slider_adaptor.xml" value="0.1" />
->>>>>>> ab6922f6bbe5089d1dd4ffbc65edcf0f1a7362ea
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/forgot_pass_dialog_box.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_clubs.xml" value="0.359375" />
@@ -64,11 +61,8 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/menu_left_drawer.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/progress_bar.xml" value="0.359375" />
-<<<<<<< HEAD
+        <entry key="app/src/main/res/layout/slider_item.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.359375" />
-=======
-        <entry key="app/src/main/res/layout/slider_item.xml" value="0.1" />
->>>>>>> ab6922f6bbe5089d1dd4ffbc65edcf0f1a7362ea
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.359375" />
       </map>
     </option>
