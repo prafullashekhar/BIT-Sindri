@@ -13,6 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:menu="@menu/menu_navigation_drawer_department"
+        app:itemIconSize="30dp"
         android:layout_weight="0.20"
         app:headerLayout="@layout/nav_header"
         android:layout_gravity="center_horizontal"
