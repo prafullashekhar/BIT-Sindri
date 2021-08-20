@@ -7,15 +7,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.Adapter.SliderAdapter;
+import com.bitsindri.bit.ViewModel.ImgUrlViewModel;
+import com.bitsindri.bit.models.SlidingImgUrl;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,8 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment {
-
+public class HomeFragment extends Fragment
+{
+    private ImgUrlViewModel imgUrlViewModel;
     SliderView sliderView;
     DatabaseReference SliderTopReference;
 
@@ -49,7 +54,18 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_home,container,false);
+
+        // initiating view model
+        imgUrlViewModel = new ViewModelProvider(this).get(ImgUrlViewModel.class);
+
+        imgUrlViewModel.getAllImgUrl().observe(getViewLifecycleOwner(), new Observer<List<SlidingImgUrl>>() {
+            @Override
+            public void onChanged(List<SlidingImgUrl> list) {
+                Toast.makeText(getContext(), "Working Fine", Toast.LENGTH_LONG).show();
+            }
+        });
 
         // initiating realtime database
         SliderTopReference = FirebaseDatabase.getInstance().getReference().child("SlidingImage").child("HomeTop");
