@@ -8,35 +8,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.models.SlidingImgUrl;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
 
-    private Context context;
-    private List<String> imagesList;
+    private List<SlidingImgUrl> imagesList;
 
-    public SliderAdapter(Context context) {
-        this.context = context;
+    public SliderAdapter(Context context, List<SlidingImgUrl> imagesList) {
+        imagesList = new ArrayList<>();
+        this.imagesList = imagesList;
     }
 
-    public void renewItems(List<String> sliderItems) {
+    public void renewItems(List<SlidingImgUrl> sliderItems) {
+        this.imagesList.clear();
         this.imagesList = sliderItems;
         notifyDataSetChanged();
     }
-
-    public void deleteItem(int position) {
-        this.imagesList.remove(position);
-        notifyDataSetChanged();
-    }
-
-    public void addItem(String sliderItemUrl) {
-        this.imagesList.add(sliderItemUrl);
-        notifyDataSetChanged();
-    }
-
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent) {
@@ -48,8 +40,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder viewHolder, int position) {
-//        viewHolder.imageView.setImageResource(imagesList.get(position));
-        Picasso.get().load(imagesList.get(position)).into(viewHolder.imageView);
+        Picasso.get().load(imagesList.get(position).getImgUrl()).into(viewHolder.imageView);
     }
 
     @Override
@@ -57,7 +48,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
         return imagesList.size();
     }
 
-    public class Holder extends SliderViewAdapter.ViewHolder {
+    public static class Holder extends SliderViewAdapter.ViewHolder {
 
         ImageView imageView;
 

@@ -1,23 +1,34 @@
 package com.bitsindri.bit.Repository;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.bitsindri.bit.Dao.ImgUrlDao;
 import com.bitsindri.bit.DataBase.RoomDB;
+import com.bitsindri.bit.Network.DataLoadListener;
+import com.bitsindri.bit.fragments.HomeFragment;
 import com.bitsindri.bit.models.SlidingImgUrl;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImgUrlRepository {
     private final RoomDB roomDB;
-    private final LiveData<List<SlidingImgUrl>> allImgUrl;
+    private LiveData<List<SlidingImgUrl>> allImgUrl;
 
     // See the BasicSample in the android-architecture-components repository at
     // https://github.com/googlesamples
-    public ImgUrlRepository(Application application){
+    public ImgUrlRepository(@NonNull Application application){
         roomDB = RoomDB.getDatabase(application);
         ImgUrlDao imgUrlDao = roomDB.getImgUrlDao();
         allImgUrl = imgUrlDao.getHomeSlidingImageUrl();
@@ -26,6 +37,7 @@ public class ImgUrlRepository {
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<SlidingImgUrl>> getAllImgUrl() {
+        loadUrl();
         return allImgUrl;
     }
 
@@ -34,9 +46,33 @@ public class ImgUrlRepository {
     public void insert(List<SlidingImgUrl> list) {
         new InsertAsyncTask(roomDB).execute(list);
     }
-
     public void deleteAll(){
         new DeleteAsyncTask(roomDB).execute();
+    }
+
+
+    // loads data from realtime database firebase
+    private void loadUrl() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("SlidingImage").child("HomeTop");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<SlidingImgUrl> urlList = new ArrayList<>();
+                for(DataSnapshot dss : snapshot.getChildren()){
+                    String imgUrl = dss.getValue(String.class);
+                    assert imgUrl != null;
+                    urlList.add(new SlidingImgUrl(imgUrl));
+                }
+                deleteAll();
+                insert(urlList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     // AsyncTask to insert

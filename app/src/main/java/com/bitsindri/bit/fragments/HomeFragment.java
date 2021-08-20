@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bitsindri.bit.Network.DataLoadListener;
 import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.Adapter.SliderAdapter;
@@ -38,7 +39,7 @@ public class HomeFragment extends Fragment
 {
     private ImgUrlViewModel imgUrlViewModel;
     SliderView sliderView;
-    DatabaseReference SliderTopReference;
+    SliderAdapter sliderAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,48 +59,24 @@ public class HomeFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         // initiating view model
-        imgUrlViewModel = new ViewModelProvider(this).get(ImgUrlViewModel.class);
+        imgUrlViewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ImgUrlViewModel.class);
+
+        // sliding image list
+        sliderView = view.findViewById(R.id.image_slider);
+        sliderView.setAutoCycle(true);
+        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+        sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
+
+        sliderAdapter = new SliderAdapter(getContext(), imgUrlViewModel.getAllImgUrl().getValue());
+        sliderView.setSliderAdapter(sliderAdapter);
 
         imgUrlViewModel.getAllImgUrl().observe(getViewLifecycleOwner(), new Observer<List<SlidingImgUrl>>() {
             @Override
             public void onChanged(List<SlidingImgUrl> list) {
-                Toast.makeText(getContext(), "Working Fine", Toast.LENGTH_LONG).show();
+                sliderAdapter.renewItems(list);
             }
         });
-
-        // initiating realtime database
-        SliderTopReference = FirebaseDatabase.getInstance().getReference().child("SlidingImage").child("HomeTop");
-
-        sliderView =view.findViewById(R.id.image_slider);
-
-        // sliding image list
-        List<String> images = new ArrayList<>();
-        SliderAdapter sliderAdapter = new SliderAdapter(getContext());
-
-        SliderTopReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    images.clear();
-                    for(DataSnapshot dss : snapshot.getChildren()){
-                        String imgUrl = dss.getValue(String.class);
-                        images.add(imgUrl);
-                    }
-
-                    sliderAdapter.renewItems(images);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                sliderAdapter.renewItems(images);
-            }
-        });
-
-        sliderView.setSliderAdapter(sliderAdapter);
-        sliderView.setAutoCycle(true);
-        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-        sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
 
       
         // Inflate the layout for this fragment
@@ -113,4 +90,5 @@ public class HomeFragment extends Fragment
         return view;
 
     }
+
 }

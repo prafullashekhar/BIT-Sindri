@@ -23,5 +23,5 @@ public class SlidingImgUrl {
     public String getImgUrl(){
         return imgUrl;
     }
-    
+
 }

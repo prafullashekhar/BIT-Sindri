@@ -43,7 +43,7 @@ public abstract class RoomDB extends RoomDatabase {
     }
 
     // Callback to clear table when database is created for the first time
-    static Callback callback = new Callback() {
+    private static final Callback callback = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -51,9 +51,9 @@ public abstract class RoomDB extends RoomDatabase {
         }
     };
 
-    static class PopulateAsyncTask extends AsyncTask<Void, Void, Void>
+    private static class PopulateAsyncTask extends AsyncTask<Void, Void, Void>
     {
-        private ImgUrlDao imgUrlDao;
+        private final ImgUrlDao imgUrlDao;
 
         PopulateAsyncTask(RoomDB roomDB){
             imgUrlDao = roomDB.getImgUrlDao();
