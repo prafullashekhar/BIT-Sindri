@@ -1,19 +1,25 @@
-package com.bitsindri.bit.activity;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.bitsindri.bit.authenticationfrag;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.methods.Constants;
@@ -32,7 +38,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterFragment extends Fragment {
+
+    public RegisterFragment() {
+    }
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore mStore;
     String UserId;
@@ -51,32 +61,36 @@ public class RegisterActivity extends AppCompatActivity {
     String strUserRegNo;
     String strUserEmail;
     String strUserPassword;
+    private SignUpButtonClickListener listener;
+    private ImageView passwordVisibilityToggle;
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_register,container,false);
         try {
-            setContentView(R.layout.activity_register);
-            setTheme(R.style.Theme_BIT);
             // initialising
-            email = findViewById(R.id.user_email);
-            password = findViewById(R.id.user_password);
-            signUp = findViewById(R.id.signup);
-            userName = findViewById(R.id.user_name);
-            userRoll = findViewById(R.id.user_roll);
-            userRegNo = findViewById(R.id.user_registration);
-            confirmPassword = findViewById(R.id.user_confirm_password);
+            email = view.findViewById(R.id.user_email);
+            password = view.findViewById(R.id.user_password);
+            signUp = view.findViewById(R.id.signup);
+            userName = view.findViewById(R.id.user_name);
+            userRoll = view.findViewById(R.id.user_roll);
+            userRegNo = view.findViewById(R.id.user_registration);
+            confirmPassword = view.findViewById(R.id.user_confirm_password);
+            confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            passwordVisibilityToggle = view.findViewById(R.id.register_hide_show_password);
 
 //             setting dropdown for batches
             String[] batches = getResources().getStringArray(R.array.batch_list);
-            ArrayAdapter<String> batchArrayAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, batches);
-            selectBatch = (AutoCompleteTextView) findViewById(R.id.select_batch);
+            ArrayAdapter<String> batchArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dropdown_item, batches);
+            selectBatch = (AutoCompleteTextView) view.findViewById(R.id.select_batch);
             selectBatch.setAdapter(batchArrayAdapter);
 
             // setting dropdown for branches
             String[] branches = getResources().getStringArray(R.array.branch_list);
-            ArrayAdapter<String> branchArrayAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, branches);
-            selectBranch = (AutoCompleteTextView) findViewById(R.id.select_branch);
+            ArrayAdapter<String> branchArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dropdown_item, branches);
+            selectBranch = (AutoCompleteTextView) view.findViewById(R.id.select_branch);
             selectBranch.setAdapter(branchArrayAdapter);
 
             // instantiating firebase
@@ -92,8 +106,29 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("myTag", "" + e.getMessage());
         }
+
+        passwordVisibilityToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              showHidePass();
+            }
+        });
+        return view;
     }
 
+    private void showHidePass() {
+
+        if (confirmPassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+            passwordVisibilityToggle.setImageResource(R.drawable.ic_password_hide);
+            //Show Password
+            confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+            passwordVisibilityToggle.setImageResource(R.drawable.ic_password_show);
+            //Hide Password
+            confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+        }
+    }
 
     // function to check user data
     private void checkUserData() {
@@ -139,12 +174,11 @@ public class RegisterActivity extends AppCompatActivity {
             addUser();
         }
     }
-
     // function to add user to the firebase database
     private void addUser() {
 
         // launching progress bar
-        progressDialog = Methods.launchProgressDialog(progressDialog, RegisterActivity.this);
+        progressDialog = Methods.launchProgressDialog(progressDialog, getContext());
 
         mAuth.createUserWithEmailAndPassword(strUserEmail, strUserPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -155,7 +189,7 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             progressDialog.dismiss();
                             if (task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, "Registered successfully \nPlease check your email to verify", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Registered successfully \nPlease check your email to verify", Toast.LENGTH_LONG).show();
                                 UserId = mAuth.getCurrentUser().getUid();
 
                                 registerUser();
@@ -174,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
                         email.setError("This email is already registered");
                         email.requestFocus();
                     } else {
-                        Toast.makeText(RegisterActivity.this, registerErrorMsg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), registerErrorMsg, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -205,4 +239,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    public void setsignupClickListener(SignUpButtonClickListener listener){
+        this.listener = listener;
+    }
 }

@@ -11,7 +11,7 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:scrollbars="vertical"
-        tools:context=".activity.LoginActivity">
+        tools:context=".activity.AuthenticationActivity">
 
         <ImageView
             android:layout_width="match_parent"
@@ -166,21 +166,38 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/text_hint" />
 
-            <EditText
-                android:id="@+id/user_confirm_password"
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/medium_margin"
+                android:layout_below="@id/email"
                 android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginLeft="@dimen/medium_margin"
                 android:layout_marginRight="@dimen/medium_margin"
-                android:background="@drawable/edit_text_signin"
-                android:drawableStart="@drawable/ic_icon_awesome_user_lock"
-                android:drawablePadding="@dimen/drawable_padding_edit_text"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword"
-                android:padding="15dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/text_hint" />
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/user_confirm_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.95"
+                    android:background="@drawable/edit_text_signin"
+                    android:drawableStart="@drawable/ic_icon_password"
+                    android:textColorHint="@color/text_hint"
+                    android:hint="@string/password"
+                    android:drawablePadding="@dimen/drawable_padding_edit_text"
+                    android:inputType="textPersonName"
+                    android:padding="15dp"
+                    tools:ignore="TextFields" />
+                <ImageView
+                    android:id="@+id/register_hide_show_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_password_show"
+                    android:onClick="showHidePass"
+                    android:layout_weight="0.05"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="-40dp"/>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/signup"

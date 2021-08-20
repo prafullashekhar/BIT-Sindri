@@ -6,9 +6,11 @@
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_calendar.xml" value="0.24871794871794872" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_departments.xml" value="0.2064814814814815" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_main_home.xml" value="0.24871794871794872" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_authentication.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_department.xml" value="0.21666666666666667" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_login.xml" value="0.2222222222222222" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_main.xml" value="0.2222222222222222" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_register.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/custom_menu_item.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/dropdown_item.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_cse.xml" value="0.23645833333333333" />
@@ -16,7 +18,9 @@
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_electrical.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_home.xml" value="0.21666666666666667" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_it.xml" value="0.23645833333333333" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_login.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_mechanical.xml" value="0.23645833333333333" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_register.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/item_option.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/menu_left_drawer.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/nav_header.xml" value="0.23645833333333333" />

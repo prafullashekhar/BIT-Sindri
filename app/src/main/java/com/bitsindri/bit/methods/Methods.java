@@ -2,6 +2,11 @@ package com.bitsindri.bit.methods;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.bitsindri.bit.R;
 
