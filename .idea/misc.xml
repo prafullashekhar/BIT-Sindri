@@ -5,7 +5,14 @@
       <map>
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_calendar.xml" value="0.24871794871794872" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_departments.xml" value="0.2064814814814815" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_map.xml" value="0.2526041666666667" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_home_placements.xml" value="0.2526041666666667" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/drawable-anydpi/ic_icon_main_home.xml" value="0.24871794871794872" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/circle_image_bg.xml" value="0.2526041666666667" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/circular_background.xml" value="0.2526041666666667" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.2526041666666667" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/ic_icon_roll.xml" value="0.2526041666666667" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/drawable/ic_icon_user.xml" value="0.2526041666666667" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_authentication.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_department.xml" value="0.21666666666666667" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/activity_login.xml" value="0.2222222222222222" />
@@ -16,7 +23,7 @@
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_cse.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_ece.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_electrical.xml" value="0.23645833333333333" />
-        <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_home.xml" value="0.21666666666666667" />
+        <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_home.xml" value="0.176" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_it.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_login.xml" value="0.23645833333333333" />
         <entry key="..\:/BIT-Sindri/app/src/main/res/layout/fragment_mechanical.xml" value="0.23645833333333333" />
