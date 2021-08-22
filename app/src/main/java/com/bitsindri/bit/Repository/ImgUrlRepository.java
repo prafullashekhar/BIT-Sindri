@@ -1,17 +1,13 @@
 package com.bitsindri.bit.Repository;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.bitsindri.bit.Dao.ImgUrlDao;
 import com.bitsindri.bit.DataBase.RoomDB;
-import com.bitsindri.bit.Network.DataLoadListener;
-import com.bitsindri.bit.fragments.HomeFragment;
 import com.bitsindri.bit.models.SlidingImgUrl;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +33,8 @@ public class ImgUrlRepository {
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<SlidingImgUrl>> getAllImgUrl() {
-        loadUrl();
+        if(allImgUrl==null)
+            loadUrl();
         return allImgUrl;
     }
 
