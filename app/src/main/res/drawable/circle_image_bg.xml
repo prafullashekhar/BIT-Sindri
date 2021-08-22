@@ -3,6 +3,6 @@
     android:shape="oval">
     <stroke android:color="@color/app_theme"
         android:width="3dp"/>
-    <size android:height="40dp"
-        android:width="40dp"/>
+    <size android:height="48dp"
+        android:width="48dp"/>
 </shape>
