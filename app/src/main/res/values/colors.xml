@@ -23,4 +23,5 @@
     <color name="blue_grey_800">#5D7683</color>
 
     <color name="department_drawer">#8E8F8D</color>
+    <color name="ruler_color">#80DFDFDF</color>
 </resources>
