@@ -70,7 +70,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_toolbar">
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -98,6 +99,7 @@
                 android:id="@+id/profile_user_branch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:padding="3dp"
                 android:text="Electronics and communication Engineering" />
 
@@ -142,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_margin"
                     android:hint="@string/write_about"
-                    android:textColorHint="@color/light_text_color" />
+                    android:textColorHint="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -173,6 +175,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/black"
                         android:padding="3dp"
                         android:text="xyz2020@gmail.com" />
                 </LinearLayout>
@@ -202,6 +205,7 @@
                         android:id="@+id/profile_roll_number"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:layout_weight="1"
                         android:padding="3dp"
                         android:text="2011024" />
@@ -233,6 +237,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/black"
                         android:padding="3dp"
                         android:text="20030480021" />
                 </LinearLayout>
@@ -263,6 +268,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/black"
                         android:padding="3dp"
                         android:text="01/01/2003" />
                 </LinearLayout>
@@ -293,6 +299,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/black"
                         android:padding="3dp"
                         android:text="Hackathon and Coding Club" />
                 </LinearLayout>
@@ -413,6 +420,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/ruler_color"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"/>
             </LinearLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
