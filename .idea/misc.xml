@@ -45,8 +45,13 @@
         <entry key="app/src/main/res/drawable/bottom_navigation_bg.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/circular_background.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/drawable/edit_text_signin.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic__1960354.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.32083333333333336" />
+        <entry key="app/src/main/res/drawable/ic_code_forces.xml" value="0.36974358974358973" />
+        <entry key="app/src/main/res/drawable/ic_codechef.xml" value="0.36974358974358973" />
+        <entry key="app/src/main/res/drawable/ic_codeforces.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_drawer.xml" value="0.33240740740740743" />
+        <entry key="app/src/main/res/drawable/ic_facebook.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_group_36.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_awesome_user_lock.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_batch.xml" value="0.37552083333333336" />
@@ -59,8 +64,11 @@
         <entry key="app/src/main/res/drawable/ic_icon_password.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_registration.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_user.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_instagram.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_linkedin.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_password_hide.xml" value="0.36974358974358973" />
+        <entry key="app/src/main/res/drawable/ic_signout.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/image_slider_bg.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/progress_bar_bg_rad20dp.xml" value="0.3776041666666667" />
         <entry key="app/src/main/res/drawable/splash_gradient.xml" value="0.33564814814814814" />

@@ -54,8 +54,8 @@
     <string name="about">About</string>
     <string name="write_about">Write Something about Yourself</string>
     <string name="academic_details">Academic Details</string>
-    <string name="roll_number">Roll Number</string>
-    <string name="registration_number">Registration Number</string>
+    <string name="roll_number">Roll No.</string>
+    <string name="registration_number">Reg. No.</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="club">Club</string>
     <string name="settings">Settings</string>

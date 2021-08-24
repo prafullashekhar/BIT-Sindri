@@ -13,6 +13,9 @@
     <dimen name="elevation_width">10dp</dimen>
     <dimen name="card_margin">5dp</dimen>
 
+
+    <!--    profile-->
+    <dimen name="profile_text_small">15sp</dimen>
     <dimen name="icon_margin">6dp</dimen>
-    <dimen name="icon_size">54dp</dimen>
+    <dimen name="icon_size">40dp</dimen>
 </resources>
