@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.bitsindri.bit.databinding.ActivityMainBinding;
 import com.bitsindri.bit.fragments.ClubsFragment;
 import com.bitsindri.bit.fragments.HomeFragment;
 import com.bitsindri.bit.fragments.NotificationsFragment;
@@ -16,16 +17,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
+    ActivityMainBinding binding;
     private Fragment fragment;
 
     @Override
     public void onBackPressed() {
-        if(bottomNavigationView.getSelectedItemId()==R.id.nav_home){
+        if(binding.bottomNavigation.getSelectedItemId()==R.id.nav_home){
             finishAffinity();
         }
         else {
-            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+            binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
         }
     }
 
@@ -33,11 +34,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){

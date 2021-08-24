@@ -13,21 +13,23 @@ import com.bitsindri.bit.R;
 import com.bitsindri.bit.authenticationfrag.LoginFragment;
 import com.bitsindri.bit.authenticationfrag.RegisterFragment;
 import com.bitsindri.bit.authenticationfrag.SignUpButtonClickListener;
+import com.bitsindri.bit.databinding.ActivityAuthenticationBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AuthenticationActivity extends AppCompatActivity implements SignUpButtonClickListener {
 
+    private ActivityAuthenticationBinding binding;
+
     private FirebaseAuth mAuth;
     LoginFragment fragment;
     private boolean isRegisterActive = false;
-    private FrameLayout container;
 
     @Override
     public void onBackPressed() {
         if(isRegisterActive){
             getSupportFragmentManager().beginTransaction().replace(R.id.authentication_container,fragment).commit();
-            container.setAnimation(AnimationUtils.loadAnimation(AuthenticationActivity.this,R.anim.up_to_down));
+            binding.authenticationContainer.setAnimation(AnimationUtils.loadAnimation(AuthenticationActivity.this,R.anim.up_to_down));
             isRegisterActive = false;
         }
         else super.onBackPressed();
@@ -36,9 +38,9 @@ public class AuthenticationActivity extends AppCompatActivity implements SignUpB
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authentication);
+        binding = ActivityAuthenticationBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        container= findViewById(R.id.authentication_container);
         mAuth = FirebaseAuth.getInstance();
         fragment = new LoginFragment();
         fragment.setSignUpClickListener(this);
@@ -62,7 +64,7 @@ public class AuthenticationActivity extends AppCompatActivity implements SignUpB
         if(view.getId() == R.id.signUp) {
             RegisterFragment registerFragment = new RegisterFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.authentication_container, registerFragment).commit();
-            container.setAnimation(AnimationUtils.loadAnimation(AuthenticationActivity.this,R.anim.down_to_up));
+            binding.authenticationContainer.setAnimation(AnimationUtils.loadAnimation(AuthenticationActivity.this,R.anim.down_to_up));
             isRegisterActive = true;
         }
     }

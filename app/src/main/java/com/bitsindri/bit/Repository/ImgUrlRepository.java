@@ -33,7 +33,7 @@ public class ImgUrlRepository {
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<SlidingImgUrl>> getAllImgUrl() {
-        if(allImgUrl==null)
+//        if(allImgUrl==null)
             loadUrl();
         return allImgUrl;
     }

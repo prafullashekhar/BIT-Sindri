@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.databinding.FragmentRegisterBinding;
 import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +41,8 @@ import java.util.Map;
 
 public class RegisterFragment extends Fragment {
 
+    private FragmentRegisterBinding binding;
+
     public RegisterFragment() {
     }
 
@@ -47,9 +50,9 @@ public class RegisterFragment extends Fragment {
     private FirebaseFirestore mStore;
     String UserId;
 
-    private TextView userName, userRoll, userRegNo, confirmPassword;
-    private TextView email, password;
-    private Button signUp;
+//    private TextView userName, userRoll, userRegNo, confirmPassword;
+//    private TextView email, password;
+//    private Button signUp;
     private ProgressDialog progressDialog;
 
     String strUserName;
@@ -62,42 +65,35 @@ public class RegisterFragment extends Fragment {
     String strUserEmail;
     String strUserPassword;
     private SignUpButtonClickListener listener;
-    private ImageView passwordVisibilityToggle;
+//    private ImageView passwordVisibilityToggle;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register,container,false);
-        try {
-            // initialising
-            email = view.findViewById(R.id.user_email);
-            password = view.findViewById(R.id.user_password);
-            signUp = view.findViewById(R.id.signup);
-            userName = view.findViewById(R.id.user_name);
-            userRoll = view.findViewById(R.id.user_roll);
-            userRegNo = view.findViewById(R.id.user_registration);
-            confirmPassword = view.findViewById(R.id.user_confirm_password);
-            confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            passwordVisibilityToggle = view.findViewById(R.id.register_hide_show_password);
+        binding = FragmentRegisterBinding.inflate(inflater, container, false);
 
-//             setting dropdown for batches
+
+//        View view = inflater.inflate(R.layout.fragment_register,container,false);
+        try {
+
+            // setting dropdown for batches
             String[] batches = getResources().getStringArray(R.array.batch_list);
             ArrayAdapter<String> batchArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dropdown_item, batches);
-            selectBatch = (AutoCompleteTextView) view.findViewById(R.id.select_batch);
+            selectBatch = (AutoCompleteTextView) binding.selectBatch;
             selectBatch.setAdapter(batchArrayAdapter);
 
             // setting dropdown for branches
             String[] branches = getResources().getStringArray(R.array.branch_list);
             ArrayAdapter<String> branchArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dropdown_item, branches);
-            selectBranch = (AutoCompleteTextView) view.findViewById(R.id.select_branch);
+            selectBranch = (AutoCompleteTextView) binding.selectBranch;
             selectBranch.setAdapter(branchArrayAdapter);
 
             // instantiating firebase
             mAuth = FirebaseAuth.getInstance();
             mStore = FirebaseFirestore.getInstance();
 
-            signUp.setOnClickListener(new View.OnClickListener() {
+            binding.signup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     checkUserData();
@@ -107,42 +103,42 @@ public class RegisterFragment extends Fragment {
             Log.e("myTag", "" + e.getMessage());
         }
 
-        passwordVisibilityToggle.setOnClickListener(new View.OnClickListener() {
+        binding.registerHideShowPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               showHidePass();
             }
         });
-        return view;
+        return binding.getRoot();
     }
 
     private void showHidePass() {
 
-        if (confirmPassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
-            passwordVisibilityToggle.setImageResource(R.drawable.ic_password_hide);
+        if (binding.userConfirmPassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+            binding.registerHideShowPassword.setImageResource(R.drawable.ic_password_hide);
             //Show Password
-            confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            binding.userConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         } else {
-            passwordVisibilityToggle.setImageResource(R.drawable.ic_password_show);
+            binding.registerHideShowPassword.setImageResource(R.drawable.ic_password_show);
             //Hide Password
-            confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            binding.userConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         }
     }
 
     // function to check user data
     private void checkUserData() {
-        strUserName = userName.getText().toString();
+        strUserName = binding.userName.getText().toString();
         strUserBatch = selectBatch.getText().toString();
         strUserBranch = selectBranch.getText().toString();
-        strUserRoll = userRoll.getText().toString();
-        strUserRegNo = userRegNo.getText().toString();
-        strUserEmail = email.getText().toString().trim();
-        strUserPassword = password.getText().toString();
+        strUserRoll = binding.userRoll.getText().toString();
+        strUserRegNo = binding.userRegistration.getText().toString();
+        strUserEmail = binding.userEmail.getText().toString().trim();
+        strUserPassword = binding.userPassword.getText().toString();
 
         if (TextUtils.isEmpty(strUserName)) {
-            userName.setError("Please fill this");
-            userName.requestFocus();
+            binding.userName.setError("Please fill this");
+            binding.userName.requestFocus();
         } else if (strUserBatch.equals("Batch")) {
             selectBatch.setError("Please fill this");
             selectBatch.requestFocus();
@@ -150,26 +146,26 @@ public class RegisterFragment extends Fragment {
             selectBranch.setError("Please fill this");
             selectBranch.requestFocus();
         } else if (TextUtils.isEmpty(strUserRoll)) {
-            userRoll.setError("Please fill this");
-            userRoll.requestFocus();
+            binding.userRoll.setError("Please fill this");
+            binding.userRoll.requestFocus();
         } else if (TextUtils.isEmpty(strUserRegNo)) {
-            userRegNo.setError("Please fill this");
-            userRegNo.requestFocus();
+            binding.userRegistration.setError("Please fill this");
+            binding.userRegistration.requestFocus();
         } else if (TextUtils.isEmpty(strUserEmail)) {
-            email.setError("Email cannot be empty");
-            email.requestFocus();
+            binding.userEmail.setError("Email cannot be empty");
+            binding.userEmail.requestFocus();
         } else if (TextUtils.isEmpty(strUserPassword)) {
-            password.setError("Password cannot be empty");
-            password.requestFocus();
+            binding.userPassword.setError("Password cannot be empty");
+            binding.userPassword.requestFocus();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(strUserEmail).matches()) {
-            email.setError("Please enter a valid email");
-            email.requestFocus();
+            binding.userEmail.setError("Please enter a valid email");
+            binding.userEmail.requestFocus();
         } else if (strUserPassword.length() < 6) {
-            password.setError("Too short password length");
-            password.requestFocus();
-        } else if (!strUserPassword.equals(confirmPassword.getText().toString())) {
-            confirmPassword.setError("Password does not matched");
-            confirmPassword.requestFocus();
+            binding.userPassword.setError("Too short password length");
+            binding.userPassword.requestFocus();
+        } else if (!strUserPassword.equals(binding.userConfirmPassword.getText().toString())) {
+            binding.userConfirmPassword.setError("Password does not matched");
+            binding.userConfirmPassword.requestFocus();
         } else {
             addUser();
         }
@@ -205,8 +201,8 @@ public class RegisterFragment extends Fragment {
                     Log.e(Constants.msg, "Not Registered - " + registerErrorMsg);
 
                     if (registerErrorMsg.equals("The email address is already in use by another account.")) {
-                        email.setError("This email is already registered");
-                        email.requestFocus();
+                        binding.userEmail.setError("This email is already registered");
+                        binding.userEmail.requestFocus();
                     } else {
                         Toast.makeText(getContext(), registerErrorMsg, Toast.LENGTH_SHORT).show();
                     }

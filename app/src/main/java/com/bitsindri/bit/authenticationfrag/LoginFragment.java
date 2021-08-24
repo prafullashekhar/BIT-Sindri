@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.activity.AuthenticationActivity;
+import com.bitsindri.bit.databinding.FragmentLoginBinding;
 import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,36 +39,26 @@ import org.jetbrains.annotations.NotNull;
 
 public class LoginFragment extends Fragment {
 
+    FragmentLoginBinding binding;
+
     public LoginFragment() {
     }
 
     private FirebaseAuth mAuth;
-    private EditText email, password;
-    private TextView forgotPassword, signUp;
-    private Button signIn;
     private ProgressDialog progressDialog;
     private AlertDialog dialog;
-    private ImageView passwordVisibilityToggle;
     private SignUpButtonClickListener listener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        // initialising
-        email = view.findViewById(R.id.email);
-        password = view.findViewById(R.id.password);
-        password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        signIn = view.findViewById(R.id.signIn);
-        forgotPassword = view.findViewById(R.id.forgot_password_text);
-        signUp = view.findViewById(R.id.signUp);
-        passwordVisibilityToggle = view.findViewById(R.id.password_hide_toggle);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
 
         // instantiating firebase
         mAuth = FirebaseAuth.getInstance();
 
         // On signIn click
-        signIn.setOnClickListener(new View.OnClickListener() {
+        binding.signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkUser();
@@ -75,10 +66,10 @@ public class LoginFragment extends Fragment {
         });
 
         // On forgotPassword click
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
+        binding.forgotPasswordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String strEmail = email.getText().toString().trim();
+                String strEmail = binding.email.getText().toString().trim();
 
                 // showing alert dialog if no email is provided
                 if (TextUtils.isEmpty(strEmail)) {
@@ -118,37 +109,38 @@ public class LoginFragment extends Fragment {
         });
 
         // On signup click
-        signUp.setOnClickListener(new View.OnClickListener() {
+        binding.signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(listener!=null)
-                listener.onSignUpClick(signUp);
+                listener.onSignUpClick(binding.signUp);
             }
         });
 
-        passwordVisibilityToggle.setOnClickListener(new View.OnClickListener() {
+        // On show password click
+        binding.passwordHideToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showHidePass();
             }
         });
-        return view;
+        return binding.getRoot();
     }
 
     // checks if the user data is in the database
     private void checkUser() {
-        String strEmail = email.getText().toString().trim();
-        String strPassword = password.getText().toString();
+        String strEmail = binding.email.getText().toString().trim();
+        String strPassword = binding.password.getText().toString();
 
         if (TextUtils.isEmpty(strEmail)) {
-            email.setError("Email cannot be empty");
-            email.requestFocus();
+            binding.email.setError("Email cannot be empty");
+            binding.email.requestFocus();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
-            email.setError("Enter the correct EmailId");
-            email.requestFocus();
+            binding.email.setError("Enter the correct EmailId");
+            binding.email.requestFocus();
         } else if (TextUtils.isEmpty(strPassword)) {
-            password.setError("Password cannot be empty");
-            password.requestFocus();
+            binding.password.setError("Password cannot be empty");
+            binding.password.requestFocus();
         } else {
             // launching progress bar
             progressDialog = Methods.launchProgressDialog(progressDialog, getContext());
@@ -175,11 +167,11 @@ public class LoginFragment extends Fragment {
                             String er = "This email is not a registered email \nIf you are new user first get registered";
                             Toast.makeText(getContext(), er, Toast.LENGTH_LONG).show();
                         } else if (errorMsg.equals("The email address is badly formatted.")) {
-                            email.setError("Enter the correct EmailId");
-                            email.requestFocus();
+                            binding.email.setError("Enter the correct EmailId");
+                            binding.email.requestFocus();
                         } else if (errorMsg.equals("The password is invalid or the user does not have a password.")) {
-                            password.setError("Incorrect password");
-                            password.requestFocus();
+                            binding.password.setError("Incorrect password");
+                            binding.password.requestFocus();
                         } else if (errorMsg.equals("We have blocked all requests from this device due to unusual activity. Try again later. [ Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. ]")) {
                             Toast.makeText(getContext(), "Too much unsuccessful attempts,\ntry after sometime", Toast.LENGTH_SHORT).show();
                         } else {
@@ -216,14 +208,14 @@ public class LoginFragment extends Fragment {
     // Show password on eye click
     public void showHidePass() {
 
-        if (password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
-            passwordVisibilityToggle.setImageResource(R.drawable.ic_password_hide);
+        if (binding.password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+            binding.passwordHideToggle.setImageResource(R.drawable.ic_password_hide);
             //Show Password
-            password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            binding.password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         } else {
-            passwordVisibilityToggle.setImageResource(R.drawable.ic_password_show);
+            binding.passwordHideToggle.setImageResource(R.drawable.ic_password_show);
             //Hide Password
-            password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            binding.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         }
     }

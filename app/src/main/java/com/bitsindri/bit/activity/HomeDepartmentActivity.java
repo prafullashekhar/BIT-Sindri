@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.databinding.ActivityDepartmentBinding;
 import com.bitsindri.bit.department_fagments.ChemicalFragment;
 import com.bitsindri.bit.department_fagments.CivilFragment;
 import com.bitsindri.bit.department_fagments.CseFagment;
@@ -35,9 +36,8 @@ import com.google.android.material.navigation.NavigationView;
 
 public class HomeDepartmentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private NavigationView departmentDrawer;
-    private LinearLayout mainContainer;
-    private boolean isFirst = true;
+    private ActivityDepartmentBinding binding;
+
     private boolean isDrawerOpened = false;
     private String[] screenTitles;
 
@@ -48,12 +48,12 @@ public class HomeDepartmentActivity extends AppCompatActivity implements Navigat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_department);
+        binding = ActivityDepartmentBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
-        departmentDrawer = findViewById(R.id.drawer_left_menu);
-        mainContainer = findViewById(R.id.department_main_container);
         screenTitles = getResources().getStringArray(R.array.full_name_branch_list);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -62,18 +62,18 @@ public class HomeDepartmentActivity extends AppCompatActivity implements Navigat
                 if (isDrawerOpened) {
                     closeDrawer();
                 } else {
-                    departmentDrawer.setVisibility(View.VISIBLE);
-                    mainContainer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right));
-                    departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right_menu));
+                    binding.drawerLeftMenu.setVisibility(View.VISIBLE);
+                    binding.departmentMainContainer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right));
+                    binding.drawerLeftMenu.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.left_to_right_menu));
                     isDrawerOpened = true;
                 }
 
             }
         });
-        departmentDrawer.setNavigationItemSelectedListener(this);
+        binding.drawerLeftMenu.setNavigationItemSelectedListener(this);
         fragment = new MechanicalFragment();
         showFragment(fragment);
-        mainContainer.setOnClickListener(new View.OnClickListener() {
+        binding.departmentMainContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isDrawerOpened) closeDrawer();
@@ -89,10 +89,10 @@ public class HomeDepartmentActivity extends AppCompatActivity implements Navigat
     }
 
     public void closeDrawer() {
-        mainContainer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.right_to_left));
-        departmentDrawer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.right_to_left_menu));
+        binding.departmentMainContainer.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.right_to_left));
+        binding.drawerLeftMenu.setAnimation(AnimationUtils.loadAnimation(HomeDepartmentActivity.this, R.anim.right_to_left_menu));
         isDrawerOpened = false;
-        departmentDrawer.setVisibility(View.GONE);
+        binding.drawerLeftMenu.setVisibility(View.GONE);
     }
 
     @Override
