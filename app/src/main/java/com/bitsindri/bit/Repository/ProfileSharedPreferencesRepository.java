@@ -1,6 +1,7 @@
 package com.bitsindri.bit.Repository;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -28,21 +29,20 @@ public class ProfileSharedPreferencesRepository {
     private final SharedPreferences sharedPreference;
     private User user;
 
-    @SuppressLint("StaticFieldLeak")
     private static ProfileSharedPreferencesRepository INSTANCE;
     Context context;
 
-    public static ProfileSharedPreferencesRepository getInstance(Context context){
+    public static ProfileSharedPreferencesRepository getInstance(Application application){
         if(INSTANCE == null){
-            INSTANCE = new ProfileSharedPreferencesRepository(context);
+            INSTANCE = new ProfileSharedPreferencesRepository(application);
         }
         return INSTANCE;
     }
 
-    public ProfileSharedPreferencesRepository(Context context){
+    public ProfileSharedPreferencesRepository(Application application){
         // sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
-        this.context = context;
-        sharedPreference = context.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
+        this.context = application;
+        sharedPreference = application.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
     }
 
     public MutableLiveData<User> getUser(){
@@ -84,8 +84,9 @@ public class ProfileSharedPreferencesRepository {
         FirebaseUser currentUser = auth.getCurrentUser();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        user = new User();
         assert currentUser != null;
-        DocumentReference reference = db.collection("User").document(currentUser.getUid());
+        DocumentReference reference = db.collection("Users").document(currentUser.getUid());
 
         reference.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -109,7 +110,6 @@ public class ProfileSharedPreferencesRepository {
                             user.setInstaUrl(documentSnapshot.getString("Instagram"));
                             user.setAbout(documentSnapshot.getString("About"));
 
-
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -127,7 +127,7 @@ public class ProfileSharedPreferencesRepository {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         assert currentUser != null;
-        DocumentReference reference = db.collection("User").document(currentUser.getUid());
+        DocumentReference reference = db.collection("Users").document(currentUser.getUid());
 
         Map<String, Object> map = new HashMap<>();
         map.put("Name", updatedUser.getName());
