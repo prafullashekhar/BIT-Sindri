@@ -3,11 +3,13 @@ package com.bitsindri.bit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 
+import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.ActivityMainBinding;
 import com.bitsindri.bit.fragments.ClubsFragment;
 import com.bitsindri.bit.fragments.HomeFragment;
@@ -73,5 +75,11 @@ public class MainActivity extends AppCompatActivity  {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.bottom_fragment_container, new HomeFragment()).commit();
     }
-
+    private ProfileSharedPreferencesViewModel viewModel;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProfileSharedPreferencesViewModel.class);
+    }
 }

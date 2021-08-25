@@ -73,7 +73,6 @@
                     android:layout_marginTop="@dimen/tiny_margin"
                     android:background="@drawable/circle_image_bg"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/test_pic"
                     app:civ_border_color="@color/app_theme"
                     app:civ_border_width="5dp"
                     app:layout_constraintEnd_toEndOf="parent"

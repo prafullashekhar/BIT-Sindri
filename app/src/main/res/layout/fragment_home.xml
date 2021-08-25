@@ -16,16 +16,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/userName_home_fragment"
+                android:id="@+id/hii"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginBottom="4dp"
                 android:textSize="20sp"
-                android:text="Hii Shiwani"
+                android:text="Hii"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/userName_home_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:paddingStart="4dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="20sp"
+                android:text="Shiwani"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/hii"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 

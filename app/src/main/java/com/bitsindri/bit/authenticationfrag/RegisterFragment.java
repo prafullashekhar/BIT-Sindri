@@ -82,6 +82,7 @@ public class RegisterFragment extends Fragment {
             ArrayAdapter<String> batchArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dropdown_item, batches);
             selectBatch = (AutoCompleteTextView) binding.selectBatch;
             selectBatch.setAdapter(batchArrayAdapter);
+            binding.userConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
             // setting dropdown for branches
             String[] branches = getResources().getStringArray(R.array.branch_list);
