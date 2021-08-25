@@ -48,6 +48,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
 
     // Room components
     def roomVersion = "2.3.0"
