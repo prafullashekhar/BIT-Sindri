@@ -7,22 +7,22 @@ public class Constants {
 
     // shared preferences
     public static final String SHARED_PREF_FILE = "com.bitsindri.bit"; /* shared preference name */
-    public static final String NAME = "userName";
-    public static final String BATCH = "userBatch";
-    public static final String EMAIL = "userEmail";
-    public static final String BRANCH = "userBranch";
-    public static final String ROLL = "userRoll";
-    public static final String REG = "userReg";
-    public static final String PROFILE_PIC = "userProfilePic";
-    public static final String DOB = "userDOVB";
-    public static final String CLUB = "userClub";
-    public static final String CODECHEF = "userCodeChefUrl";
-    public static final String CODEFORCES = "userCodeForcesUrl";
-    public static final String FACEBOOK = "userFacebookUrl";
-    public static final String INSTAGRAM = "userInstagramUrl";
-    public static final String GITHUB = "userGithubUrl";
-    public static final String LINKEDIN = "userLinkedInUrl";
-    public static final String ABOUT = "userAbout";
+    public static final String NAME = "Name";
+    public static final String BATCH = "Batch";
+    public static final String EMAIL = "Email";
+    public static final String BRANCH = "Branch";
+    public static final String ROLL = "Roll";
+    public static final String REG = "RegNo";
+    public static final String PROFILE_PIC = "ProfilePic";
+    public static final String DOB = "DOB";
+    public static final String CLUB = "Club";
+    public static final String CODECHEF = "Codechef";
+    public static final String CODEFORCES = "Codeforces";
+    public static final String FACEBOOK = "Facebook";
+    public static final String INSTAGRAM = "Instagram";
+    public static final String GITHUB = "Github";
+    public static final String LINKEDIN = "LinkedIn";
+    public static final String ABOUT = "About";
 
 
 

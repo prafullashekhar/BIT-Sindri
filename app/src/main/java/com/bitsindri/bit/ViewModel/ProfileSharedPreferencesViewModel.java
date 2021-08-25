@@ -18,7 +18,7 @@ public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
     public ProfileSharedPreferencesViewModel(@NonNull Application application) {
         super(application);
         repository = new ProfileSharedPreferencesRepository(application);
-        user = repository.getUser();
+        user = ProfileSharedPreferencesRepository.getInstance(application).getUser();
     }
 
     // call to get user data

@@ -46,8 +46,28 @@ public class ProfileSharedPreferencesRepository {
     }
 
     public MutableLiveData<User> getUser(){
-        if(user == null)
+        if(sharedPreference.getString(Constants.NAME, "").equals(""))
             loadData();
+
+        user = new User(
+                sharedPreference.getString(Constants.NAME, ""),
+                sharedPreference.getString(Constants.EMAIL, ""),
+                sharedPreference.getString(Constants.BATCH, ""),
+                sharedPreference.getString(Constants.BRANCH, ""),
+                sharedPreference.getString(Constants.ROLL, ""),
+                sharedPreference.getString(Constants.REG, ""),
+                sharedPreference.getString(Constants.ABOUT, ""),
+                sharedPreference.getString(Constants.CODECHEF, ""),
+                sharedPreference.getString(Constants.LINKEDIN, ""),
+                sharedPreference.getString(Constants.FACEBOOK, ""),
+                sharedPreference.getString(Constants.INSTAGRAM, ""),
+                sharedPreference.getString(Constants.GITHUB, ""),
+                sharedPreference.getString(Constants.CODEFORCES, ""),
+                sharedPreference.getString(Constants.PROFILE_PIC, ""),
+                sharedPreference.getString(Constants.DOB, ""),
+                sharedPreference.getString(Constants.CLUB, "")
+        );
+
         MutableLiveData<User> mutableUser = new MutableLiveData<>();
         mutableUser.setValue(user);
         return mutableUser;
@@ -82,10 +102,9 @@ public class ProfileSharedPreferencesRepository {
     private void loadData() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
+        assert currentUser != null;
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        user = new User();
-        assert currentUser != null;
         DocumentReference reference = db.collection("Users").document(currentUser.getUid());
 
         reference.get()
@@ -93,23 +112,25 @@ public class ProfileSharedPreferencesRepository {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
-                            user.setName(documentSnapshot.getString("Name"));
-                            user.setEmail(documentSnapshot.getString("Email"));
-                            user.setBatch(documentSnapshot.getString("Batch"));
-                            user.setBranch(documentSnapshot.getString("Branch"));
-                            user.setRollNo(documentSnapshot.getString("Roll"));
-                            user.setRegNo(documentSnapshot.getString("RegNo"));
-                            user.setDob(documentSnapshot.getString("DOB"));
-                            user.setProfilePic(documentSnapshot.getString("ProfilePic"));
-                            user.setClub(documentSnapshot.getString("Club"));
-                            user.setCodechefUrl(documentSnapshot.getString("Codechef"));
-                            user.setCodefrocesUrl(documentSnapshot.getString("Codeforces"));
-                            user.setGithubUrl(documentSnapshot.getString("Github"));
-                            user.setLinkedInUrl(documentSnapshot.getString("LinkedIn"));
-                            user.setFacebookUrl(documentSnapshot.getString("Facebook"));
-                            user.setInstaUrl(documentSnapshot.getString("Instagram"));
-                            user.setAbout(documentSnapshot.getString("About"));
+                            SharedPreferences.Editor editor = sharedPreference.edit();
+                            editor.putString(Constants.NAME, documentSnapshot.getString(Constants.NAME));
+                            editor.putString(Constants.BATCH, documentSnapshot.getString(Constants.BATCH));
+                            editor.putString(Constants.EMAIL, documentSnapshot.getString(Constants.EMAIL));
+                            editor.putString(Constants.BRANCH, documentSnapshot.getString(Constants.BRANCH));
+                            editor.putString(Constants.DOB, documentSnapshot.getString(Constants.DOB));
+                            editor.putString(Constants.ROLL, documentSnapshot.getString(Constants.ROLL));
+                            editor.putString(Constants.REG, documentSnapshot.getString(Constants.REG));
+                            editor.putString(Constants.PROFILE_PIC, documentSnapshot.getString(Constants.PROFILE_PIC));
+                            editor.putString(Constants.CLUB, documentSnapshot.getString(Constants.CLUB));
+                            editor.putString(Constants.CODECHEF, documentSnapshot.getString(Constants.CODECHEF));
+                            editor.putString(Constants.CODEFORCES, documentSnapshot.getString(Constants.CODEFORCES));
+                            editor.putString(Constants.GITHUB, documentSnapshot.getString(Constants.GITHUB));
+                            editor.putString(Constants.LINKEDIN, documentSnapshot.getString(Constants.LINKEDIN));
+                            editor.putString(Constants.FACEBOOK, documentSnapshot.getString(Constants.FACEBOOK));
+                            editor.putString(Constants.INSTAGRAM, documentSnapshot.getString(Constants.INSTAGRAM));
+                            editor.putString(Constants.ABOUT, documentSnapshot.getString(Constants.ABOUT));
 
+                            editor.apply();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
