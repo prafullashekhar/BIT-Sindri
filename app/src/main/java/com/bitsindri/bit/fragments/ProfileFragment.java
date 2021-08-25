@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -190,6 +192,7 @@ public class ProfileFragment extends Fragment {
                 Methods.closeView(profileEditContainer,getContext());
             }
         });
+        AppCompatButton saveChanges = profileEditContainer.findViewById(R.id.saveChanges);
         /* the imageview button editprofile pic will give user to set profile image or reset the profile pic */
         ImageView editProfilePic = fullSizeProfileViewer.findViewById(R.id.edit_profile_image);
         editProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +201,87 @@ public class ProfileFragment extends Fragment {
                 setProfilePic();
             }
         });
+        initialiseEditProfile();
+
+        saveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveEditProfile();
+            }
+        });
         return binding.getRoot();
+    }
+    EditText about,name,dob,club,codeChef,linkedIn,faceBook,instagram,github,codeForces;
+    private void initialiseEditProfile() {
+        about = profileEditContainer.findViewById(R.id.edit_profile_about);
+        name = profileEditContainer.findViewById(R.id.edit_profile_name);
+        dob = profileEditContainer.findViewById(R.id.edit_profile_dob);
+        club = profileEditContainer.findViewById(R.id.edit_profile_club);
+        codeChef = profileEditContainer.findViewById(R.id.edit_codechef_link);
+        linkedIn = profileEditContainer.findViewById(R.id.edit_linkedin_link);
+        faceBook = profileEditContainer.findViewById(R.id.edit_facebook_link);
+        instagram = profileEditContainer.findViewById(R.id.edit_instagram_link);
+        github = profileEditContainer.findViewById(R.id.edit_github_link);
+        codeForces = profileEditContainer.findViewById(R.id.edit_codeforces_link);
+
+        name.setText(binding.profileUserName.getText());
+        club.setText(binding.profileClub.getText());
+        dob.setText(binding.profileDob.getText());
+        about.setText(binding.profileAbout.getText());
+    }
+
+
+
+    private void saveEditProfile() {
+
+
+        String abouts,names,dobs,clubs,codechefs,linkedins,facebooks,instagrams,githubs,codeforcess;
+
+
+        abouts = about.getText().toString();
+        assert abouts!=null;
+        names = name.getText().toString();
+        assert names!=null;
+        dobs = dob.getText().toString();
+        assert dobs!=null;
+        clubs = club.getText().toString();
+        assert clubs!=null;
+        codechefs = codeChef.getText().toString();
+        linkedins = linkedIn.getText().toString();
+        facebooks = faceBook.getText().toString();
+        instagrams = instagram.getText().toString();
+        githubs = github.getText().toString();
+        codeforcess = codeForces.getText().toString();
+        DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
+        Map<String, Object> user = new HashMap<>();
+        user.put("Name", names);
+        user.put("DOB", dobs);
+        user.put("Club", clubs);
+        user.put("Codechef", codechefs);
+        user.put("Codeforces", codeforcess);
+        user.put("Github", githubs);
+        user.put("LinkedIn", linkedins);
+        user.put("Facebook", facebooks);
+        user.put("Instagram", instagrams);
+        user.put("About", abouts);
+        currentUser.setAbout(abouts);
+        currentUser.setName(names);
+        currentUser.setDob(dobs);
+        currentUser.setClub(clubs);
+        currentUser.setCodechefUrl(codechefs);
+        currentUser.setLinkedInUrl(linkedins);
+        currentUser.setFacebookUrl(facebooks);
+        currentUser.setInstaUrl(instagrams);
+        currentUser.setGithubUrl(githubs);
+        currentUser.setCodefrocesUrl(codeforcess);
+        viewModel.updateUser(currentUser);
+        documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                Methods.closeView(profileEditContainer,getContext());
+            }
+        });
     }
 
     private void setProfilePic() {
