@@ -4,9 +4,13 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +20,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.bitsindri.bit.R;
+
+import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
+import com.bitsindri.bit.databinding.FragmentProfileBinding;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
+import com.bitsindri.bit.models.User;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
-
+    private FragmentProfileBinding binding;
+    private LinearLayout socialMediaContainer;
+    private ProfileSharedPreferencesViewModel viewModel;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
     private int REQUEST_CODE = 18;
-    private LinearLayout socialMediaContainer;
     private CircleImageView normalProfileImage;
     private int shortAnimationDuration = 400;
     private FrameLayout profileFragContainer;
@@ -42,21 +53,51 @@ public class ProfileFragment extends Fragment {
     private TextView headerUserName;
     private ImageView showProfileEditContainer;
     private View profileEditContainer;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        socialMediaContainer = view.findViewById(R.id.social_media_container);
+                binding = FragmentProfileBinding.inflate(inflater, container, false);
+
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
+
+        // assign everything with user model here
+
+        FrameLayout view = binding.profileContainer;
+        User user = viewModel.getUser().getValue();
+        assert user != null;
+        binding.profileUserName.setText(user.getName());
+        binding.profileUserBranch.setText(user.getBranch());
+        binding.profileUserSession.setText(user.getBatch());
+
+        binding.profileAbout.setText(user.getAbout());
+        binding.profileEmail.setText(user.getEmail());
+        binding.profileRollNumber.setText(user.getRollNo());
+        binding.profileRegNumber.setText(user.getRegNo());
+        binding.profileDob.setText(user.getDob());
+        binding.profileClub.setText(user.getClub());
+
+        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+
+            }
+        });
+//        socialMediaContainer = view.findViewById(R.id.social_media_container);
+        socialMediaContainer = binding.socialMediaContainer;
         socialMediaContainer.bringToFront();
-        showProfileEditContainer = view.findViewById(R.id.edit_profile_icon);
+//        showProfileEditContainer = view.findViewById(R.id.edit_profile_icon);
+        showProfileEditContainer = binding.editProfileIcon;
 
         /* normal profile image show when fragment is started and very first time appear */
-        normalProfileImage = view.findViewById(R.id.profile_image);
+//        normalProfileImage = view.findViewById(R.id.profile_image);
+        normalProfileImage = binding.profileImage;
         normalProfileImage.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pop_up));
-        headerUserName = view.findViewById(R.id.profile_user_name);
-        profileFragContainer = view.findViewById(R.id.profileContainer);
+//        headerUserName = view.findViewById(R.id.profile_user_name);
+        headerUserName = binding.profileUserName;
+//        profileFragContainer = view.findViewById(R.id.profileContainer);
+        profileFragContainer = binding.profileContainer;
 
         /* medium profile viewer show the profile pic on half of the screen */
         mediumProfileViewer = view.findViewById(R.id.profile_viewer_container);
@@ -131,7 +172,7 @@ public class ProfileFragment extends Fragment {
                 setProfilePic();
             }
         });
-        return view;
+        return binding.getRoot();
     }
 
     private void setProfilePic() {

@@ -214,7 +214,7 @@ public class RegisterFragment extends Fragment {
 
     // register the user information in FireStore cloud database in collection named "user(Batch-Branch)" and document named as userid
     private void registerUser() {
-        DocumentReference documentReference = mStore.collection("user(" + strUserBatch + "-" + strUserBranch + ")").document(UserId);
+        DocumentReference documentReference = mStore.collection("Users").document(UserId);
         Map<String, Object> user = new HashMap<>();
         user.put("Name", strUserName);
         user.put("Email", strUserEmail);
@@ -222,6 +222,16 @@ public class RegisterFragment extends Fragment {
         user.put("Branch", strUserBranch);
         user.put("Roll", strUserRoll);
         user.put("RegNo", strUserRegNo);
+        user.put("DOB", "");
+        user.put("ProfilePic", "");
+        user.put("Club", "");
+        user.put("Codechef", "");
+        user.put("Codeforces", "");
+        user.put("Github", "");
+        user.put("LinkedIn", "");
+        user.put("Facebook", "");
+        user.put("Instagram", "");
+        user.put("About", "");
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
