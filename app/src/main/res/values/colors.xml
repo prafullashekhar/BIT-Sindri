@@ -24,4 +24,6 @@
 
     <color name="department_drawer">#8E8F8D</color>
     <color name="ruler_color">#80DFDFDF</color>
+
+    <color name="hint_black_bg">#F1E4E4</color>
 </resources>

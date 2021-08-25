@@ -63,6 +63,12 @@
     <string name="privacy_and_security">Privacy and Security</string>
     <string name="data_and_storage">Data and Storage</string>
     <string name="ask_a_question">Ask a Question</string>
+    <string name="codechef_link">Codechef link</string>
+    <string name="linkedin_link">Linkedin link</string>
+    <string name="facebook_link">Facebook link</string>
+    <string name="instagram_link">Instagram link</string>
+    <string name="github_link">Github link</string>
+    <string name="codeforces_link">Codeforces link</string>
 
 
 </resources>
