@@ -1,6 +1,7 @@
 package com.bitsindri.bit.ViewModel;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,12 +13,12 @@ import com.bitsindri.bit.models.User;
 
 public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
 
-    private final ProfileSharedPreferencesRepository repository;
-    private MutableLiveData<User> user;
+    private final Application application;
+    private final MutableLiveData<User> user;
 
     public ProfileSharedPreferencesViewModel(@NonNull Application application) {
         super(application);
-        repository = new ProfileSharedPreferencesRepository(application);
+        this.application = application;
         user = ProfileSharedPreferencesRepository.getInstance(application).getUser();
     }
 
@@ -28,6 +29,6 @@ public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
 
     // call to update user data
     public void updateUser(User updatedUser){
-        repository.updateUser(updatedUser);
+        ProfileSharedPreferencesRepository.getInstance(application).updateUser(updatedUser);
     }
 }

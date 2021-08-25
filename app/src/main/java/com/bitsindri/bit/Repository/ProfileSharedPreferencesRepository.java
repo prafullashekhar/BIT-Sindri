@@ -27,9 +27,8 @@ import java.util.Map;
 public class ProfileSharedPreferencesRepository {
 
     private final SharedPreferences sharedPreference;
-    private User user;
 
-    private static ProfileSharedPreferencesRepository INSTANCE;
+    private static volatile ProfileSharedPreferencesRepository INSTANCE;
     Context context;
 
     public static ProfileSharedPreferencesRepository getInstance(Application application){
@@ -49,7 +48,7 @@ public class ProfileSharedPreferencesRepository {
         if(sharedPreference.getString(Constants.NAME, "").equals(""))
             loadData();
 
-        user = new User(
+        User user = new User(
                 sharedPreference.getString(Constants.NAME, ""),
                 sharedPreference.getString(Constants.EMAIL, ""),
                 sharedPreference.getString(Constants.BATCH, ""),
@@ -145,28 +144,28 @@ public class ProfileSharedPreferencesRepository {
     private void uploadData(User updatedUser) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
+        assert currentUser != null;
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        assert currentUser != null;
         DocumentReference reference = db.collection("Users").document(currentUser.getUid());
 
         Map<String, Object> map = new HashMap<>();
-        map.put("Name", updatedUser.getName());
-        map.put("Email", updatedUser.getEmail());
-        map.put("Batch", updatedUser.getBatch());
-        map.put("Branch", updatedUser.getBranch());
-        map.put("Roll", updatedUser.getRollNo());
-        map.put("RegNo", updatedUser.getRegNo());
-        map.put("DOB", updatedUser.getDob());
-        map.put("ProfilePic", updatedUser.getProfilePic());
-        map.put("Club", updatedUser.getClub());
-        map.put("Codechef", updatedUser.getCodechefUrl());
-        map.put("Codeforces", updatedUser.getCodefrocesUrl());
-        map.put("Github", updatedUser.getGithubUrl());
-        map.put("LinkedIn", updatedUser.getLinkedInUrl());
-        map.put("Facebook", updatedUser.getFacebookUrl());
-        map.put("Instagram", updatedUser.getInstaUrl());
-        map.put("About", updatedUser.getAbout());
+        map.put(Constants.NAME, updatedUser.getName());
+        map.put(Constants.EMAIL, updatedUser.getEmail());
+        map.put(Constants.BATCH, updatedUser.getBatch());
+        map.put(Constants.BRANCH, updatedUser.getBranch());
+        map.put(Constants.ROLL, updatedUser.getRollNo());
+        map.put(Constants.REG, updatedUser.getRegNo());
+        map.put(Constants.DOB, updatedUser.getDob());
+        map.put(Constants.PROFILE_PIC, updatedUser.getProfilePic());
+        map.put(Constants.CLUB, updatedUser.getClub());
+        map.put(Constants.CODECHEF, updatedUser.getCodechefUrl());
+        map.put(Constants.CODEFORCES, updatedUser.getCodefrocesUrl());
+        map.put(Constants.GITHUB, updatedUser.getGithubUrl());
+        map.put(Constants.LINKEDIN, updatedUser.getLinkedInUrl());
+        map.put(Constants.FACEBOOK, updatedUser.getFacebookUrl());
+        map.put(Constants.INSTAGRAM, updatedUser.getInstaUrl());
+        map.put(Constants.ABOUT, updatedUser.getAbout());
 
         reference.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
