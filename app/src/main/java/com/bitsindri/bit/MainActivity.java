@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 
 import com.bitsindri.bit.databinding.ActivityMainBinding;
 import com.bitsindri.bit.fragments.ClubsFragment;
@@ -15,7 +16,7 @@ import com.bitsindri.bit.fragments.ProfileFragment;
 import com.bitsindri.bit.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     ActivityMainBinding binding;
     private Fragment fragment;
@@ -72,4 +73,5 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.bottom_fragment_container, new HomeFragment()).commit();
     }
+
 }

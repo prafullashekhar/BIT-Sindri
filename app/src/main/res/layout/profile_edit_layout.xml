@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/sign_in_container_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/tiny_margin">
+
+        <ImageView
+            android:id="@+id/canel_profile_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_arrow"
+            android:layout_margin="8dp"/>
+
+        <EditText
+            android:id="@+id/edit_profile_about"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:hint="@string/write_about"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/profile_text_small" />
+
+        <EditText
+            android:id="@+id/edit_profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"
+            android:hint="@string/user_name"
+            android:padding="13dp"/>
+
+        <EditText
+            android:id="@+id/edit_profile_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"
+            android:hint="@string/date_of_birth"
+            android:padding="13dp" />
+
+        <EditText
+            android:id="@+id/edit_profile_club"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:hint="@string/club"
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edit_codechef_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:hint="@string/codechef_link"
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edit_linkedin_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:hint="@string/linkedin_link"
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edit_facebook_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:hint="@string/facebook_link"
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edit_instagram_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:hint="@string/instagram_link"
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edit_github_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:hint="@string/github_link"
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edit_codeforces_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginRight="@dimen/medium_margin"
+            android:hint="@string/codeforces_link"
+            android:padding="13dp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/black"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_gravity="end"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
+    </LinearLayout>
+</ScrollView>
