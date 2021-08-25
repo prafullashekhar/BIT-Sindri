@@ -29,6 +29,12 @@ import com.bitsindri.bit.databinding.FragmentProfileBinding;
 import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,6 +42,8 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private LinearLayout socialMediaContainer;
     private ProfileSharedPreferencesViewModel viewModel;
+    private FirebaseStorage storage;
+    private  FirebaseAuth auth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -63,6 +71,9 @@ public class ProfileFragment extends Fragment {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
 
         // assign everything with user model here
+
+        storage = FirebaseStorage.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         FrameLayout view = binding.profileContainer;
         User user = viewModel.getUser().getValue();
@@ -187,9 +198,21 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (data.getData() != null) {
             Uri imageToBeUpload = data.getData();
-            normalProfileImage.setImageURI(imageToBeUpload);
-            mediumExpandedImage.setImageURI(imageToBeUpload);
-            fullSizeImage.setImageURI(imageToBeUpload);
+            final StorageReference reference = storage.getReference().child("profile pictures").child(auth.getUid());
+            reference.putFile(imageToBeUpload).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                    normalProfileImage.setImageURI(imageToBeUpload);
+                    mediumExpandedImage.setImageURI(imageToBeUpload);
+                    fullSizeImage.setImageURI(imageToBeUpload);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
