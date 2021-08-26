@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_margin="5dp"
             android:padding="3dp">
             <ImageView
@@ -49,7 +49,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_password_show"/>
+                android:src="@drawable/ic_gallery_profile_select"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_password_show"/>
+                android:src="@drawable/ic_camera_profile_select"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
