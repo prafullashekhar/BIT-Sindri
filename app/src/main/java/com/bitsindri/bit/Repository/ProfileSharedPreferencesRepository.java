@@ -100,12 +100,6 @@ public class ProfileSharedPreferencesRepository {
         uploadData(updatedUser);
     }
 
-    public String uploadProfilePicInStorage(Uri uri){
-        uploadProfilePic(uri);
-        return profileDownloadUrl;
-    }
-
-
     // functions to load and upload data from fire store database
     private void loadData() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -190,18 +184,32 @@ public class ProfileSharedPreferencesRepository {
 
     }
 
-    private void uploadProfilePic(Uri uri){
+    public void uploadProfilePicInStorage(Uri imageToBeUpload){
+        Toast.makeText(context, "Uploading...", Toast.LENGTH_SHORT).show();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseStorage store = FirebaseStorage.getInstance();
         StorageReference reference = store.getReference().child("profile pictures").child(auth.getUid());
 
-        reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        reference.putFile(imageToBeUpload).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         profileDownloadUrl = uri.toString();
+                        FirebaseFirestore mStore = FirebaseFirestore.getInstance();
+                        DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("ProfilePic",profileDownloadUrl);
+                        SharedPreferences.Editor editor = sharedPreference.edit();
+                        editor.putString(Constants.PROFILE_PIC, profileDownloadUrl);
+                        editor.commit();
+                        documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
             }
