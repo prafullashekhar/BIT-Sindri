@@ -73,7 +73,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // User permission
-    implementation 'com.karumi:dexter:6.2.3'
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

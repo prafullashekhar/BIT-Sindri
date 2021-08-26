@@ -2,17 +2,20 @@ package com.bitsindri.bit.Repository;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bitsindri.bit.methods.Constants;
+import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -183,8 +186,8 @@ public class ProfileSharedPreferencesRepository {
         });
 
     }
-
-    public void uploadProfilePicInStorage(Uri imageToBeUpload){
+    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img){
+        img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         Toast.makeText(context, "Uploading...", Toast.LENGTH_SHORT).show();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseStorage store = FirebaseStorage.getInstance();
@@ -207,6 +210,7 @@ public class ProfileSharedPreferencesRepository {
                         documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
                                 Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
                             }
                         });

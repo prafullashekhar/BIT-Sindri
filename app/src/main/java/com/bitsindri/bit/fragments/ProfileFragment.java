@@ -1,6 +1,5 @@
 package com.bitsindri.bit.fragments;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +10,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,28 +26,12 @@ import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentProfileBinding;
-import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -181,7 +161,7 @@ public class ProfileFragment extends Fragment {
         canceprofileEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
+                profileEditContainer.performClick();
             }
         });
         AppCompatButton saveChanges = profileEditContainer.findViewById(R.id.saveChanges);
@@ -330,22 +310,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setProfilePic() {
-        Dexter.withContext(getContext()).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, REQUEST_CODE);
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
-                        Toast.makeText(getContext(), "Internal storage permission is needed for image selection", Toast.LENGTH_SHORT).show();
-                    }
-                }).check();
+        ImagePicker.with(this)
+                .crop()
+                .compress(400)
+                .maxResultSize(512, 512)
+                .start();
     }
 
     @Override
@@ -354,7 +323,7 @@ public class ProfileFragment extends Fragment {
         if (data.getData() != null) {
             fullSizeProfileViewer.setClickable(false);
             Uri imageToBeUpload = data.getData();
-            viewModel.uploadProfilePicInStorage(imageToBeUpload);
+            viewModel.uploadProfilePicInStorage(imageToBeUpload,fullSizeImage);
             normalProfileImage.setImageURI(imageToBeUpload);
             mediumExpandedImage.setImageURI(imageToBeUpload);
             fullSizeImage.setImageURI(imageToBeUpload);

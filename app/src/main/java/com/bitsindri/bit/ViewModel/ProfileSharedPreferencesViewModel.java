@@ -3,6 +3,7 @@ package com.bitsindri.bit.ViewModel;
 import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -33,7 +34,7 @@ public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
         ProfileSharedPreferencesRepository.getInstance(application).updateUser(updatedUser);
     }
 
-    public void  uploadProfilePicInStorage(Uri uri){
-        ProfileSharedPreferencesRepository.getInstance(application).uploadProfilePicInStorage(uri);
+    public void  uploadProfilePicInStorage(Uri uri, ImageView img){
+        ProfileSharedPreferencesRepository.getInstance(application).uploadProfilePicInStorage(uri,img);
     }
 }
