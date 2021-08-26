@@ -1,18 +1,25 @@
 package com.bitsindri.bit.fragments;
 
 import android.animation.Animator;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import android.provider.Contacts;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -29,7 +36,10 @@ import com.bitsindri.bit.databinding.FragmentProfileBinding;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
+
 
 import java.io.File;
 
@@ -40,6 +50,9 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private LinearLayout socialMediaContainer;
     private ProfileSharedPreferencesViewModel viewModel;
+    private BottomSheetBehavior mBehaviour;
+    private BottomSheetDialog mBottomSheetDialog;
+    private View bottom_sheet;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -48,17 +61,18 @@ public class ProfileFragment extends Fragment {
     private int REQUEST_CODE = 18;
     private CircleImageView normalProfileImage;
     private int shortAnimationDuration = 400;
-    private FrameLayout profileFragContainer;
+    private CoordinatorLayout profileFragContainer;
     private View mediumProfileViewer;
     private View fullSizeProfileViewer;
-    private Animator currentAnimator;
     private ImageView mediumExpandedImage;
     private ImageView fullSizeImage;
     private TextView headerUserName;
     private ImageView showProfileEditContainer;
     private View profileEditContainer;
     private User currentUser;
-    private File path;
+    private LinearLayout selectImageFromProfile;
+    private LinearLayout selectImageFromCamera;
+    private LinearLayout showProfilePic;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -71,17 +85,23 @@ public class ProfileFragment extends Fragment {
         // assign everything with user model here
         currentUser = viewModel.getUser().getValue();
         assert currentUser != null;
+        bottom_sheet = binding.bottomSheet;
+        try {
+            mBehaviour = BottomSheetBehavior.from(binding.bottomSheet);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         initialiseProfileViews(currentUser);
         try {
             Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.profileImage);
         } catch (Exception e) {
-            Toast.makeText(getContext(), ""+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "" + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
         }
 
         viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
-               initialiseProfileViews(user);
+                initialiseProfileViews(user);
             }
         });
         socialMediaContainer = binding.socialMediaContainer;
@@ -136,9 +156,10 @@ public class ProfileFragment extends Fragment {
          * button option.
          */
         mediumExpandedImage.setOnClickListener(v -> {
-            mediumProfileViewer.setVisibility(View.INVISIBLE);
-            fullSizeProfileViewer.setVisibility(View.VISIBLE);
-            fullSizeProfileViewer.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
+//            mediumProfileViewer.setVisibility(View.INVISIBLE);
+            showBottomSheetDialog();
+//            fullSizeProfileViewer.setVisibility(View.VISIBLE);
+//            fullSizeProfileViewer.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
         });
 
         /* When user clicked when image is on full size the full size profile will get closed */
@@ -157,8 +178,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        ImageView canceprofileEditButton = profileEditContainer.findViewById(R.id.canel_profile_edit);
-        canceprofileEditButton.setOnClickListener(new View.OnClickListener() {
+        ImageView cancelProfileEditButton = profileEditContainer.findViewById(R.id.canel_profile_edit);
+        cancelProfileEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 profileEditContainer.performClick();
@@ -217,7 +238,8 @@ public class ProfileFragment extends Fragment {
 
     private void openUrl(View v) {
         String url = v.getContentDescription().toString();
-        if (url.equals("")) Toast.makeText(getContext(), v.getTag().toString()+" is empty", Toast.LENGTH_SHORT).show();
+        if (url.equals(""))
+            Toast.makeText(getContext(), v.getTag().toString() + " is empty", Toast.LENGTH_SHORT).show();
         else {
             if (!url.startsWith("https://")) url = "https://" + url;
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -309,25 +331,85 @@ public class ProfileFragment extends Fragment {
         Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
     }
 
+    private void setProfilePic(boolean isGallery) {
+        if (isGallery) {
+            ImagePicker.with(this)
+                    .crop()
+                    .maxResultSize(512, 512)
+                    .compress(400)
+                    .galleryOnly()
+                    .start();
+        } else {
+            ImagePicker.with(this)
+                    .crop()
+                    .maxResultSize(512, 512)
+                    .compress(400)
+                    .cameraOnly()
+                    .start();
+        }
+    }
+
     private void setProfilePic() {
         ImagePicker.with(this)
                 .crop()
-                .compress(400)
                 .maxResultSize(512, 512)
+                .compress(400)
                 .start();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data.getData() != null) {
-            fullSizeProfileViewer.setClickable(false);
-            Uri imageToBeUpload = data.getData();
-            viewModel.uploadProfilePicInStorage(imageToBeUpload,fullSizeImage);
-            normalProfileImage.setImageURI(imageToBeUpload);
-            mediumExpandedImage.setImageURI(imageToBeUpload);
-            fullSizeImage.setImageURI(imageToBeUpload);
-            fullSizeProfileViewer.setClickable(true);
-        }
+        mBottomSheetDialog.dismiss();
+        mediumProfileViewer.setVisibility(View.INVISIBLE);
+        fullSizeProfileViewer.setVisibility(View.VISIBLE);
+        Uri imageToBeUpload = data.getData();
+        viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage);
+        normalProfileImage.setImageURI(imageToBeUpload);
+        mediumExpandedImage.setImageURI(imageToBeUpload);
+        fullSizeImage.setImageURI(imageToBeUpload);
+        fullSizeProfileViewer.setClickable(true);
     }
+
+    private void showBottomSheetDialog() {
+        if (mBehaviour.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            mBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+
+        final View view = getLayoutInflater().inflate(R.layout.sheet_list, null);
+        mBottomSheetDialog = new BottomSheetDialog(getContext());
+        mBottomSheetDialog.setContentView(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mBottomSheetDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
+        mBottomSheetDialog.show();
+        selectImageFromProfile = view.findViewById(R.id.setProfileFromGallery);
+        selectImageFromCamera = view.findViewById(R.id.setProfileFromCamera);
+        showProfilePic = view.findViewById(R.id.showProfile);
+        selectImageFromProfile.setOnClickListener(v -> {
+            setProfilePic(true);
+        });
+        selectImageFromCamera.setOnClickListener(v->{
+            setProfilePic(false);
+        });
+        showProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediumProfileViewer.setVisibility(View.INVISIBLE);
+                fullSizeProfileViewer.setVisibility(View.VISIBLE);
+                fullSizeProfileViewer.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
+                mBottomSheetDialog.dismiss();
+            }
+        });
+
+        mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mBottomSheetDialog = null;
+            }
+        });
+    }
+
+
 }
