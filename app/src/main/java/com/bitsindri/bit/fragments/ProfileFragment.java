@@ -1,6 +1,6 @@
 package com.bitsindri.bit.fragments;
 
-import android.animation.Animator;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -9,22 +9,20 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.provider.Contacts;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.net.Uri;
 import android.widget.Toast;
@@ -39,10 +37,6 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
-
-
-import java.io.File;
-
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -73,6 +67,7 @@ public class ProfileFragment extends Fragment {
     private LinearLayout selectImageFromProfile;
     private LinearLayout selectImageFromCamera;
     private LinearLayout showProfilePic;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -104,6 +99,7 @@ public class ProfileFragment extends Fragment {
                 initialiseProfileViews(user);
             }
         });
+        progressBar = binding.progressBar;
         socialMediaContainer = binding.socialMediaContainer;
         socialMediaContainer.bringToFront();
         showProfileEditContainer = binding.editProfileIcon;
@@ -364,7 +360,7 @@ public class ProfileFragment extends Fragment {
         mediumProfileViewer.setVisibility(View.INVISIBLE);
         fullSizeProfileViewer.setVisibility(View.VISIBLE);
         Uri imageToBeUpload = data.getData();
-        viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage);
+        viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage,progressBar);
         normalProfileImage.setImageURI(imageToBeUpload);
         mediumExpandedImage.setImageURI(imageToBeUpload);
         fullSizeImage.setImageURI(imageToBeUpload);
@@ -410,6 +406,4 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
-
 }
