@@ -1,5 +1,8 @@
 package com.bitsindri.bit.models;
 
+import android.app.DownloadManager;
+import android.net.Uri;
+
 public class User {
 
     String name;
