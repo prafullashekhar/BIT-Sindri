@@ -2,14 +2,7 @@ package com.bitsindri.bit.fragments;
 
 import android.Manifest;
 import android.animation.Animator;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaScannerConnection;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,7 +30,6 @@ import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentProfileBinding;
-import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,12 +48,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,6 +178,7 @@ public class ProfileFragment extends Fragment {
         fullSizeProfileViewer.setOnClickListener(v -> {
             /* Methods.closeView() methods simply hide the current view
              * This methods takes the view which has to be hide and the context
+             * in second parameter it takes the root view of the current view.
              */
             Methods.closeView(v, normalProfileImage, getContext());
         });
