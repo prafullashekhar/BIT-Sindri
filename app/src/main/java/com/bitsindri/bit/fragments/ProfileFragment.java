@@ -193,7 +193,7 @@ public class ProfileFragment extends Fragment {
             /* Methods.closeView() methods simply hide the current view
              * This methods takes the view which has to be hide and the context
              */
-            Methods.closeView(v,normalProfileImage, getContext());
+            Methods.closeView(v, normalProfileImage, getContext());
         });
 
         showProfileEditContainer.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +207,7 @@ public class ProfileFragment extends Fragment {
         canceprofileEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Methods.closeView(profileEditContainer,showProfileEditContainer, getContext());
+                Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
             }
         });
         AppCompatButton saveChanges = profileEditContainer.findViewById(R.id.saveChanges);
@@ -225,7 +225,7 @@ public class ProfileFragment extends Fragment {
         binding.profileCodechef.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 openUrl(v);
+                openUrl(v);
             }
         });
         binding.profileLinkedin.setOnClickListener(new View.OnClickListener() {
@@ -261,14 +261,17 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void openUrl(View v){
+    private void openUrl(View v) {
         String url = v.getContentDescription().toString();
-        if(!url.startsWith("https://"))url = "https://"+url;
-        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(url));
-        try {
-            getContext().startActivity(intent);
-        }catch (Exception e){
-            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        if (url.equals("")) Toast.makeText(getContext(), v.getTag().toString()+" is empty", Toast.LENGTH_SHORT).show();
+        else {
+            if (!url.startsWith("https://")) url = "https://" + url;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            try {
+                getContext().startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -377,7 +380,7 @@ public class ProfileFragment extends Fragment {
                 binding.profileInstagram.setContentDescription(instagrams);
                 binding.profileGithub.setContentDescription(githubs);
                 binding.profileCodeforces.setContentDescription(codeforcess);
-                Methods.closeView(profileEditContainer,showProfileEditContainer, getContext());
+                Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
             }
         });
     }
@@ -432,6 +435,7 @@ public class ProfileFragment extends Fragment {
                                 }
                             });
                         }
+                    });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

@@ -467,6 +467,7 @@
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
                         android:elevation="3dp"
+                        android:tag="@string/codechef_link"
                         android:src="@drawable/ic_codechef" />
 
                     <ImageButton
@@ -477,6 +478,7 @@
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
                         android:elevation="3dp"
+                        android:tag="@string/linkedin_link"
                         android:src="@drawable/ic_linkedin" />
 
                     <ImageButton
@@ -487,6 +489,7 @@
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
                         android:elevation="3dp"
+                        android:tag="@string/facebook_link"
                         android:src="@drawable/ic_facebook" />
 
                     <ImageButton
@@ -497,6 +500,7 @@
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
                         android:elevation="3dp"
+                        android:tag="@string/instagram_link"
                         android:src="@drawable/ic_instagram" />
 
                     <ImageButton
@@ -507,6 +511,7 @@
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
                         android:elevation="3dp"
+                        android:tag="@string/github_link"
                         android:src="@drawable/ic_github" />
 
                     <ImageButton
@@ -516,6 +521,7 @@
                         android:layout_gravity="center"
                         android:background="@drawable/circle_button_bg"
                         android:elevation="3dp"
+                        android:tag="@string/codechef_link"
                         android:src="@drawable/ic_codeforces" />
                 </LinearLayout>
             </HorizontalScrollView>
