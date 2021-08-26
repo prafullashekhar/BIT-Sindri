@@ -311,8 +311,6 @@ public class ProfileFragment extends Fragment {
 
 
     private void saveEditProfile() {
-
-
         String abouts, names, dobs, clubs, codechefs, linkedins, facebooks, instagrams, githubs, codeforcess;
 
 

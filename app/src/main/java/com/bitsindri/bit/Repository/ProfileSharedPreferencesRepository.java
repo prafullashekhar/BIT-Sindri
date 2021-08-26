@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,6 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +31,7 @@ import java.util.Map;
 public class ProfileSharedPreferencesRepository {
 
     private final SharedPreferences sharedPreference;
+    private String profileDownloadUrl;
 
     private static volatile ProfileSharedPreferencesRepository INSTANCE;
     Context context;
@@ -39,7 +44,6 @@ public class ProfileSharedPreferencesRepository {
     }
 
     public ProfileSharedPreferencesRepository(Application application){
-        // sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
         this.context = application;
         sharedPreference = application.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
     }
@@ -94,6 +98,11 @@ public class ProfileSharedPreferencesRepository {
         editor.apply();
 
         uploadData(updatedUser);
+    }
+
+    public String uploadProfilePicInStorage(Uri uri){
+        uploadProfilePic(uri);
+        return profileDownloadUrl;
     }
 
 
@@ -179,6 +188,29 @@ public class ProfileSharedPreferencesRepository {
             }
         });
 
+    }
+
+    private void uploadProfilePic(Uri uri){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseStorage store = FirebaseStorage.getInstance();
+        StorageReference reference = store.getReference().child("profile pictures").child(auth.getUid());
+
+        reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        profileDownloadUrl = uri.toString();
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(Constants.msg, "Cannot upload image "+e.toString());
+            }
+        });
     }
 
 
