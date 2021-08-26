@@ -35,11 +35,12 @@ public class Methods {
         return progressDialog;
     }
 
-    public static void closeView(View view, Context context){
+    public static void closeView(View view,View root, Context context){
         view.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_out));
         view.postOnAnimation(new Runnable() {
             @Override
             public void run() {
+                root.setAlpha(1f);
                 view.setVisibility(View.GONE);
             }
         });

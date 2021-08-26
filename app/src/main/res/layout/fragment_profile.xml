@@ -135,7 +135,7 @@
                     <TextView
                         android:id="@+id/profile_about"
                         android:layout_width="match_parent"
-                        android:layout_height="74dp"
+                        android:layout_height="wrap_content"
                         android:hint="@string/write_about"
                         android:textColorHint="@color/text_hint"
                         android:textSize="@dimen/profile_text_small" />
