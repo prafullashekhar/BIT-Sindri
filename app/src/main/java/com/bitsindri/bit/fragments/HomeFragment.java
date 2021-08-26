@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment
 
         binding.userNameHomeFragment.setText(currentUser.getName());
         if(!currentUser.getProfilePic().equals("")){
-            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.test_pic).into(binding.homeProfileImage);
+            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.homeProfileImage);
         }
         // sliding image list
         binding.imageSlider.setAutoCycle(true);

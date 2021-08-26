@@ -30,6 +30,7 @@ import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentProfileBinding;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,9 +60,6 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private LinearLayout socialMediaContainer;
     private ProfileSharedPreferencesViewModel viewModel;
-    private FirebaseStorage storage;
-    private FirebaseAuth auth;
-    private FirebaseFirestore mStore;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -81,40 +79,29 @@ public class ProfileFragment extends Fragment {
     private View profileEditContainer;
     private User currentUser;
     private File path;
-    String imgName;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-        path = Environment.getExternalStorageDirectory();
-        File dir = new File(path + "/BIT");
-        if (!dir.exists()) {
-            Log.e("Nipun", dir.toString());
-            dir.mkdir();
-        }
-
-        storage = FirebaseStorage.getInstance();
-        auth = FirebaseAuth.getInstance();
-        mStore = FirebaseFirestore.getInstance();
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
 
         // assign everything with user model here
         currentUser = viewModel.getUser().getValue();
         assert currentUser != null;
-        initialiseProfileViews();
+        initialiseProfileViews(currentUser);
         try {
-            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.test_pic).into(binding.profileImage);
+            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.profileImage);
         } catch (Exception e) {
-            Log.e("Nipun", "" + e.getMessage());
+            Toast.makeText(getContext(), ""+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
         }
 
         viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                currentUser = user;
+               initialiseProfileViews(user);
             }
         });
         socialMediaContainer = binding.socialMediaContainer;
@@ -262,8 +249,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-
-    private void initialiseProfileViews() {
+    private void initialiseProfileViews(User currentUser) {
         binding.profileUserName.setText(currentUser.getName());
         binding.profileUserBranch.setText(currentUser.getBranch());
         String batch = currentUser.getBatch();
@@ -328,18 +314,6 @@ public class ProfileFragment extends Fragment {
         instagrams = instagram.getText().toString();
         githubs = github.getText().toString();
         codeforcess = codeForces.getText().toString();
-        DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
-        Map<String, Object> user = new HashMap<>();
-        user.put("Name", names);
-        user.put("DOB", dobs);
-        user.put("Club", clubs);
-        user.put("Codechef", codechefs);
-        user.put("Codeforces", codeforcess);
-        user.put("Github", githubs);
-        user.put("LinkedIn", linkedins);
-        user.put("Facebook", facebooks);
-        user.put("Instagram", instagrams);
-        user.put("About", abouts);
         currentUser.setAbout(abouts);
         currentUser.setName(names);
         currentUser.setDob(dobs);
@@ -351,23 +325,8 @@ public class ProfileFragment extends Fragment {
         currentUser.setGithubUrl(githubs);
         currentUser.setCodefrocesUrl(codeforcess);
         viewModel.updateUser(currentUser);
-        documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                binding.profileUserName.setText(names);
-                binding.profileAbout.setText(abouts);
-                binding.profileDob.setText(dobs);
-                binding.profileClub.setText(clubs);
-                binding.profileCodechef.setContentDescription(codechefs);
-                binding.profileLinkedin.setContentDescription(linkedins);
-                binding.profileFacebook.setContentDescription(facebooks);
-                binding.profileInstagram.setContentDescription(instagrams);
-                binding.profileGithub.setContentDescription(githubs);
-                binding.profileCodeforces.setContentDescription(codeforcess);
-                Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
-            }
-        });
+        initialiseProfileViews(currentUser);
+        Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
     }
 
     private void setProfilePic() {
@@ -395,39 +354,11 @@ public class ProfileFragment extends Fragment {
         if (data.getData() != null) {
             fullSizeProfileViewer.setClickable(false);
             Uri imageToBeUpload = data.getData();
-            Log.e("Nipun", imageToBeUpload.toString());
-            final StorageReference reference = storage.getReference().child("profile pictures").child(auth.getUid());
-            reference.putFile(imageToBeUpload).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("ProfilePic", uri.toString());
-                            currentUser.setProfilePic(uri.toString());
-                            viewModel.updateUser(currentUser);
-
-                            documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    normalProfileImage.setImageURI(imageToBeUpload);
-                                    mediumExpandedImage.setImageURI(imageToBeUpload);
-                                    fullSizeImage.setImageURI(imageToBeUpload);
-                                    Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                                    fullSizeProfileViewer.setClickable(true);
-                                }
-                            });
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                }
-            });
+            viewModel.uploadProfilePicInStorage(imageToBeUpload);
+            normalProfileImage.setImageURI(imageToBeUpload);
+            mediumExpandedImage.setImageURI(imageToBeUpload);
+            fullSizeImage.setImageURI(imageToBeUpload);
+            fullSizeProfileViewer.setClickable(true);
         }
     }
 }

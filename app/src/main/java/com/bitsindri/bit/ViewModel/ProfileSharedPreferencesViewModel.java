@@ -33,8 +33,7 @@ public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
         ProfileSharedPreferencesRepository.getInstance(application).updateUser(updatedUser);
     }
 
-    public String  uploadProfilePicInStorage(Uri uri){
-        String s = ProfileSharedPreferencesRepository.getInstance(application).uploadProfilePicInStorage(uri);
-        return s;
+    public void  uploadProfilePicInStorage(Uri uri){
+        ProfileSharedPreferencesRepository.getInstance(application).uploadProfilePicInStorage(uri);
     }
 }
