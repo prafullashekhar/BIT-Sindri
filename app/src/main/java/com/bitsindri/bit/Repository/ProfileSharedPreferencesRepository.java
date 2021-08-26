@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -186,8 +188,9 @@ public class ProfileSharedPreferencesRepository {
         });
 
     }
-    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img){
+    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img , ProgressBar progressBar){
         img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        progressBar.setVisibility(View.VISIBLE);
         Toast.makeText(context, "Uploading...", Toast.LENGTH_SHORT).show();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseStorage store = FirebaseStorage.getInstance();
@@ -211,6 +214,7 @@ public class ProfileSharedPreferencesRepository {
                             @Override
                             public void onSuccess(Void unused) {
                                 img.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                                progressBar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -220,6 +224,7 @@ public class ProfileSharedPreferencesRepository {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Log.e(Constants.msg, "Cannot upload image "+e.toString());
             }
         });
