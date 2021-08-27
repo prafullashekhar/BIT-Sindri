@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.fragments.ProfileImageStateListener;
 
 public class Methods {
 
@@ -48,8 +49,8 @@ public class Methods {
     private static Animator currentAnimator = null;
     private static int shortAnimationDuration = 400;
 
-    public static void showtoToggle(View from, View to, View container) {
-
+    public static void showtoToggle(View from, View to, View container,Context context) {
+        ProfileImageStateListener listener = ((ProfileImageStateListener)context);
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
@@ -172,6 +173,7 @@ public class Methods {
                         currentAnimator = null;
                     }
                 });
+                listener.setImageState(null);
                 set.start();
                 currentAnimator = set;
             }

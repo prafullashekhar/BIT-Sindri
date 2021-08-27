@@ -10,16 +10,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.Adapter.SliderAdapter;
 import com.bitsindri.bit.ViewModel.ImgUrlViewModel;
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
+import com.bitsindri.bit.authenticationfrag.SignUpButtonClickListener;
 import com.bitsindri.bit.databinding.FragmentHomeBinding;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.models.SlidingImgUrl;
 import com.bitsindri.bit.models.User;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -37,8 +41,10 @@ public class HomeFragment extends Fragment
 
     private ImgUrlViewModel imgUrlViewModel;
     private User currentUser;
-    SliderAdapter sliderAdapter;
+    private SliderAdapter sliderAdapter;
     private ProfileSharedPreferencesViewModel viewModel;
+    private FragmentChangeListener listener;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -47,8 +53,6 @@ public class HomeFragment extends Fragment
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
-
-    CardView departments;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -62,12 +66,17 @@ public class HomeFragment extends Fragment
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
         // assign everything with user model here
         currentUser = viewModel.getUser().getValue();
-        assert currentUser != null;
+        listener = ((FragmentChangeListener) getContext());
 
+        assert currentUser != null;
         binding.userNameHomeFragment.setText(currentUser.getName());
         if(!currentUser.getProfilePic().equals("")){
             Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.homeProfileImage);
         }
+
+        binding.homeProfileImage.setOnClickListener(v -> {
+            if(listener!=null) listener.changeFragment(R.id.nav_profile);
+        });
         // sliding image list
         binding.imageSlider.setAutoCycle(true);
         binding.imageSlider.setIndicatorAnimation(IndicatorAnimationType.SLIDE);
@@ -94,5 +103,6 @@ public class HomeFragment extends Fragment
         return binding.getRoot();
 
     }
+
 
 }

@@ -68,12 +68,14 @@ public class ProfileFragment extends Fragment {
     private LinearLayout selectImageFromCamera;
     private LinearLayout showProfilePic;
     private ProgressBar progressBar;
+    private ProfileImageStateListener listener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false);
+        listener = ((ProfileImageStateListener) getContext());
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
 
@@ -144,7 +146,8 @@ public class ProfileFragment extends Fragment {
              * 2nd method take the view after the 1st view is zoomed their zoomed position will show.
              * 3rd parameter simply takes the container of the activity.
              */
-            Methods.showtoToggle(v, mediumProfileViewer, profileFragContainer);
+            Methods.showtoToggle(v, mediumProfileViewer, profileFragContainer,getContext());
+            listener.setImageState(mediumProfileViewer);
         });
 
         /* When user clicked the image view when medium profile image is opened
@@ -165,13 +168,18 @@ public class ProfileFragment extends Fragment {
              * in second parameter it takes the root view of the current view.
              */
             Methods.closeView(v, normalProfileImage, getContext());
+            listener.setImageState(null);
         });
 
         showProfileEditContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Methods.showtoToggle(v, profileEditContainer, profileFragContainer);
+                Methods.showtoToggle(v, profileEditContainer, profileFragContainer,getContext());
+                listener.setImageState(profileEditContainer);
             }
+        });
+        mediumProfileViewer.setOnClickListener(v -> {
+            listener.setImageState(null);
         });
 
         ImageView cancelProfileEditButton = profileEditContainer.findViewById(R.id.canel_profile_edit);
@@ -179,6 +187,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 profileEditContainer.performClick();
+                listener.setImageState(null);
             }
         });
         AppCompatButton saveChanges = profileEditContainer.findViewById(R.id.saveChanges);
@@ -191,6 +200,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveEditProfile();
+                listener.setImageState(null);
             }
         });
         binding.profileCodechef.setOnClickListener(new View.OnClickListener() {
@@ -359,6 +369,7 @@ public class ProfileFragment extends Fragment {
         mBottomSheetDialog.dismiss();
         mediumProfileViewer.setVisibility(View.INVISIBLE);
         fullSizeProfileViewer.setVisibility(View.VISIBLE);
+        listener.setImageState(fullSizeProfileViewer);
         Uri imageToBeUpload = data.getData();
         viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage,progressBar);
         normalProfileImage.setImageURI(imageToBeUpload);
@@ -395,6 +406,7 @@ public class ProfileFragment extends Fragment {
                 mediumProfileViewer.setVisibility(View.INVISIBLE);
                 fullSizeProfileViewer.setVisibility(View.VISIBLE);
                 fullSizeProfileViewer.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
+                listener.setImageState(fullSizeProfileViewer);
                 mBottomSheetDialog.dismiss();
             }
         });
