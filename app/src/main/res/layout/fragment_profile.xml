@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:background="@drawable/sign_in_container_bg"
-                    android:elevation="30dp"
+                    android:elevation="40dp"
                     android:fadingEdge="horizontal"
                     android:orientation="vertical"
                     android:padding="20dp"
@@ -466,7 +466,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
-                        android:elevation="3dp"
+                        android:elevation="@dimen/social_media_container_elevation"
                         android:tag="@string/codechef_link"
                         android:src="@drawable/ic_codechef" />
 
@@ -477,7 +477,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
-                        android:elevation="3dp"
+                        android:elevation="@dimen/social_media_container_elevation"
                         android:tag="@string/linkedin_link"
                         android:src="@drawable/ic_linkedin" />
 
@@ -488,7 +488,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
-                        android:elevation="3dp"
+                        android:elevation="@dimen/social_media_container_elevation"
                         android:tag="@string/facebook_link"
                         android:src="@drawable/ic_facebook" />
 
@@ -499,7 +499,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
-                        android:elevation="3dp"
+                        android:elevation="@dimen/social_media_container_elevation"
                         android:tag="@string/instagram_link"
                         android:src="@drawable/ic_instagram" />
 
@@ -510,7 +510,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/icon_margin"
                         android:background="@drawable/circle_button_bg"
-                        android:elevation="3dp"
+                        android:elevation="@dimen/social_media_container_elevation"
                         android:tag="@string/github_link"
                         android:src="@drawable/ic_github" />
 
@@ -520,7 +520,7 @@
                         android:layout_height="@dimen/icon_size"
                         android:layout_gravity="center"
                         android:background="@drawable/circle_button_bg"
-                        android:elevation="3dp"
+                        android:elevation="@dimen/social_media_container_elevation"
                         android:tag="@string/codechef_link"
                         android:src="@drawable/ic_codeforces" />
                 </LinearLayout>

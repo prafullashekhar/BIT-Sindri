@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,6 +31,7 @@ import com.bitsindri.bit.activity.HomeDepartmentActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment
@@ -36,9 +39,11 @@ public class HomeFragment extends Fragment
     private FragmentHomeBinding binding;
 
     private ImgUrlViewModel imgUrlViewModel;
-    private User currentUser;
     SliderAdapter sliderAdapter;
     private ProfileSharedPreferencesViewModel viewModel;
+
+    CardView departments;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -48,34 +53,20 @@ public class HomeFragment extends Fragment
         super.onAttach(context);
     }
 
-    CardView departments;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        // initiating view model
+        // initiating view model and sliderAdapter and set sliding image list
         imgUrlViewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ImgUrlViewModel.class);
-        viewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
-        // assign everything with user model here
-        currentUser = viewModel.getUser().getValue();
-        assert currentUser != null;
-
-        binding.userNameHomeFragment.setText(currentUser.getName());
-        if(!currentUser.getProfilePic().equals("")){
-            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.homeProfileImage);
-        }
-        // sliding image list
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ImgUrlViewModel.class);
         binding.imageSlider.setAutoCycle(true);
         binding.imageSlider.setIndicatorAnimation(IndicatorAnimationType.SLIDE);
         binding.imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-
         sliderAdapter = new SliderAdapter(getContext(), imgUrlViewModel.getAllImgUrl().getValue());
         binding.imageSlider.setSliderAdapter(sliderAdapter);
-
         imgUrlViewModel.getAllImgUrl().observe(getViewLifecycleOwner(), new Observer<List<SlidingImgUrl>>() {
             @Override
             public void onChanged(List<SlidingImgUrl> list) {
@@ -83,8 +74,33 @@ public class HomeFragment extends Fragment
             }
         });
 
+
+        // initialising view moder for user
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
+
+        User currentUser = viewModel.getUser().getValue();
+        assert currentUser != null;
+
+        binding.userNameHomeFragment.setText(currentUser.getName());
+        if(!currentUser.getProfilePic().equals("")){
+            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.homeProfileImage);
+        }
+
+        // opening profile fragment on click on profile picture in home fragment
+        binding.homeProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.bottom_fragment_container, new ProfileFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
+
+
       
-        // Inflate the layout for this fragment
+        // handling click on department cards
         binding.homeDepartments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -48,10 +48,6 @@ public class ProfileFragment extends Fragment {
     private BottomSheetDialog mBottomSheetDialog;
     private View bottom_sheet;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
     private int REQUEST_CODE = 18;
     private CircleImageView normalProfileImage;
     private int shortAnimationDuration = 400;
@@ -69,36 +65,43 @@ public class ProfileFragment extends Fragment {
     private LinearLayout showProfilePic;
     private ProgressBar progressBar;
 
+    public ProfileFragment() {
+        // Required empty public constructor
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false);
+
+        // initialising view model for getting user data
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
 
         // assign everything with user model here
         currentUser = viewModel.getUser().getValue();
         assert currentUser != null;
-        bottom_sheet = binding.bottomSheet;
-        try {
-            mBehaviour = BottomSheetBehavior.from(binding.bottomSheet);
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
         initialiseProfileViews(currentUser);
-        try {
-            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.profileImage);
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "" + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-        }
-
         viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 initialiseProfileViews(user);
             }
         });
+
+        bottom_sheet = binding.bottomSheet;
+        try {
+            mBehaviour = BottomSheetBehavior.from(binding.bottomSheet);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        try {
+            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.profileImage);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
         progressBar = binding.progressBar;
         socialMediaContainer = binding.socialMediaContainer;
         socialMediaContainer.bringToFront();
@@ -322,6 +325,7 @@ public class ProfileFragment extends Fragment {
         currentUser.setInstaUrl(instagrams);
         currentUser.setGithubUrl(githubs);
         currentUser.setCodefrocesUrl(codeforcess);
+
         viewModel.updateUser(currentUser);
         initialiseProfileViews(currentUser);
         Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
