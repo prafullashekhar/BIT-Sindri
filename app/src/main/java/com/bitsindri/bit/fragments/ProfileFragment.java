@@ -1,6 +1,5 @@
 package com.bitsindri.bit.fragments;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -41,29 +40,40 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
-    private FragmentProfileBinding binding;
-    private LinearLayout socialMediaContainer;
-    private ProfileSharedPreferencesViewModel viewModel;
-    private BottomSheetBehavior mBehaviour;
-    private BottomSheetDialog mBottomSheetDialog;
-    private View bottom_sheet;
 
     private int REQUEST_CODE = 18;
-    private CircleImageView normalProfileImage;
-    private int shortAnimationDuration = 400;
+
+    // View Groups Variables
+    private FragmentProfileBinding binding;
     private CoordinatorLayout profileFragContainer;
-    private View mediumProfileViewer;
-    private View fullSizeProfileViewer;
-    private ImageView mediumExpandedImage;
-    private ImageView fullSizeImage;
-    private TextView headerUserName;
-    private ImageView showProfileEditContainer;
-    private View profileEditContainer;
-    private User currentUser;
     private LinearLayout selectImageFromProfile;
     private LinearLayout selectImageFromCamera;
     private LinearLayout showProfilePic;
+    private View mediumProfileViewer;
+    private View fullSizeProfileViewer;
+    private View profileEditContainer;
+    private View bottom_sheet;
+
+    // View Variables
+    private CircleImageView normalProfileImage;
+    private ImageView mediumExpandedImage;
+    private ImageView fullSizeImage;
+    private ImageView showProfileEditContainer;
     private ProgressBar progressBar;
+    private TextView headerUserName;
+
+    // Bottom Sheet Variables
+    private ProfileSharedPreferencesViewModel viewModel;
+    private BottomSheetBehavior mBehaviour;
+    private BottomSheetDialog mBottomSheetDialog;
+
+    // Basic variables
+    private int shortAnimationDuration = 400;
+    private User currentUser;
+
+    // Declaring the variable handling the on back button
+    private FragmentClickListener stateListener;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -73,10 +83,14 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
+        stateListener = ((FragmentClickListener) getContext());
+
+/* -------- This section Initialising the view model  -------------- */
 
         // initialising view model for getting user data
         viewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().
+                        getApplication())).get(ProfileSharedPreferencesViewModel.class);
 
         // assign everything with user model here
         currentUser = viewModel.getUser().getValue();
@@ -89,29 +103,75 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        bottom_sheet = binding.bottomSheet;
-        try {
-            mBehaviour = BottomSheetBehavior.from(binding.bottomSheet);
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+/* ----------------- This section initialising the profile edit button -----------------*/
 
+        // Initialising the profile content edit button
+        showProfileEditContainer = binding.editProfileIcon;
+        showProfileEditContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Methods.showtoToggle(v, profileEditContainer, profileFragContainer,getContext());
+            }
+        });
+        /* After clicking the showProfileEditContainer profile edit container will appear
+        * Initialising the profile edit Container */
+        profileEditContainer = binding.profileEditContainer.getRoot();
+
+        /* Profile edit container contains a cancel button in next line of code
+         * we initialise the cancel edit button
+         */
+        ImageView cancelProfileEditButton = profileEditContainer.findViewById(R.id.canel_profile_edit);
+        cancelProfileEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // When user clicked on cancel button profile edit container will get closed.
+                profileEditContainer.performClick();
+            }
+        });
+
+        /* Initialising the save changes button */
+        AppCompatButton saveChanges = profileEditContainer.findViewById(R.id.saveChanges);
+        /* the imageview button editprofile pic will give user to set profile image or reset the profile pic */
+        initialiseEditProfile();
+        saveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveEditProfile();
+            }
+        });
+
+/* ---------------------- This section initialising the profile picture -------------- */
+
+        // Loading profile Picture
         try {
             Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.profileImage);
         } catch (Exception e) {
             Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        // Initialising progress bar
         progressBar = binding.progressBar;
-        socialMediaContainer = binding.socialMediaContainer;
-        socialMediaContainer.bringToFront();
-        showProfileEditContainer = binding.editProfileIcon;
+
+        // Bringing Social media container on front
+        binding.socialMediaContainer.bringToFront();
 
         /* normal profile image show when fragment is started and very first time appear */
         normalProfileImage = binding.profileImage;
         normalProfileImage.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pop_up));
         headerUserName = binding.profileUserName;
         profileFragContainer = binding.profileContainer;
+        /* When user click on normal profile image the medium profile image will show
+         * medium profile covers only half of the screen.
+         * again clicking in the image set the profile pic on full screen .
+         */
+        normalProfileImage.setOnClickListener(v -> {
+            /* Methods.showtoToggle() method simply zoom the view with an zooming animation
+             * this methods take 1st argument is a view which indicates the view which has to be zoomed.
+             * 2nd method take the view after the 1st view is zoomed their zoomed position will show.
+             * 3rd parameter simply takes the container of the activity.
+             */
+            Methods.showtoToggle(v, mediumProfileViewer, profileFragContainer,getContext());
+        });
 
         /* medium profile viewer show the profile pic on half of the screen */
         mediumProfileViewer = binding.profileViewerContainer.getRoot();
@@ -120,7 +180,22 @@ public class ProfileFragment extends Fragment {
             mediumExpandedImage.setImageDrawable(normalProfileImage.getDrawable());
         else
             Picasso.get().load(currentUser.getProfilePic()).into(mediumExpandedImage);
+        /* When user clicked the image view when medium profile image is opened
+         * profile image will zoom to full size and get the profile image edit
+         * button option.
+         */
+        // Bottom Sheet initialising
+        bottom_sheet = binding.bottomSheet;
+        mBehaviour = BottomSheetBehavior.from(binding.bottomSheet);
+        mediumExpandedImage.setOnClickListener(v -> {
+            /* When user click on the image which opened in half size
+             * it will prompt a bottom sheet which give 3 option 1st is show profile,
+             * 2nd is set profile from gallery and 3rd is set profile from camera
+             */
+            showBottomSheetDialog();
+        });
 
+        /* Setting the name of user when image is in zoom mode */
         TextView userNameInMediumProfileViewer = mediumProfileViewer.findViewById(R.id.expanded_user_name);
         userNameInMediumProfileViewer.setText(headerUserName.getText());
 
@@ -132,35 +207,6 @@ public class ProfileFragment extends Fragment {
         if (currentUser.getProfilePic().equals(""))
             fullSizeImage.setImageDrawable(normalProfileImage.getDrawable());
         else Picasso.get().load(currentUser.getProfilePic()).into(fullSizeImage);
-        TextView userNameInFullSizeProfileViewer = fullSizeProfileViewer.findViewById(R.id.full_size_user_name);
-        userNameInFullSizeProfileViewer.setText(headerUserName.getText());
-
-        /* Initialising the profile edit Container */
-        profileEditContainer = binding.profileEditContainer.getRoot();
-        /* When user click on normal profile image the medium profile image will show
-         * medium profile covers only half of the screen.
-         * again clicking in the image set the profile pic on full screen .
-         */
-        normalProfileImage.setOnClickListener(v -> {
-            /* Methods.showtoToggle() method simply zoom the view with an zooming animation
-             * this methods take 1st argument is a view which indicates the view which has to be zoomed.
-             * 2nd method take the view after the 1st view is zoomed their zoomed position will show.
-             * 3rd parameter simply takes the container of the activity.
-             */
-            Methods.showtoToggle(v, mediumProfileViewer, profileFragContainer);
-        });
-
-        /* When user clicked the image view when medium profile image is opened
-         * profile image will zoom to full size and get the profile image edit
-         * button option.
-         */
-        mediumExpandedImage.setOnClickListener(v -> {
-//            mediumProfileViewer.setVisibility(View.INVISIBLE);
-            showBottomSheetDialog();
-//            fullSizeProfileViewer.setVisibility(View.VISIBLE);
-//            fullSizeProfileViewer.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
-        });
-
         /* When user clicked when image is on full size the full size profile will get closed */
         fullSizeProfileViewer.setOnClickListener(v -> {
             /* Methods.closeView() methods simply hide the current view
@@ -168,34 +214,16 @@ public class ProfileFragment extends Fragment {
              * in second parameter it takes the root view of the current view.
              */
             Methods.closeView(v, normalProfileImage, getContext());
+            stateListener.setProfileFragmentState(null);
         });
-
-        showProfileEditContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Methods.showtoToggle(v, profileEditContainer, profileFragContainer);
-            }
-        });
-
-        ImageView cancelProfileEditButton = profileEditContainer.findViewById(R.id.canel_profile_edit);
-        cancelProfileEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileEditContainer.performClick();
-            }
-        });
-        AppCompatButton saveChanges = profileEditContainer.findViewById(R.id.saveChanges);
-        /* the imageview button editprofile pic will give user to set profile image or reset the profile pic */
+        TextView userNameInFullSizeProfileViewer = fullSizeProfileViewer.findViewById(R.id.full_size_user_name);
+        userNameInFullSizeProfileViewer.setText(headerUserName.getText());
         ImageView editProfilePic = fullSizeProfileViewer.findViewById(R.id.edit_profile_image);
         editProfilePic.setOnClickListener(v -> setProfilePic());
-        initialiseEditProfile();
 
-        saveChanges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveEditProfile();
-            }
-        });
+
+/* --------------- Handle  ClickListener on various social media icon --------------- */
+
         binding.profileCodechef.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,6 +264,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openUrl(View v) {
+        /* This method is used for open url by taking  image view */
         String url = v.getContentDescription().toString();
         if (url.equals(""))
             Toast.makeText(getContext(), v.getTag().toString() + " is empty", Toast.LENGTH_SHORT).show();
@@ -251,6 +280,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initialiseProfileViews(User currentUser) {
+        /* This method is used for initialising the various variable
+         * and set the initial value of profile fragment
+         */
         binding.profileUserName.setText(currentUser.getName());
         binding.profileUserBranch.setText(currentUser.getBranch());
         String batch = currentUser.getBatch();
@@ -273,6 +305,9 @@ public class ProfileFragment extends Fragment {
     EditText about, name, dob, club, codeChef, linkedIn, faceBook, instagram, github, codeForces;
 
     private void initialiseEditProfile() {
+        /* This method is used for initialising the view
+         * inside the edit button and set their initial value
+         */
         about = profileEditContainer.findViewById(R.id.edit_profile_about);
         name = profileEditContainer.findViewById(R.id.edit_profile_name);
         dob = profileEditContainer.findViewById(R.id.edit_profile_dob);
@@ -298,9 +333,11 @@ public class ProfileFragment extends Fragment {
 
 
     private void saveEditProfile() {
+        /* This method is used for saving the value after
+         * clicking the save changes button inside the profile edit section.
+         */
+
         String abouts, names, dobs, clubs, codechefs, linkedins, facebooks, instagrams, githubs, codeforcess;
-
-
         abouts = about.getText().toString();
         assert abouts != null;
         names = name.getText().toString();
@@ -332,6 +369,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setProfilePic(boolean isGallery) {
+        /* This method is used for setting the profile pic */
         if (isGallery) {
             ImagePicker.with(this)
                     .crop()
@@ -363,8 +401,9 @@ public class ProfileFragment extends Fragment {
         mBottomSheetDialog.dismiss();
         mediumProfileViewer.setVisibility(View.INVISIBLE);
         fullSizeProfileViewer.setVisibility(View.VISIBLE);
+        stateListener.setProfileFragmentState(fullSizeProfileViewer);
         Uri imageToBeUpload = data.getData();
-        viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage,progressBar);
+        viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage, progressBar);
         normalProfileImage.setImageURI(imageToBeUpload);
         mediumExpandedImage.setImageURI(imageToBeUpload);
         fullSizeImage.setImageURI(imageToBeUpload);
@@ -372,6 +411,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showBottomSheetDialog() {
+        /* This method is used for initialising the bottom sheet for selection
+         * of profile upload option.
+         */
         if (mBehaviour.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             mBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
@@ -390,7 +432,7 @@ public class ProfileFragment extends Fragment {
         selectImageFromProfile.setOnClickListener(v -> {
             setProfilePic(true);
         });
-        selectImageFromCamera.setOnClickListener(v->{
+        selectImageFromCamera.setOnClickListener(v -> {
             setProfilePic(false);
         });
         showProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -398,6 +440,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 mediumProfileViewer.setVisibility(View.INVISIBLE);
                 fullSizeProfileViewer.setVisibility(View.VISIBLE);
+                stateListener.setProfileFragmentState(fullSizeProfileViewer);
                 fullSizeProfileViewer.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
                 mBottomSheetDialog.dismiss();
             }
