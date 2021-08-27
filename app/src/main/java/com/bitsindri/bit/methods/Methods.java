@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.fragments.FragmentClickListener;
 
 public class Methods {
 
@@ -48,11 +49,11 @@ public class Methods {
     private static Animator currentAnimator = null;
     private static int shortAnimationDuration = 400;
 
-    public static void showtoToggle(View from, View to, View container) {
-
+    public static void showtoToggle(View from, View to, View container , Context context) {
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
+        FragmentClickListener stateListener = ((FragmentClickListener) context);
         // Calculate the starting and ending bounds for the zoomed-in image.
         // This step involves lots of math. Yay, math.
         final Rect startBounds = new Rect();
@@ -96,6 +97,7 @@ public class Methods {
         // thumbnail.
         from.setAlpha(0f);
         to.setVisibility(View.VISIBLE);
+        stateListener.setProfileFragmentState(to);
 
         // Set the pivot point for SCALE_X and SCALE_Y transformations
         // to the top-left corner of the zoomed-in view (the default
@@ -172,6 +174,7 @@ public class Methods {
                         currentAnimator = null;
                     }
                 });
+                stateListener.setProfileFragmentState(null);
                 set.start();
                 currentAnimator = set;
             }

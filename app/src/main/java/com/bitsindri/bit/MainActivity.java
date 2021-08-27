@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
+import android.view.View;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.ActivityMainBinding;
@@ -17,20 +17,26 @@ import com.bitsindri.bit.fragments.ClubsFragment;
 import com.bitsindri.bit.fragments.HomeFragment;
 import com.bitsindri.bit.fragments.NotificationsFragment;
 import com.bitsindri.bit.fragments.ProfileFragment;
+import com.bitsindri.bit.fragments.FragmentClickListener;
 import com.bitsindri.bit.fragments.SearchFragment;
 import com.bitsindri.bit.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements FragmentClickListener {
 
     ActivityMainBinding binding;
     private Fragment fragment;
     public static ProfileSharedPreferencesViewModel viewModel;
+    private View profileState = null;
 
     @Override
     public void onBackPressed() {
         if(binding.bottomNavigation.getSelectedItemId()==R.id.nav_home){
             finishAffinity();
+        }
+        else if(profileState != null){
+            profileState.performClick();
+            profileState = null;
         }
         else {
             binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
@@ -91,10 +97,14 @@ public class MainActivity extends AppCompatActivity  {
         getSupportFragmentManager().beginTransaction().replace(R.id.bottom_fragment_container, new HomeFragment()).commit();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        viewModel = new ViewModelProvider(this,
-//                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProfileSharedPreferencesViewModel.class);
-//    }
+    @Override
+    public void setProfileFragmentState(View view) {
+        this.profileState = view;
+    }
+
+    @Override
+    public void setFragment(int id) {
+        binding.bottomNavigation.setSelectedItemId(id);
+    }
+
 }

@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -26,12 +24,10 @@ import com.bitsindri.bit.models.SlidingImgUrl;
 import com.bitsindri.bit.models.User;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
-import com.smarteist.autoimageslider.SliderView;
 import com.bitsindri.bit.activity.HomeDepartmentActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.Objects;
 
 
 public class HomeFragment extends Fragment
@@ -41,6 +37,7 @@ public class HomeFragment extends Fragment
     private ImgUrlViewModel imgUrlViewModel;
     SliderAdapter sliderAdapter;
     private ProfileSharedPreferencesViewModel viewModel;
+
 
     CardView departments;
 
@@ -58,6 +55,7 @@ public class HomeFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        FragmentClickListener listener = ((FragmentClickListener) getContext());
 
         // initiating view model and sliderAdapter and set sliding image list
         imgUrlViewModel = new ViewModelProvider(this,
@@ -88,13 +86,9 @@ public class HomeFragment extends Fragment
         }
 
         // opening profile fragment on click on profile picture in home fragment
-        binding.homeProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.bottom_fragment_container, new ProfileFragment());
-                fragmentTransaction.commit();
-            }
+        binding.homeProfileImage.setOnClickListener(v -> {
+            if(listener!=null)
+            listener.setFragment(R.id.nav_profile);
         });
 
 
