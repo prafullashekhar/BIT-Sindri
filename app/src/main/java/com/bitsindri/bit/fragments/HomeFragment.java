@@ -92,8 +92,6 @@ public class HomeFragment extends Fragment
         });
 
 
-
-      
         // handling click on department cards
         binding.homeDepartments.setOnClickListener(new View.OnClickListener() {
             @Override

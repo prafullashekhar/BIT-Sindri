@@ -3,13 +3,18 @@ package com.bitsindri.bit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.ActivityMainBinding;
@@ -19,6 +24,7 @@ import com.bitsindri.bit.fragments.NotificationsFragment;
 import com.bitsindri.bit.fragments.ProfileFragment;
 import com.bitsindri.bit.fragments.FragmentClickListener;
 import com.bitsindri.bit.fragments.SearchFragment;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -50,7 +56,14 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // initiating view model for all the fragments associated with main activity
+        // getting intent from custom tab
+//        if(getIntent().getData() != null){
+//            Log.e(Constants.msg, "HELLO HELLO");
+//            String url = getIntent().getDataString();
+//            Toast.makeText(MainActivity.this, url, Toast.LENGTH_SHORT).show();
+//        }
+
+                // initiating view model for all the fragments associated with main activity
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProfileSharedPreferencesViewModel.class);
         viewModel.getUser().observe(this, new Observer<User>() {
@@ -95,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
         });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.bottom_fragment_container, new HomeFragment()).commit();
+
     }
 
     @Override
