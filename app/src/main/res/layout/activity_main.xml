@@ -24,6 +24,4 @@
         app:menu="@menu/bottom_menu"
         app:labelVisibilityMode="unlabeled"
         app:itemIconSize="20dp"/>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
