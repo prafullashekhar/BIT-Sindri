@@ -9,6 +9,7 @@
     tools:context=".fragments.ProfileFragment">
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -35,6 +36,7 @@
 
 
                 <TextView
+                    android:id="@+id/text_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -437,7 +439,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="90dp" />
+                        android:layout_height="40dp" />
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

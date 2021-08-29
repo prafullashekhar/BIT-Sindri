@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
             profileState = null;
         }
         else {
+            binding.bottomNavigation.setVisibility(View.VISIBLE);
             binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
         }
     }
@@ -114,11 +116,22 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
     @Override
     public void setProfileFragmentState(View view) {
         this.profileState = view;
+        if(profileState!=null){
+            binding.bottomNavigation.setVisibility(View.GONE);
+        }
+        else binding.bottomNavigation.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void setFragment(int id) {
         binding.bottomNavigation.setSelectedItemId(id);
     }
+
+    @Override
+    public void setScrollListener(int scrollY, int oldScrollY ) {
+        if(scrollY - oldScrollY > 0 )binding.bottomNavigation.setVisibility(View.GONE);
+        else binding.bottomNavigation.setVisibility(View.VISIBLE);
+    }
+
 
 }

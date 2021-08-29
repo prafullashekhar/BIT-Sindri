@@ -37,17 +37,19 @@ public class Methods {
     }
 
     public static void closeView(View view,View root, Context context){
+        FragmentClickListener stateListener = ((FragmentClickListener) context);
         view.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_out));
         view.postOnAnimation(new Runnable() {
             @Override
             public void run() {
                 root.setAlpha(1f);
                 view.setVisibility(View.GONE);
+                stateListener.setProfileFragmentState(null);
             }
         });
     }
     private static Animator currentAnimator = null;
-    private static int shortAnimationDuration = 400;
+    private static int shortAnimationDuration = 200;
 
     public static void showtoToggle(View from, View to, View container , Context context) {
         if (currentAnimator != null) {

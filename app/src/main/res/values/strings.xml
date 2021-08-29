@@ -69,6 +69,7 @@
     <string name="instagram_link">Instagram link</string>
     <string name="github_link">Github link</string>
     <string name="codeforces_link">Codeforces link</string>
+    <string name="write_your_name_here">Write your Name here</string>
 
 
 </resources>
