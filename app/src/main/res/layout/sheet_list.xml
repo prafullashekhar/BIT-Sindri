@@ -33,7 +33,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_password_show"/>
+                android:src="@drawable/ic_show_profile_select"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

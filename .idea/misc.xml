@@ -61,7 +61,9 @@
         <entry key="app/src/main/res/drawable/ic_codechef.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_codeforces.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_drawer.xml" value="0.33240740740740743" />
+        <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.353125" />
         <entry key="app/src/main/res/drawable/ic_facebook.xml" value="0.36974358974358973" />
+        <entry key="app/src/main/res/drawable/ic_gallery_profile_select.xml" value="0.353125" />
         <entry key="app/src/main/res/drawable/ic_group_36.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_awesome_user_lock.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_icon_batch.xml" value="0.37552083333333336" />
@@ -78,6 +80,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/ic_linkedin.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/ic_password_hide.xml" value="0.36974358974358973" />
+        <entry key="app/src/main/res/drawable/ic_show_profile_select.xml" value="0.353125" />
         <entry key="app/src/main/res/drawable/ic_signout.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/image_slider_bg.xml" value="0.36974358974358973" />
         <entry key="app/src/main/res/drawable/profile_image_viewer_bg.xml" value="0.353125" />

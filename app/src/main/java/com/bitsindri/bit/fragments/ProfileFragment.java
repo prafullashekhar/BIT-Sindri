@@ -1,5 +1,6 @@
 package com.bitsindri.bit.fragments;
 
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -8,11 +9,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +29,12 @@ import android.widget.TextView;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.bitsindri.BroadcastReceiver.GetUrlBroadcastReceiver;
 import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentProfileBinding;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -227,57 +232,77 @@ public class ProfileFragment extends Fragment {
         binding.profileCodechef.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl(v);
+                openCustomTab(v);
             }
         });
         binding.profileLinkedin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl(v);
+                openCustomTab(v);
             }
         });
         binding.profileFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl(v);
+                openCustomTab(v);
             }
         });
         binding.profileInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl(v);
+                openCustomTab(v);
             }
         });
         binding.profileGithub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl(v);
+                openCustomTab(v);
             }
         });
         binding.profileCodeforces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openUrl(v);
+                openCustomTab(v);
             }
         });
         return binding.getRoot();
     }
 
-    private void openUrl(View v) {
-        /* This method is used for open url by taking  image view */
+    private void openCustomTab(View v){
         String url = v.getContentDescription().toString();
-        if (url.equals(""))
-            Toast.makeText(getContext(), v.getTag().toString() + " is empty", Toast.LENGTH_SHORT).show();
-        else {
-            if (!url.startsWith("https://")) url = "https://" + url;
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            try {
-                getContext().startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getContext(), GetUrlBroadcastReceiver.class);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "url is ");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if(url.equals("")){
+            switch (v.getTag().toString()){
+                case "Codechef link":
+                    url+="https://www.codechef.com/ratings/all?order=asc&sortBy=global_rank";
+                    break;
+                case "LinkedIn link":
+                    url+="https://www.linkedin.com";
+                    break;
+                case "Facebook link":
+                    url+="https://www.social-searcher.com/facebook-search/";
+                    break;
+                case "Instagram link":
+                    url+="https://www.instagram.com/";
+                    break;
+                case "Github link":
+                    url+="https://github.com/";
+                    break;
             }
         }
+
+        if (!url.startsWith("https://")) url = "https://" + url;
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.addMenuItem("Set it as your "+v.getTag().toString(), pendingIntent);
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(getContext(), Uri.parse(url));
+
     }
+
 
     private void initialiseProfileViews(User currentUser) {
         /* This method is used for initialising the various variable
@@ -452,5 +477,7 @@ public class ProfileFragment extends Fragment {
                 mBottomSheetDialog = null;
             }
         });
+
     }
+
 }
