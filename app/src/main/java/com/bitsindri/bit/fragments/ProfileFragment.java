@@ -116,6 +116,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Methods.showtoToggle(v, profileEditContainer, profileFragContainer,getContext());
+                initialiseEditProfile();
+                binding.textProfile.setVisibility(View.INVISIBLE);
             }
         });
         /* After clicking the showProfileEditContainer profile edit container will appear
@@ -131,18 +133,24 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 // When user clicked on cancel button profile edit container will get closed.
                 profileEditContainer.performClick();
+                binding.textProfile.setVisibility(View.VISIBLE);
             }
         });
 
         /* Initialising the save changes button */
         AppCompatButton saveChanges = profileEditContainer.findViewById(R.id.saveChanges);
         /* the imageview button editprofile pic will give user to set profile image or reset the profile pic */
-        initialiseEditProfile();
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveEditProfile();
+                binding.textProfile.setVisibility(View.VISIBLE);
             }
+        });
+        ImageView saveButton = profileEditContainer.findViewById(R.id.save_profile_changes);
+        saveButton.setOnClickListener(v->{
+            saveEditProfile();
+            binding.textProfile.setVisibility(View.VISIBLE);
         });
 
 /* ---------------------- This section initialising the profile picture -------------- */
@@ -265,6 +273,17 @@ public class ProfileFragment extends Fragment {
                 openCustomTab(v);
             }
         });
+
+/*----------------- Handle On Scroll of profile -------------------------------------*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    // We take the last son in the scrollview
+                    stateListener.setScrollListener(scrollY,oldScrollY);
+                }
+            });
+        }
         return binding.getRoot();
     }
 
@@ -334,6 +353,7 @@ public class ProfileFragment extends Fragment {
          * inside the edit button and set their initial value
          */
         about = profileEditContainer.findViewById(R.id.edit_profile_about);
+        about.scrollTo(0,about.getBottom());
         name = profileEditContainer.findViewById(R.id.edit_profile_name);
         dob = profileEditContainer.findViewById(R.id.edit_profile_dob);
         club = profileEditContainer.findViewById(R.id.edit_profile_club);
