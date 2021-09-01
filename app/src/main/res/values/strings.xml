@@ -48,6 +48,7 @@
         <item>Civil</item>
         <item>Mining</item>
     </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="dash_board">Dashboard</string>
     <string name="welcome_back">Welcome Back</string>
@@ -70,6 +71,7 @@
     <string name="github_link">Github link</string>
     <string name="codeforces_link">Codeforces link</string>
     <string name="write_your_name_here">Write your Name here</string>
+
 
 
 </resources>

@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +28,11 @@ import android.widget.TextView;
 import android.net.Uri;
 import android.widget.Toast;
 
-import com.bitsindri.BroadcastReceiver.GetUrlBroadcastReceiver;
+import com.bitsindri.bit.BroadcastReceiver.GetUrlBroadcastReceiver;
 import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentProfileBinding;
-import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -311,6 +309,9 @@ public class ProfileFragment extends Fragment {
                 case "Github link":
                     url+="https://github.com/";
                     break;
+
+                default:
+                    url+="https://google.com";
             }
         }
 

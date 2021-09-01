@@ -19,7 +19,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
 
     private List<SlidingImgUrl> imagesList;
 
-    public SliderAdapter(Context context, List<SlidingImgUrl> imagesList) {
+    public SliderAdapter(Context context) {
         imagesList = new ArrayList<>();
         this.imagesList = imagesList;
     }

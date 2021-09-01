@@ -33,7 +33,7 @@
         </activity>
         <activity android:name=".MainActivity" />
 
-        <receiver android:name="com.bitsindri.BroadcastReceiver.GetUrlBroadcastReceiver"
+        <receiver android:name="com.bitsindri.bit.BroadcastReceiver.GetUrlBroadcastReceiver"
             android:enabled="true"/>
 
     </application>
