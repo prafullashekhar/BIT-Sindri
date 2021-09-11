@@ -21,6 +21,7 @@ import com.bitsindri.bit.databinding.FragmentHomeBinding;
 import com.bitsindri.bit.models.SlidingImgUrl;
 import com.bitsindri.bit.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -31,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 
 public class HomeFragment extends Fragment
@@ -70,10 +72,12 @@ public class HomeFragment extends Fragment
 
         remoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(60)
+                .setMinimumFetchIntervalInSeconds(3600)
                 .build();
         remoteConfig.setConfigSettingsAsync(configSettings);
         remoteConfig.setDefaultsAsync(R.xml.sliding_img_url_default);
+        remoteConfig.activate();
+        updateSlidingImageUrlFromRemote();
         getSlidingImageUrlFromRemote();
 
 
@@ -110,24 +114,46 @@ public class HomeFragment extends Fragment
 
     // function to get url data for sliding images
     private void getSlidingImageUrlFromRemote(){
-        List<SlidingImgUrl> mSlidingImgUrlList = new ArrayList<>();
+
+//        final Task<Void> fetch = remoteConfig.fetch(0);
+//        fetch.addOnSuccessListener((Executor) this, new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void unused) {
+//                remoteConfig.activate();
+//
+//                String url = remoteConfig.getString("Home_sliding_image_url");
+//                List<SlidingImgUrl> mSlidingImgUrlList = new ArrayList<>();
+//
+//                for(String val: url.split(" ")){
+//                    SlidingImgUrl s = new SlidingImgUrl(val);
+//                    mSlidingImgUrlList.add(s);
+//                }
+//
+//                sliderAdapter.renewItems(mSlidingImgUrlList);
+//            }
+//        });
 
         remoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
             @Override
             public void onComplete(@NonNull Task<Boolean> task) {
                 if(task.isSuccessful()){
-                    String url = remoteConfig.getString("Home_sliding_image_url");
-                    List<SlidingImgUrl> mSlidingImgUrlList = new ArrayList<>();
-
-                    for(String val: url.split(" ")){
-                        SlidingImgUrl s = new SlidingImgUrl(val);
-                        mSlidingImgUrlList.add(s);
-                    }
-
-                    sliderAdapter.renewItems(mSlidingImgUrlList);
+                    updateSlidingImageUrlFromRemote();
                 }
             }
         });
+    }
+
+    // function to set and update the url data
+    private void updateSlidingImageUrlFromRemote(){
+        String url = remoteConfig.getString("Home_sliding_image_url");
+        List<SlidingImgUrl> mSlidingImgUrlList = new ArrayList<>();
+
+        for(String val: url.split(" ")){
+            SlidingImgUrl s = new SlidingImgUrl(val);
+            mSlidingImgUrlList.add(s);
+        }
+
+        sliderAdapter.renewItems(mSlidingImgUrlList);
     }
 
 }

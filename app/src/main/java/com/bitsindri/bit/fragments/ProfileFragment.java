@@ -32,19 +32,21 @@ import com.bitsindri.bit.BroadcastReceiver.GetUrlBroadcastReceiver;
 import com.bitsindri.bit.R;
 
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
+import com.bitsindri.bit.activity.AuthenticationActivity;
 import com.bitsindri.bit.databinding.FragmentProfileBinding;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
-    private int REQUEST_CODE = 18;
+    private final int REQUEST_CODE = 18;
 
     // View Groups Variables
     private FragmentProfileBinding binding;
@@ -71,7 +73,7 @@ public class ProfileFragment extends Fragment {
     private BottomSheetDialog mBottomSheetDialog;
 
     // Basic variables
-    private int shortAnimationDuration = 400;
+    private final int shortAnimationDuration = 400;
     private User currentUser;
 
     // Declaring the variable handling the on back button
@@ -282,6 +284,20 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+
+
+/*-------------------------- Settings -------------------------------------------------------------------------*/
+        binding.profileLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(), AuthenticationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+            }
+        });
+
         return binding.getRoot();
     }
 
