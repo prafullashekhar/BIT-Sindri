@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +35,17 @@ import com.bitsindri.bit.R;
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.activity.AuthenticationActivity;
 import com.bitsindri.bit.databinding.FragmentProfileBinding;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
+
+import java.lang.invoke.ConstantCallSite;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -159,7 +164,7 @@ public class ProfileFragment extends Fragment {
         try {
             Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.profileImage);
         } catch (Exception e) {
-            Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(Constants.msg, e.getMessage());
         }
 
         // Initialising progress bar
@@ -290,6 +295,7 @@ public class ProfileFragment extends Fragment {
         binding.profileLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TastyToast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT, TastyToast.DEFAULT);
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getContext(), AuthenticationActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -464,6 +470,7 @@ public class ProfileFragment extends Fragment {
         mediumProfileViewer.setVisibility(View.INVISIBLE);
         fullSizeProfileViewer.setVisibility(View.VISIBLE);
         stateListener.setProfileFragmentState(fullSizeProfileViewer);
+        assert data != null;
         Uri imageToBeUpload = data.getData();
         viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage, progressBar);
         normalProfileImage.setImageURI(imageToBeUpload);

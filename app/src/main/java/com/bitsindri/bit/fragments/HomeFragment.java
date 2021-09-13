@@ -43,8 +43,6 @@ public class HomeFragment extends Fragment
     SliderAdapter sliderAdapter;
     private ProfileSharedPreferencesViewModel viewModel;
 
-
-
     CardView departments;
 
     public HomeFragment() {
@@ -77,9 +75,7 @@ public class HomeFragment extends Fragment
         remoteConfig.setConfigSettingsAsync(configSettings);
         remoteConfig.setDefaultsAsync(R.xml.sliding_img_url_default);
         remoteConfig.activate();
-        updateSlidingImageUrlFromRemote();
-        getSlidingImageUrlFromRemote();
-
+        updateSlidingImageUrlFromFetchedData();
 
 //---------------------- initialising view moder for user ------------------------------------------------------------------------------------
         viewModel = new ViewModelProvider(this,
@@ -107,44 +103,30 @@ public class HomeFragment extends Fragment
                 getContext().startActivity(new Intent(getContext(), HomeDepartmentActivity.class));
             }
         });
+
+
+        // at last checks for updates of sliding pic
+        getSlidingImageUrlFromRemote();
         return binding.getRoot();
 
     }
 
 
-    // function to get url data for sliding images
+    // function to get and set url data for config to sliding images
     private void getSlidingImageUrlFromRemote(){
-
-//        final Task<Void> fetch = remoteConfig.fetch(0);
-//        fetch.addOnSuccessListener((Executor) this, new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void unused) {
-//                remoteConfig.activate();
-//
-//                String url = remoteConfig.getString("Home_sliding_image_url");
-//                List<SlidingImgUrl> mSlidingImgUrlList = new ArrayList<>();
-//
-//                for(String val: url.split(" ")){
-//                    SlidingImgUrl s = new SlidingImgUrl(val);
-//                    mSlidingImgUrlList.add(s);
-//                }
-//
-//                sliderAdapter.renewItems(mSlidingImgUrlList);
-//            }
-//        });
 
         remoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
             @Override
             public void onComplete(@NonNull Task<Boolean> task) {
                 if(task.isSuccessful()){
-                    updateSlidingImageUrlFromRemote();
+                    updateSlidingImageUrlFromFetchedData();
                 }
             }
         });
     }
 
-    // function to set and update the url data
-    private void updateSlidingImageUrlFromRemote(){
+    // function to set the url data from config
+    private void updateSlidingImageUrlFromFetchedData(){
         String url = remoteConfig.getString("Home_sliding_image_url");
         List<SlidingImgUrl> mSlidingImgUrlList = new ArrayList<>();
 

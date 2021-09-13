@@ -79,6 +79,8 @@ dependencies {
     // custom chrome tabs
     implementation "androidx.browser:browser:1.3.0"
 
+    // toast
+    implementation 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

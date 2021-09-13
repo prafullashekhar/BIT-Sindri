@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -178,7 +179,7 @@ public class ProfileSharedPreferencesRepository {
         reference.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -191,7 +192,6 @@ public class ProfileSharedPreferencesRepository {
     public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img , ProgressBar progressBar){
         img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         progressBar.setVisibility(View.VISIBLE);
-        Toast.makeText(context, "Uploading...", Toast.LENGTH_SHORT).show();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseStorage store = FirebaseStorage.getInstance();
         StorageReference reference = store.getReference().child("profile pictures").child(auth.getUid());
@@ -215,7 +215,7 @@ public class ProfileSharedPreferencesRepository {
                             public void onSuccess(Void unused) {
                                 img.setScaleType(ImageView.ScaleType.FIT_CENTER);
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
+                                TastyToast.makeText(context, "Profile Pic updated", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
                             }
                         });
                     }
