@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="app_theme">#FF4ca1af</color>
+    <color name="app_theme_light">#4D4ca1af</color>
+    <color name="app_theme_dark">#018786</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -14,9 +18,6 @@
     <color name="background_color">#FFFFFFFF</color>
     <color name="light_text_color">#727171</color>
 
-    <color name="app_theme">#FF4ca1af</color>
-    <color name="app_theme_light">#4D4ca1af</color>
-    <color name="app_theme_dark">#018786</color>
     <color name="edit_text_outline">#F6F8F8</color>
     <color name="edit_text_bg">#E6FBFB</color>
     <color name="text_hint">#878585</color>
@@ -26,4 +27,7 @@
     <color name="ruler_color">#80DFDFDF</color>
 
     <color name="hint_black_bg">#F1E4E4</color>
+
+
+    <color name="overlay_dark_30">#4D000000</color>
 </resources>
