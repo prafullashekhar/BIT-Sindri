@@ -14,6 +14,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.bitsindri.bit.Repository.ProfileSharedPreferencesRepository;
 import com.bitsindri.bit.models.User;
 
+import java.util.ArrayList;
+
 public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
 
     private final Application application;
@@ -38,4 +40,14 @@ public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
     public void  uploadProfilePicInStorage(Uri uri, ImageView img, ProgressBar progressBar){
         ProfileSharedPreferencesRepository.getInstance(application).uploadProfilePicInStorage(uri,img,progressBar);
     }
+
+    public ArrayList<User> getAllUsers(ProgressBar progressBar){
+        return ProfileSharedPreferencesRepository.getInstance(application).getAllUsers(progressBar);
+    }
+
+    public void clearLoginInfo(){
+        ProfileSharedPreferencesRepository.getInstance(application).clearLoginInfo();
+    }
+
+
 }

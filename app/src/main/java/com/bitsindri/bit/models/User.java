@@ -5,30 +5,31 @@ import android.net.Uri;
 
 public class User {
 
-    String name;
-    String email;
-    String batch;
-    String branch;
-    String rollNo;
-    String regNo;
-    String profilePic;
-    String dob;
-    String club;
+    String Name;
+    String Email;
+    String Batch;
+    String Branch;
+    String Roll;
+    String RegNo;
+    String ProfilePic;
+    String DOB;
+    String Club;
+    String Uid;
 
-    String codechefUrl, linkedInUrl, facebookUrl, instaUrl, githubUrl, codefrocesUrl;
-    String about;
+    String Codechef, LinkedIn, Facebook, Instagram, Github, Codefroces;
+    String About;
 
     // empty constructor
     public User(){
     }
 
     public User(String name, String email, String batch, String branch, String rollNo, String regNo){
-        this.name=name;
-        this.email=email;
-        this.batch=batch;
-        this.branch=branch;
-        this.rollNo=rollNo;
-        this.regNo=regNo;
+        this.Name=name;
+        this.Email=email;
+        this.Batch=batch;
+        this.Branch=branch;
+        this.Roll=rollNo;
+        this.RegNo=regNo;
 
     }
 
@@ -37,151 +38,159 @@ public class User {
                 String codechefUrl, String linkedInUrl, String facebookUrl, String instaUrl, String githubUrl, String codefrocesUrl,
                 String profilePic, String dob, String club){
 
-        this.name=name;
-        this.email=email;
-        this.batch=batch;
-        this.branch=branch;
-        this.rollNo=rollNo;
-        this.regNo=regNo;
-        this.about=about;
-        this.codechefUrl=codechefUrl;
-        this.linkedInUrl=linkedInUrl;
-        this.facebookUrl=facebookUrl;
-        this.instaUrl=instaUrl;
-        this.githubUrl=githubUrl;
-        this.codefrocesUrl=codefrocesUrl;
-        this.profilePic=profilePic;
-        this.dob=dob;
-        this.club=club;
+        this.Name=name;
+        this.Email=email;
+        this.Batch=batch;
+        this.Branch=branch;
+        this.Roll=rollNo;
+        this.RegNo=regNo;
+        this.About=about;
+        this.Codechef=codechefUrl;
+        this.LinkedIn=linkedInUrl;
+        this.Facebook=facebookUrl;
+        this.Instagram=instaUrl;
+        this.Github=githubUrl;
+        this.Codefroces=codefrocesUrl;
+        this.ProfilePic=profilePic;
+        this.DOB=dob;
+        this.Club=club;
     }
 
 
     // getter and setter of different variables
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getRollNo() {
-        return rollNo;
+        return Roll;
+    }
+
+    public String getUid() {
+        return Uid;
+    }
+
+    public void setUid(String uid) {
+        Uid = uid;
     }
 
     public void setRollNo(String rollNo) {
-        this.rollNo = rollNo;
+        this.Roll = rollNo;
     }
 
     public String getProfilePic() {
-        return profilePic;
+        return ProfilePic;
     }
 
     public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+        this.ProfilePic = profilePic;
     }
 
     public String getDob() {
-        return dob;
+        return DOB;
     }
 
     public void setDob(String dob) {
-        this.dob = dob;
+        this.DOB = dob;
     }
 
     public String getClub() {
-        return club;
+        return Club;
     }
 
     public void setClub(String club) {
-        this.club = club;
+        this.Club = club;
     }
 
     public String getCodechefUrl() {
-        return codechefUrl;
+        return Codechef;
     }
 
     public void setCodechefUrl(String codechefUrl) {
-        this.codechefUrl = codechefUrl;
+        this.Codechef = codechefUrl;
     }
 
     public String getLinkedInUrl() {
-        return linkedInUrl;
+        return LinkedIn;
     }
 
     public void setLinkedInUrl(String linkedInUrl) {
-        this.linkedInUrl = linkedInUrl;
+        this.LinkedIn = linkedInUrl;
     }
 
     public String getFacebookUrl() {
-        return facebookUrl;
+        return Facebook;
     }
 
     public void setFacebookUrl(String facebookUrl) {
-        this.facebookUrl = facebookUrl;
+        this.Facebook = facebookUrl;
     }
 
     public String getInstaUrl() {
-        return instaUrl;
+        return Instagram;
     }
 
     public void setInstaUrl(String instaUrl) {
-        this.instaUrl = instaUrl;
+        this.Instagram = instaUrl;
     }
 
     public String getGithubUrl() {
-        return githubUrl;
+        return Github;
     }
 
     public void setGithubUrl(String githubUrl) {
-        this.githubUrl = githubUrl;
+        this.Github = githubUrl;
     }
 
     public String getCodefrocesUrl() {
-        return codefrocesUrl;
+        return Codefroces;
     }
 
     public void setCodefrocesUrl(String codefrocesUrl) {
-        this.codefrocesUrl = codefrocesUrl;
+        this.Codefroces = codefrocesUrl;
     }
 
     public String getAbout() {
-        return about;
+        return About;
     }
 
     public void setAbout(String about) {
-        this.about = about;
+        this.About = about;
     }
 
     public String getRegNo() {
-        return regNo;
+        return RegNo;
     }
 
     public void setRegNo(String regNo) {
-        this.regNo = regNo;
+        this.RegNo = regNo;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.Email = email;
     }
 
     public String getBatch() {
-        return batch;
+        return Batch;
     }
 
     public void setBatch(String batch) {
-        this.batch = batch;
+        this.Batch = batch;
     }
 
     public String getBranch() {
-        return branch;
+        return Branch;
     }
 
     public void setBranch(String branch) {
-        this.branch = branch;
+        this.Branch = branch;
     }
 }

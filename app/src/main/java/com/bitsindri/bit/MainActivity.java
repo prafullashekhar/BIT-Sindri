@@ -68,12 +68,7 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
                 // initiating view model for all the fragments associated with main activity
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProfileSharedPreferencesViewModel.class);
-        viewModel.getUser().observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-
-            }
-        });
+        User user  = viewModel.getUser().getValue();
 
         binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -109,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.bottom_fragment_container, new HomeFragment()).commit();
+        binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
 
     }
 

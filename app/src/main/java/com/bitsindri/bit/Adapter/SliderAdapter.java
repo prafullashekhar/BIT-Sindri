@@ -2,6 +2,7 @@ package com.bitsindri.bit.Adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,12 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder viewHolder, int position) {
-        Picasso.get().load(imagesList.get(position).getImgUrl()).into(viewHolder.imageView);
+        try {
+            Picasso.get().load(imagesList.get(position).getImgUrl()).into(viewHolder.imageView);
+        }
+        catch (Exception e){
+            Log.e("TAg",e.getMessage().toString());
+        }
     }
 
     @Override

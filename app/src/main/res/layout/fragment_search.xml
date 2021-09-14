@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/userList"
         android:layout_height="match_parent"
-        android:text="SEARCH Fragment" />
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:scrollingCache="true"/>
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

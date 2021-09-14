@@ -81,6 +81,7 @@ dependencies {
 
     // toast
     implementation 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
+    implementation 'com.balysv:material-ripple:1.0.2'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

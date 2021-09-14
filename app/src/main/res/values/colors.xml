@@ -28,6 +28,10 @@
 
     <color name="hint_black_bg">#F1E4E4</color>
 
+    <color name="grey_10">#e6e6e6</color>
+    <color name="grey_40">#999999</color>
+    <color name="grey_90">#263238</color>
+
 
     <color name="overlay_dark_30">#4D000000</color>
 </resources>

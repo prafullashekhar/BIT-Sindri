@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment {
 
         // instantiating firebase
         mAuth = FirebaseAuth.getInstance();
-        binding.password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        binding.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         // On signIn click
         binding.signIn.setOnClickListener(new View.OnClickListener() {
