@@ -23,14 +23,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sdsmdg.tastytoast.TastyToast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,20 +46,21 @@ public class ProfileSharedPreferencesRepository {
     private static volatile ProfileSharedPreferencesRepository INSTANCE;
     Context context;
 
-    public static ProfileSharedPreferencesRepository getInstance(Application application){
-        if(INSTANCE == null){
+    public static ProfileSharedPreferencesRepository getInstance(Application application) {
+        if (INSTANCE == null) {
             INSTANCE = new ProfileSharedPreferencesRepository(application);
         }
         return INSTANCE;
     }
 
-    public ProfileSharedPreferencesRepository(Application application){
+    public ProfileSharedPreferencesRepository(Application application) {
         this.context = application;
         sharedPreference = application.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
     }
 
-    public MutableLiveData<User> getUser(){
-        if(sharedPreference.getString(Constants.NAME, "").equals(""))
+
+    public MutableLiveData<User> getUser() {
+        if (sharedPreference.getString(Constants.NAME, "").equals(""))
             loadData();
 
         User user = new User(
@@ -83,7 +88,7 @@ public class ProfileSharedPreferencesRepository {
     }
 
     // updates the user date in shared preferences and updates it also in online database
-    public void updateUser(User updatedUser){
+    public void updateUser(User updatedUser) {
         SharedPreferences.Editor editor = sharedPreference.edit();
         editor.putString(Constants.NAME, updatedUser.getName());
         editor.putString(Constants.BATCH, updatedUser.getBatch());
@@ -119,7 +124,7 @@ public class ProfileSharedPreferencesRepository {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()){
+                        if (documentSnapshot.exists()) {
                             SharedPreferences.Editor editor = sharedPreference.edit();
                             editor.putString(Constants.NAME, documentSnapshot.getString(Constants.NAME));
                             editor.putString(Constants.BATCH, documentSnapshot.getString(Constants.BATCH));
@@ -144,7 +149,7 @@ public class ProfileSharedPreferencesRepository {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(Constants.msg, "Unable to get user data "+e.toString());
+                Log.e(Constants.msg, "Unable to get user data " + e.toString());
             }
         });
 
@@ -175,6 +180,7 @@ public class ProfileSharedPreferencesRepository {
         map.put(Constants.FACEBOOK, updatedUser.getFacebookUrl());
         map.put(Constants.INSTAGRAM, updatedUser.getInstaUrl());
         map.put(Constants.ABOUT, updatedUser.getAbout());
+        map.put(Constants.Uid, auth.getCurrentUser().getUid());
 
         reference.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -189,7 +195,8 @@ public class ProfileSharedPreferencesRepository {
         });
 
     }
-    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img , ProgressBar progressBar){
+
+    public void uploadProfilePicInStorage(Uri imageToBeUpload, ImageView img, ProgressBar progressBar) {
         img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         progressBar.setVisibility(View.VISIBLE);
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -206,7 +213,7 @@ public class ProfileSharedPreferencesRepository {
                         FirebaseFirestore mStore = FirebaseFirestore.getInstance();
                         DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
                         Map<String, Object> user = new HashMap<>();
-                        user.put("ProfilePic",profileDownloadUrl);
+                        user.put("ProfilePic", profileDownloadUrl);
                         SharedPreferences.Editor editor = sharedPreference.edit();
                         editor.putString(Constants.PROFILE_PIC, profileDownloadUrl);
                         editor.commit();
@@ -225,10 +232,52 @@ public class ProfileSharedPreferencesRepository {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Log.e(Constants.msg, "Cannot upload image "+e.toString());
+                Log.e(Constants.msg, "Cannot upload image " + e.toString());
             }
         });
     }
 
+    public void clearLoginInfo() {
+        SharedPreferences.Editor editor = sharedPreference.edit();
+        editor.clear();
+        editor.commit();
+    }
 
+    ArrayList<User> users = new ArrayList<>();
+
+    public ArrayList<User> getAllUsers(ProgressBar progressBar) {
+
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        assert currentUser != null;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference reference = db.collection("Users");
+        reference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                users.clear();
+                progressBar.setVisibility(View.INVISIBLE);
+                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                    try {
+                        if (!document.getId().equals(auth.getUid())) {
+                            User user = document.toObject(User.class);
+                            users.add(user);
+                        }
+                    }
+                    catch (Exception e){
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.INVISIBLE);
+                TastyToast.makeText(context, "Something Went Wrong", Toast.LENGTH_LONG, TastyToast.ERROR);
+            }
+        });
+        return users;
+    }
 }

@@ -116,8 +116,6 @@
         app:fabSize="normal"
         app:layout_anchor="@id/app_bar_layout_notifications"
         app:layout_anchorGravity="bottom|right|end"
-        app:layout_constraintBottom_toBottomOf="@+id/app_bar_layout_notifications"
-        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_bookmark" />
 
 

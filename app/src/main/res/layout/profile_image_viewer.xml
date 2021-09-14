@@ -18,6 +18,7 @@
             android:id="@+id/expanded_profile_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:src="@drawable/ic_icon_user"
             android:scaleType="centerCrop"/>
         <TextView
             android:id="@+id/expanded_user_name"
