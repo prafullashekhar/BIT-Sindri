@@ -106,8 +106,27 @@ public class ProfileSharedPreferencesRepository {
         editor.putString(Constants.ABOUT, updatedUser.getAbout());
         editor.apply();
 
-//        uploadData(updatedUser);
         new uploadUserAsyncTask().execute(updatedUser);
+    }
+
+    public void clearLoginInfo() {
+        SharedPreferences.Editor editor = sharedPreference.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    static ImageView image;
+    @SuppressLint("StaticFieldLeak")
+    static ProgressBar progress;
+    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img , ProgressBar progressBar){
+        image=img;
+        progress=progressBar;
+        img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        new uploadProfilePicInFirebaseAndPreferences().execute(imageToBeUpload);
+
     }
 
     // functions to load and upload data from fire store database
@@ -193,52 +212,54 @@ public class ProfileSharedPreferencesRepository {
 //        });
 //
 //    }
-    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img , ProgressBar progressBar){
-        img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        progressBar.setVisibility(View.VISIBLE);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseStorage store = FirebaseStorage.getInstance();
-        StorageReference reference = store.getReference().child("profile pictures").child(auth.getUid());
 
-        reference.putFile(imageToBeUpload).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        profileDownloadUrl = uri.toString();
-                        FirebaseFirestore mStore = FirebaseFirestore.getInstance();
-                        DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("ProfilePic",profileDownloadUrl);
-                        SharedPreferences.Editor editor = sharedPreference.edit();
-                        editor.putString(Constants.PROFILE_PIC, profileDownloadUrl);
-                        editor.commit();
-                        documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                                progressBar.setVisibility(View.INVISIBLE);
-                                TastyToast.makeText(context, "Profile Pic updated", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
-                            }
-                        });
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.INVISIBLE);
-                Log.e(Constants.msg, "Cannot upload image "+e.toString());
-            }
-        });
-    }
+
+//    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img , ProgressBar progressBar){
+//        img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//        progressBar.setVisibility(View.VISIBLE);
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//        FirebaseStorage store = FirebaseStorage.getInstance();
+//        StorageReference reference = store.getReference().child("profile pictures").child(auth.getUid());
+//
+//        reference.putFile(imageToBeUpload).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                    @Override
+//                    public void onSuccess(Uri uri) {
+//                        profileDownloadUrl = uri.toString();
+//                        FirebaseFirestore mStore = FirebaseFirestore.getInstance();
+//                        DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
+//                        Map<String, Object> user = new HashMap<>();
+//                        user.put("ProfilePic",profileDownloadUrl);
+//                        SharedPreferences.Editor editor = sharedPreference.edit();
+//                        editor.putString(Constants.PROFILE_PIC, profileDownloadUrl);
+//                        editor.commit();
+//                        documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void unused) {
+//                                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//                                progressBar.setVisibility(View.INVISIBLE);
+//                                TastyToast.makeText(context, "Profile Pic updated", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                Log.e(Constants.msg, "Cannot upload image "+e.toString());
+//            }
+//        });
+//    }
 
     /* ------------------------------------- async task to ger user data ---------------------------------------------------*/
     private static class getUserAsyncTask extends AsyncTask<Void, Void, Void>
     {
-        DocumentReference reference;
-        SharedPreferences sharedPreferences;
+        private DocumentReference reference;
+        private SharedPreferences sharedPreferences;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -293,7 +314,7 @@ public class ProfileSharedPreferencesRepository {
     /* --------------------------------- async task to update user data in fire store ---------------------------------------------*/
     private static class uploadUserAsyncTask extends AsyncTask<User, Void, Void>
     {
-        DocumentReference reference;
+        private DocumentReference reference;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -340,6 +361,72 @@ public class ProfileSharedPreferencesRepository {
 
             return null;
         }
+    }
+
+    private static class uploadProfilePicInFirebaseAndPreferences extends AsyncTask<Uri, Void, Boolean>
+    {
+        private FirebaseAuth auth;
+        private StorageReference reference;
+        private String profileDownloadUrl;
+        private SharedPreferences sharedPreferences;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            auth = FirebaseAuth.getInstance();
+            FirebaseStorage store = FirebaseStorage.getInstance();
+            reference = store.getReference().child("profile pictures").child(auth.getUid());
+            sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
+        }
+
+        @Override
+        protected Boolean doInBackground(Uri... uris) {
+            Uri imageToBeUpload = uris[0];
+            boolean[] success = {false};
+            reference.putFile(imageToBeUpload).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            profileDownloadUrl = uri.toString();
+                            FirebaseFirestore mStore = FirebaseFirestore.getInstance();
+                            DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("ProfilePic",profileDownloadUrl);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Constants.PROFILE_PIC, profileDownloadUrl);
+                            editor.commit();
+                            documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    success[0] =true;
+                                }
+                            });
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    success[0]=false;
+                }
+            });
+            return success[0];
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            progress.setVisibility(View.INVISIBLE);
+//            if(aBoolean){
+                image.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                TastyToast.makeText(context, "Profile Pic updated", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
+//            }else{
+//                TastyToast.makeText(context, "Please try again", Toast.LENGTH_SHORT, TastyToast.ERROR);
+//            }
+        }
+
     }
 
 }

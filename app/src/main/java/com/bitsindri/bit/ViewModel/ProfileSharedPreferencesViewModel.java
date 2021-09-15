@@ -35,7 +35,13 @@ public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
         ProfileSharedPreferencesRepository.getInstance(application).updateUser(updatedUser);
     }
 
+    // call to upload and update profile pic
     public void  uploadProfilePicInStorage(Uri uri, ImageView img, ProgressBar progressBar){
         ProfileSharedPreferencesRepository.getInstance(application).uploadProfilePicInStorage(uri,img,progressBar);
+    }
+
+    // call to clear loggedIn user data
+    public void clearLoginInfo(){
+        ProfileSharedPreferencesRepository.getInstance(application).clearLoginInfo();
     }
 }

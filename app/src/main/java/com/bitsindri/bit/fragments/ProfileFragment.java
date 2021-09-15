@@ -295,6 +295,7 @@ public class ProfileFragment extends Fragment {
         binding.profileLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                viewModel.clearLoginInfo();
                 TastyToast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT, TastyToast.DEFAULT);
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getContext(), AuthenticationActivity.class);

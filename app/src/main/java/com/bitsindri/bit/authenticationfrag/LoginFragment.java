@@ -21,9 +21,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bitsindri.bit.MainActivity;
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.Repository.ProfileSharedPreferencesRepository;
+import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.activity.AuthenticationActivity;
 import com.bitsindri.bit.databinding.FragmentLoginBinding;
 import com.bitsindri.bit.methods.Constants;
@@ -152,6 +156,7 @@ public class LoginFragment extends Fragment {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         if (mAuth.getCurrentUser().isEmailVerified()) {
+                            ProfileSharedPreferencesRepository.getInstance(getActivity().getApplication()).getUser();
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
