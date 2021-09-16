@@ -11,8 +11,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bitsindri.bit.Repository.ClubsDataRepository;
 import com.bitsindri.bit.Repository.ProfileSharedPreferencesRepository;
+import com.bitsindri.bit.models.Club;
 import com.bitsindri.bit.models.User;
+
+import java.util.List;
 
 public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
 
@@ -44,4 +48,10 @@ public class ProfileSharedPreferencesViewModel extends AndroidViewModel {
     public void clearLoginInfo(){
         ProfileSharedPreferencesRepository.getInstance(application).clearLoginInfo();
     }
+
+    // call to get list of all clubs
+    public LiveData<List<Club>> getClubs(){
+        return ClubsDataRepository.getInstance(application).getClubs();
+    }
+
 }

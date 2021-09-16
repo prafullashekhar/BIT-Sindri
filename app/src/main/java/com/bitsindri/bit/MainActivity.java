@@ -1,6 +1,7 @@
 package com.bitsindri.bit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -26,8 +27,11 @@ import com.bitsindri.bit.fragments.ProfileFragment;
 import com.bitsindri.bit.fragments.FragmentClickListener;
 import com.bitsindri.bit.fragments.SearchFragment;
 import com.bitsindri.bit.methods.Constants;
+import com.bitsindri.bit.models.Club;
 import com.bitsindri.bit.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FragmentClickListener {
 
@@ -65,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
 //            Toast.makeText(MainActivity.this, url, Toast.LENGTH_SHORT).show();
 //        }
 
-                // initiating view model for all the fragments associated with main activity
+        // initiating view model for all the fragments associated with main activity -----------------------------------------------
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProfileSharedPreferencesViewModel.class);
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         viewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -132,6 +138,5 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
         if(scrollY - oldScrollY > 0 )binding.bottomNavigation.setVisibility(View.GONE);
         else binding.bottomNavigation.setVisibility(View.VISIBLE);
     }
-
 
 }

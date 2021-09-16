@@ -7,8 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import com.bitsindri.bit.R;
 import com.bitsindri.bit.Adapter.SliderAdapter;
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentHomeBinding;
+import com.bitsindri.bit.methods.Constants;
+import com.bitsindri.bit.models.Club;
 import com.bitsindri.bit.models.SlidingImgUrl;
 import com.bitsindri.bit.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +36,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 
@@ -95,20 +100,30 @@ public class HomeFragment extends Fragment
             listener.setFragment(R.id.nav_profile);
         });
 
-
         // handling click on department cards
         binding.homeDepartments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getContext().startActivity(new Intent(getContext(), HomeDepartmentActivity.class));
+                requireContext().startActivity(new Intent(getContext(), HomeDepartmentActivity.class));
             }
         });
 
 
         // at last checks for updates of sliding pic
         getSlidingImageUrlFromRemote();
-        return binding.getRoot();
 
+        List<Club> allclub= new ArrayList<>();
+        allclub = viewModel.getClubs().getValue();
+        hello(allclub);
+        viewModel.getClubs().observe(getViewLifecycleOwner(), new Observer<List<Club>>() {
+            @Override
+            public void onChanged(List<Club> clubs) {
+                hello(clubs);
+            }
+        });
+
+
+        return binding.getRoot();
     }
 
 
@@ -136,6 +151,22 @@ public class HomeFragment extends Fragment
         }
 
         sliderAdapter.renewItems(mSlidingImgUrlList);
+    }
+
+
+    // for checking
+    // TODO to be removed
+    private void hello(List<Club> x){
+        int n=0;
+        try{
+            n=x.size();
+        }catch (Exception e){
+            Log.e(Constants.msg, "size is zero "+e.getMessage());
+        }
+
+        for(int i=0; i<n; i++){
+            Log.d(Constants.msg, x.get(i).getClubName());
+        }
     }
 
 }
