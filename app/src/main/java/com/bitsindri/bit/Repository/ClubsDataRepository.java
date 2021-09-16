@@ -41,11 +41,6 @@ public class ClubsDataRepository {
             allClubsMutable = new MutableLiveData<>();
         }
         fetchClubsFromRemote();
-        Gson gson = new Gson();
-        List<Club> allClubList = new ArrayList<>();
-        allClubList = gson.fromJson(JsonClubsData,new TypeToken<ArrayList<Club>>(){}.getType());
-
-        allClubsMutable.setValue(allClubList);
         return allClubsMutable;
     }
 
@@ -58,11 +53,16 @@ public class ClubsDataRepository {
                 .build();
         remoteConfig.setConfigSettingsAsync(configSettings);
 //        remoteConfig.setDefaultsAsync();
+        remoteConfig.activate();
         remoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
             @Override
             public void onComplete(@NonNull Task<Boolean> task) {
                 if(task.isSuccessful()){
                     JsonClubsData = remoteConfig.getString("Clubs");
+                    Gson gson = new Gson();
+                    List<Club> allClubList = new ArrayList<>();
+                    allClubList = gson.fromJson(JsonClubsData,new TypeToken<ArrayList<Club>>(){}.getType());
+                    allClubsMutable.setValue(allClubList);
                 }
             }
         });

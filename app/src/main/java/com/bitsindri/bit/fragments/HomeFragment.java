@@ -85,14 +85,17 @@ public class HomeFragment extends Fragment
 //---------------------- initialising view moder for user ------------------------------------------------------------------------------------
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
-
         User currentUser = viewModel.getUser().getValue();
         assert currentUser != null;
+        assignUserData(currentUser);
 
-        binding.userNameHomeFragment.setText(currentUser.getName());
-        if(!currentUser.getProfilePic().equals("")){
-            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.homeProfileImage);
-        }
+        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                assignUserData(user);
+            }
+        });
+
 
         // opening profile fragment on click on profile picture in home fragment
         binding.homeProfileImage.setOnClickListener(v -> {
@@ -100,7 +103,7 @@ public class HomeFragment extends Fragment
             listener.setFragment(R.id.nav_profile);
         });
 
-        // handling click on department cards
+        //------------------ handling click on cards in home fragment --------------------------------------------
         binding.homeDepartments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,21 +114,18 @@ public class HomeFragment extends Fragment
 
         // at last checks for updates of sliding pic
         getSlidingImageUrlFromRemote();
-
-        List<Club> allclub= new ArrayList<>();
-        allclub = viewModel.getClubs().getValue();
-        hello(allclub);
-        viewModel.getClubs().observe(getViewLifecycleOwner(), new Observer<List<Club>>() {
-            @Override
-            public void onChanged(List<Club> clubs) {
-                hello(clubs);
-            }
-        });
-
-
         return binding.getRoot();
     }
 
+    // function to assign user data
+    private void assignUserData(User currentUser){
+        binding.userNameHomeFragment.setText(currentUser.getName());
+        try{
+            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.homeProfileImage);
+        }catch (Exception e){
+            Log.e(Constants.msg, "cannot load profile image in home "+e.getMessage());
+        }
+    }
 
     // function to get and set url data for config to sliding images
     private void getSlidingImageUrlFromRemote(){
@@ -151,22 +151,6 @@ public class HomeFragment extends Fragment
         }
 
         sliderAdapter.renewItems(mSlidingImgUrlList);
-    }
-
-
-    // for checking
-    // TODO to be removed
-    private void hello(List<Club> x){
-        int n=0;
-        try{
-            n=x.size();
-        }catch (Exception e){
-            Log.e(Constants.msg, "size is zero "+e.getMessage());
-        }
-
-        for(int i=0; i<n; i++){
-            Log.d(Constants.msg, x.get(i).getClubName());
-        }
     }
 
 }

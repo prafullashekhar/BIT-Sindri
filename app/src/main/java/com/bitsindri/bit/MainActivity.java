@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
 
     ActivityMainBinding binding;
     private Fragment fragment;
-    public static ProfileSharedPreferencesViewModel viewModel;
+//    public static ProfileSharedPreferencesViewModel viewModel;
     private View profileState = null;
 
     @Override
@@ -70,16 +70,14 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
 //        }
 
         // initiating view model for all the fragments associated with main activity -----------------------------------------------
-        viewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProfileSharedPreferencesViewModel.class);
-
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.getUser().observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-
-            }
-        });
+//        viewModel = new ViewModelProvider(this,
+//                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProfileSharedPreferencesViewModel.class);
+//        viewModel.getUser().observe(this, new Observer<User>() {
+//            @Override
+//            public void onChanged(User user) {
+//
+//            }
+//        });
 
         binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
