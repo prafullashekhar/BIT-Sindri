@@ -1,13 +1,11 @@
 package com.bitsindri.bit.Repository;
 
 import android.app.Application;
-import android.icu.number.CompactNotation;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.bitsindri.bit.methods.Constants;
+import com.bitsindri.bit.R;
 import com.bitsindri.bit.models.Club;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -52,7 +50,7 @@ public class ClubsDataRepository {
                 .setMinimumFetchIntervalInSeconds(3600)
                 .build();
         remoteConfig.setConfigSettingsAsync(configSettings);
-//        remoteConfig.setDefaultsAsync();
+        remoteConfig.setDefaultsAsync(R.xml.clubs_list_default);
         remoteConfig.activate();
         remoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
             @Override
