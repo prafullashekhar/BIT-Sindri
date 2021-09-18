@@ -185,9 +185,9 @@ public class Methods {
             }
         });
     }
-    public static void loadImage(ImageView clubLogo, String url) {
+    public static void loadImage(ImageView clubLogo, String url,int placeholder) {
         try {
-            Picasso.get().load(url).placeholder(R.drawable.ic_icon_user).into(clubLogo);
+            Picasso.get().load(url).placeholder(placeholder).into(clubLogo);
         } catch (Exception e) {
             Log.e(Constants.msg, e.getMessage().toString());
         }
@@ -206,5 +206,4 @@ public class Methods {
         animatorSet.play(animatorAlpha);
         animatorSet.start();
     }
-
 }

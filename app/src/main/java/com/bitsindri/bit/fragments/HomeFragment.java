@@ -93,11 +93,11 @@ public class HomeFragment extends Fragment
 //---------------------- initialising view moder for user ------------------------------------------------------------------------------------
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
-        User currentUser = viewModel.getUser().getValue();
+        User currentUser = viewModel.user.getValue();
         assert currentUser != null;
         assignUserData(currentUser);
 
-        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+        viewModel.user.observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 assignUserData(user);
@@ -124,7 +124,7 @@ public class HomeFragment extends Fragment
     // function to assign user data
     private void assignUserData(User currentUser){
         binding.userNameHomeFragment.setText(currentUser.getName());
-        loadImage(binding.homeProfileImage,currentUser.getProfilePic());
+        loadImage(binding.homeProfileImage,currentUser.getProfilePic(),R.drawable.ic_icon_user);
     }
 
     // function to get and set url data for config to sliding images

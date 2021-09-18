@@ -43,7 +43,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> {
         Club club = clubs.get(position);
         holder.clubName.setText(club.getClubName());
         holder.clubDesc.setText(club.getClubDescription());
-        loadImage(holder.clubLogo,club.getClubLogoUrl());
+        loadImage(holder.clubLogo,club.getClubLogoUrl(),R.drawable.ic_icon_bottom_clubs);
         setAnimation(holder.itemView,position);
     }
 

@@ -30,5 +30,6 @@
         <item name="boxStrokeColor">#fff</item>
         <item name="boxStrokeWidth">2dp</item>
     </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

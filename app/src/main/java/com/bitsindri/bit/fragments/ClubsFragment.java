@@ -2,15 +2,14 @@ package com.bitsindri.bit.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -19,19 +18,11 @@ import com.bitsindri.bit.Adapter.ClubAdapter;
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentClubsBinding;
-import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.models.Club;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ClubsFragment extends Fragment {
+public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     private ArrayList<Club> allClub;
     private FragmentClubsBinding binding;
@@ -54,11 +45,34 @@ public class ClubsFragment extends Fragment {
         binding.rvAllClub.setLayoutManager(new LinearLayoutManager(requireContext()));
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
-        viewModel.getClubs().observe(getViewLifecycleOwner(), clubs -> {
-            allClub = (ArrayList<Club>)clubs;
-            adapter.updateClubList(allClub);
+        viewModel.clubs.observe(getViewLifecycleOwner(),result ->{
+            try {
+                switch (result.getStatus()){
+                    case LOADING:{
+                        binding.progressBar.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                    case SUCCESS:{
+                        binding.progressBar.setVisibility(View.GONE);
+                        adapter.updateClubList((ArrayList<Club>) result.getData());
+                    }
+                }
+            }
+            catch (Exception e){
+                Log.e("Nipun",e.getMessage().toString());
+            }
         });
+        binding.clubToolbar.setOnMenuItemClickListener(this);
         return binding.getRoot();
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.club_search:
+                Toast.makeText(getContext(), "search clicked", Toast.LENGTH_SHORT).show();
+                return false;
+            default: return false;
+        }
+    }
 }
