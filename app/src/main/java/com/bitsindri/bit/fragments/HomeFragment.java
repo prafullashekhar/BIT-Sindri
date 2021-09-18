@@ -1,5 +1,7 @@
 package com.bitsindri.bit.fragments;
 
+import static com.bitsindri.bit.methods.Methods.loadImage;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,12 +35,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.bitsindri.bit.activity.HomeDepartmentActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Executor;
 
 
 public class HomeFragment extends Fragment
@@ -125,11 +124,7 @@ public class HomeFragment extends Fragment
     // function to assign user data
     private void assignUserData(User currentUser){
         binding.userNameHomeFragment.setText(currentUser.getName());
-        try{
-            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.homeProfileImage);
-        }catch (Exception e){
-            Log.e(Constants.msg, "cannot load profile image in home "+e.getMessage());
-        }
+        loadImage(binding.homeProfileImage,currentUser.getProfilePic());
     }
 
     // function to get and set url data for config to sliding images

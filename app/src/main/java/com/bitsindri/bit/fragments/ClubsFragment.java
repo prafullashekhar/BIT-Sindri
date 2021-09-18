@@ -41,63 +41,24 @@ public class ClubsFragment extends Fragment {
     public ClubsFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        try {
 //
-//            binding = FragmentClubsBinding.inflate(inflater, container, false);
-//            adapter = new ClubAdapter(getContext());
-//            allClub = new ArrayList<>();
-//            Club club = new Club();
-//            club.setClubName(getContext().getResources().getString(R.string.hncc));
-//            club.setClubDescription(getContext().getResources().getString(R.string.hncc_desc));
-//            allClub.add(club);
-//            adapter.updateClubList(allClub);
-////        viewModel = new ViewModelProvider(this,
-////                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
-////        viewModel.getClubs().observe(getViewLifecycleOwner(), new Observer<List<Club>>() {
-////            @Override
-////            public void onChanged(List<Club> clubs) {
-////                allClub = (ArrayList<Club>) clubs;
-////                adapter.updateClubList(allClub);
-////            }
-////        });
-//
-//            binding.rvAllClub.setAdapter(adapter);
-//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-//            try {
-//                binding.rvAllClub.setLayoutManager(linearLayoutManager);
-//            } catch (Exception e) {
-//                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            return binding.getRoot();
-//        }
-//        catch (Exception e){
-//            Log.e("Nipun",e.getMessage().toString());
-//            return null;
-//        }
-        View view = inflater.inflate(R.layout.fragment_clubs,container,false);
+        binding = FragmentClubsBinding.inflate(inflater, container, false);
         allClub = new ArrayList<>();
-        RecyclerView recyclerView = view.findViewById(R.id.rvAllClub);
-        Club club = new Club();
-        club.setClubName(getContext().getResources().getString(R.string.hncc));
-        club.setClubDescription(getContext().getResources().getString(R.string.hncc_desc));
-        allClub.add(club);
-        ClubAdapter adapter =  new ClubAdapter(getContext(),allClub);
-//        adapter.updateClubList(allClub);
-
-        LinearLayoutManager linearLayoutManager;
-            linearLayoutManager = new LinearLayoutManager(getContext());
-            try {
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(linearLayoutManager);
-            }
-            catch (Exception e){
-                Log.e("Nipun",e.getMessage().toString());
-            }
-        return view;
+        adapter = new ClubAdapter(getContext());
+        binding.rvAllClub.setAdapter(adapter);
+        binding.rvAllClub.setLayoutManager(new LinearLayoutManager(requireContext()));
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
+        viewModel.getClubs().observe(getViewLifecycleOwner(), clubs -> {
+            allClub = (ArrayList<Club>)clubs;
+            adapter.updateClubList(allClub);
+        });
+        return binding.getRoot();
     }
+
 }

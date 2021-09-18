@@ -1,6 +1,8 @@
 package com.bitsindri.bit.Adapter;
 
 
+import static com.bitsindri.bit.methods.Methods.loadImage;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +13,6 @@ import android.widget.ImageView;
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.models.SlidingImgUrl;
 import com.smarteist.autoimageslider.SliderViewAdapter;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +42,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder viewHolder, int position) {
-        try {
-            Picasso.get().load(imagesList.get(position).getImgUrl()).into(viewHolder.imageView);
-        }
-        catch (Exception e){
-            Log.e("TAg","UNABLE TO LOAD PICASSO " +e.getMessage().toString());
-        }
+        loadImage(viewHolder.imageView,imagesList.get(position).getImgUrl());
     }
 
     @Override
