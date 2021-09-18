@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<defaultsMap>
+<entry>
+    <key>Clubs</key>
+    <value>
+        [
+        {
+        "clubId": 1001,
+        "clubName": "Hackathon and Coding Club",
+        "clubLogoUrl": "https://hnccbits.com/images/hncc-logo.png",
+        "clubDescription": "Hackathon and Coding Club (HnCC) is the official coding and development club of BIT Sindri"
+        },
+        {
+        "clubId": 1002,
+        "clubName": "Model Club",
+        "clubLogoUrl": "https://modelclubbit.com/img/modellogo111.png",
+        "clubDescription": "Model Club is the marketing club of BIT Sindri"
+        },
+        {
+        "clubId": 1003,
+        "clubName": "Sports",
+        "clubLogoUrl": "https://scontent.fbbi1-1.fna.fbcdn.net/v/t1.6435-1/c0.0.200.200a/50301920_2059571504130330_3615325894349946880_n.png?_nc_cat=103&amp;ccb=1-5&amp;_nc_sid=dbb9e7&amp;_nc_ohc=6rxyVp2ES84AX8AjZaa&amp;_nc_ht=scontent.fbbi1-1.fna&amp;oh=d9030e1c939cc6f80314187ccea6775e&amp;oe=616B9D4D",
+        "clubDescription": "sdfsdfdsfsdf"
+        },
+        {
+        "clubId": 1004,
+        "clubName": "Leo",
+        "clubLogoUrl": "https://yt3.ggpht.com/ytc/AKedOLQXbq-zPpu5yK0kuS2RGkhPZdPcvRW8cn2D52iDvw=s88-c-k-c0x00ffffff-no-rj",
+        "clubDescription": "sfdsfsdf"
+        }
+        ]
+    </value>
+</entry>
+</defaultsMap>

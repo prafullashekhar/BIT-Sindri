@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -59,6 +60,21 @@ public class HomeFragment extends Fragment
         super.onAttach(context);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        remoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        remoteConfig.setConfigSettingsAsync(configSettings);
+        remoteConfig.setDefaultsAsync(R.xml.sliding_img_url_default);
+        remoteConfig.activate();
+
+        // at last checks for updates of sliding pic
+        getSlidingImageUrlFromRemote();
+
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -73,13 +89,6 @@ public class HomeFragment extends Fragment
         sliderAdapter = new SliderAdapter(getContext());
         binding.imageSlider.setSliderAdapter(sliderAdapter);
 
-        remoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(3600)
-                .build();
-        remoteConfig.setConfigSettingsAsync(configSettings);
-        remoteConfig.setDefaultsAsync(R.xml.sliding_img_url_default);
-        remoteConfig.activate();
         updateSlidingImageUrlFromFetchedData();
 
 //---------------------- initialising view moder for user ------------------------------------------------------------------------------------
@@ -111,9 +120,17 @@ public class HomeFragment extends Fragment
             }
         });
 
+        //TODO to be removed
+        List<Club> clubs = new ArrayList<>();
+        clubs = viewModel.getClubs().getValue();
+        viewModel.getClubs().observe(getViewLifecycleOwner(), new Observer<List<Club>>() {
+            @Override
+            public void onChanged(List<Club> clubs) {
+                Log.e(Constants.msg, clubs.get(0).getClubName() +" "+ clubs.get(0).getClubId());
+            }
+        });
 
-        // at last checks for updates of sliding pic
-        getSlidingImageUrlFromRemote();
+
         return binding.getRoot();
     }
 

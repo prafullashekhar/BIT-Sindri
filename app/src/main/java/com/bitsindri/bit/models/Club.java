@@ -2,28 +2,28 @@ package com.bitsindri.bit.models;
 
 public class Club {
 
-    String clubId;
+    long clubId;
     String clubName;
     String clubLogoUrl;
-    String clubBackgroundUrl;
+    String clubDescription;
 
     // default constructor
     public Club(){
     }
 
-    public Club(String clubId, String clubName, String clubLogoUrl, String clubBackgroundUrl){
+    public Club(long clubId, String clubName, String clubLogoUrl, String clubDescription){
         this.clubId = clubId;
         this.clubName = clubName;
         this.clubLogoUrl = clubLogoUrl;
-        this.clubBackgroundUrl = clubBackgroundUrl;
+        this.clubDescription = clubDescription;
     }
 
     /*--------------------getters ans setters----------------------------------*/
-    public String getClubId() {
+    public long getClubId() {
         return clubId;
     }
 
-    public void setClubId(String clubId) {
+    public void setClubId(long clubId) {
         this.clubId = clubId;
     }
 
@@ -43,11 +43,11 @@ public class Club {
         this.clubLogoUrl = clubLogoUrl;
     }
 
-    public String getClubBackgroundUrl() {
-        return clubBackgroundUrl;
+    public String getClubDescription() {
+        return clubDescription;
     }
 
-    public void setClubBackgroundUrl(String clubBackgroundUrl) {
-        this.clubBackgroundUrl = clubBackgroundUrl;
+    public void setClubDescription(String clubDescription) {
+        this.clubDescription = clubDescription;
     }
 }
