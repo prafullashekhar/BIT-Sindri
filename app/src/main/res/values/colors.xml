@@ -25,6 +25,9 @@
 
     <color name="department_drawer">#8E8F8D</color>
     <color name="ruler_color">#80DFDFDF</color>
+    <color name="grey_40">#999999</color>
+    <color name="grey_60">#666666</color>
+    <color name="grey_90">#263238</color>
 
     <color name="hint_black_bg">#F1E4E4</color>
 

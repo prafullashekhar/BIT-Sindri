@@ -72,6 +72,9 @@
     <string name="codeforces_link">Codeforces link</string>
     <string name="write_your_name_here">Write your Name here</string>
 
+    <string name="hncc">Hackathon and coding club</string>
+    <string name="hncc_desc">Hackathon and coding club (Hncc) is the official coding and development club of BIT Sindri</string>
+    <string name="visit_profile">visit profile</string>
 
 
 </resources>

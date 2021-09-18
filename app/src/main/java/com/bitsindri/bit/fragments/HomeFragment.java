@@ -119,18 +119,6 @@ public class HomeFragment extends Fragment
                 requireContext().startActivity(new Intent(getContext(), HomeDepartmentActivity.class));
             }
         });
-
-        //TODO to be removed
-        List<Club> clubs = new ArrayList<>();
-        clubs = viewModel.getClubs().getValue();
-        viewModel.getClubs().observe(getViewLifecycleOwner(), new Observer<List<Club>>() {
-            @Override
-            public void onChanged(List<Club> clubs) {
-                Log.e(Constants.msg, clubs.get(0).getClubName() +" "+ clubs.get(0).getClubId());
-            }
-        });
-
-
         return binding.getRoot();
     }
 
