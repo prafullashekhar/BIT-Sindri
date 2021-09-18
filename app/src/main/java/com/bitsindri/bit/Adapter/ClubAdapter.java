@@ -39,7 +39,6 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         Club club = clubs.get(position);
         holder.clubName.setText(club.getClubName());
         holder.clubDesc.setText(club.getClubDescription());
@@ -72,6 +71,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> {
         AppCompatButton visitProfile;
         ImageView clubLogo, clubNotification;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             clubName = itemView.findViewById(R.id.club_name);
@@ -79,6 +79,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> {
             visitProfile = itemView.findViewById(R.id.club_visit_profile);
             clubLogo = itemView.findViewById(R.id.club_profile);
             clubNotification = itemView.findViewById(R.id.club_notification);
+
         }
     }
 }
