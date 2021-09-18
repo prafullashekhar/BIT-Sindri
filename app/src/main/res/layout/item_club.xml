@@ -26,7 +26,6 @@
             android:src="@drawable/ic_icon_bottom_notifications"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="wrap_content"
@@ -35,7 +34,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
 
             <ImageView
                 android:id="@+id/club_profile"
@@ -51,7 +49,6 @@
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:background="@drawable/circle_image_bg" />
-
         </FrameLayout>
 
         <TextView
@@ -95,6 +92,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/club_desc" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
