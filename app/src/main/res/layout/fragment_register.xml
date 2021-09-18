@@ -129,7 +129,7 @@
                 android:drawableStart="@drawable/ic_icon_roll"
                 android:drawablePadding="@dimen/drawable_padding_edit_text"
                 android:hint="@string/user_roll"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:padding="13dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/text_hint" />
@@ -145,7 +145,7 @@
                 android:drawableStart="@drawable/ic_icon_registration"
                 android:drawablePadding="@dimen/drawable_padding_edit_text"
                 android:hint="@string/user_registration"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:padding="13dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/text_hint" />

@@ -105,13 +105,7 @@ public class ProfileFragment extends Fragment {
         // assign everything with user model here
         currentUser = viewModel.getUser().getValue();
         assert currentUser != null;
-        initialiseProfileViews(currentUser);
-        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                initialiseProfileViews(user);
-            }
-        });
+        viewModel.getUser().observe(getViewLifecycleOwner(), user -> initialiseProfileViews(user));
 
 /* ----------------- This section initialising the profile edit button -----------------*/
 
@@ -368,6 +362,11 @@ public class ProfileFragment extends Fragment {
         binding.profileInstagram.setContentDescription(currentUser.getInstaUrl());
         binding.profileGithub.setContentDescription(currentUser.getGithubUrl());
         binding.profileCodeforces.setContentDescription(currentUser.getCodefrocesUrl());
+        TextView mediumProfileText = mediumProfileViewer.findViewById(R.id.expanded_user_name),
+                fullSizeProfileText = fullSizeProfileViewer.findViewById(R.id.full_size_user_name);
+        mediumProfileText.setText(currentUser.getName());
+        fullSizeProfileText.setText(currentUser.getName());
+
     }
 
     EditText about, name, dob, club, codeChef, linkedIn, faceBook, instagram, github, codeForces;
@@ -433,7 +432,6 @@ public class ProfileFragment extends Fragment {
         currentUser.setCodefrocesUrl(codeforcess);
 
         viewModel.updateUser(currentUser);
-        initialiseProfileViews(currentUser);
         Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
     }
 
