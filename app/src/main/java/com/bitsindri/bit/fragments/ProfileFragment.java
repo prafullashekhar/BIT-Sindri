@@ -1,5 +1,7 @@
 package com.bitsindri.bit.fragments;
 
+import static com.bitsindri.bit.methods.Methods.loadImage;
+
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,7 +45,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.sdsmdg.tastytoast.TastyToast;
-import com.squareup.picasso.Picasso;
 
 import java.lang.invoke.ConstantCallSite;
 
@@ -95,7 +96,7 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         stateListener = ((FragmentClickListener) getContext());
 
-/* -------- This section Initialising the view model  -------------- */
+        /* -------- This section Initialising the view model  -------------- */
 
         // initialising view model for getting user data
         viewModel = new ViewModelProvider(this,
@@ -107,20 +108,20 @@ public class ProfileFragment extends Fragment {
         assert currentUser != null;
         viewModel.getUser().observe(getViewLifecycleOwner(), user -> initialiseProfileViews(user));
 
-/* ----------------- This section initialising the profile edit button -----------------*/
+        /* ----------------- This section initialising the profile edit button -----------------*/
 
         // Initialising the profile content edit button
         showProfileEditContainer = binding.editProfileIcon;
         showProfileEditContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Methods.showtoToggle(v, profileEditContainer, profileFragContainer,getContext());
+                Methods.showtoToggle(v, profileEditContainer, profileFragContainer, getContext());
                 initialiseEditProfile();
                 binding.textProfile.setVisibility(View.INVISIBLE);
             }
         });
         /* After clicking the showProfileEditContainer profile edit container will appear
-        * Initialising the profile edit Container */
+         * Initialising the profile edit Container */
         profileEditContainer = binding.profileEditContainer.getRoot();
 
         /* Profile edit container contains a cancel button in next line of code
@@ -147,19 +148,15 @@ public class ProfileFragment extends Fragment {
             }
         });
         ImageView saveButton = profileEditContainer.findViewById(R.id.save_profile_changes);
-        saveButton.setOnClickListener(v->{
+        saveButton.setOnClickListener(v -> {
             saveEditProfile();
             binding.textProfile.setVisibility(View.VISIBLE);
         });
 
-/* ---------------------- This section initialising the profile picture -------------- */
+        /* ---------------------- This section initialising the profile picture -------------- */
 
         // Loading profile Picture
-        try {
-            Picasso.get().load(currentUser.getProfilePic()).placeholder(R.drawable.ic_icon_user).into(binding.profileImage);
-        } catch (Exception e) {
-            Log.e(Constants.msg, e.getMessage());
-        }
+        loadImage(binding.profileImage, currentUser.getProfilePic());
 
         // Initialising progress bar
         progressBar = binding.progressBar;
@@ -182,7 +179,7 @@ public class ProfileFragment extends Fragment {
              * 2nd method take the view after the 1st view is zoomed their zoomed position will show.
              * 3rd parameter simply takes the container of the activity.
              */
-            Methods.showtoToggle(v, mediumProfileViewer, profileFragContainer,getContext());
+            Methods.showtoToggle(v, mediumProfileViewer, profileFragContainer, getContext());
         });
 
         /* medium profile viewer show the profile pic on half of the screen */
@@ -191,7 +188,7 @@ public class ProfileFragment extends Fragment {
         if (currentUser.getProfilePic().equals(""))
             mediumExpandedImage.setImageDrawable(normalProfileImage.getDrawable());
         else
-            Picasso.get().load(currentUser.getProfilePic()).into(mediumExpandedImage);
+            loadImage(mediumExpandedImage, currentUser.getProfilePic());
         /* When user clicked the image view when medium profile image is opened
          * profile image will zoom to full size and get the profile image edit
          * button option.
@@ -218,7 +215,7 @@ public class ProfileFragment extends Fragment {
         fullSizeImage = fullSizeProfileViewer.findViewById(R.id.full_profile_image);
         if (currentUser.getProfilePic().equals(""))
             fullSizeImage.setImageDrawable(normalProfileImage.getDrawable());
-        else Picasso.get().load(currentUser.getProfilePic()).into(fullSizeImage);
+        else loadImage(fullSizeImage,currentUser.getProfilePic());
         /* When user clicked when image is on full size the full size profile will get closed */
         fullSizeProfileViewer.setOnClickListener(v -> {
             /* Methods.closeView() methods simply hide the current view
@@ -234,7 +231,7 @@ public class ProfileFragment extends Fragment {
         editProfilePic.setOnClickListener(v -> setProfilePic());
 
 
-/* --------------- Handle  ClickListener on various social media icon --------------- */
+        /* --------------- Handle  ClickListener on various social media icon --------------- */
 
         binding.profileCodechef.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,19 +270,19 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-/*----------------- Handle On Scroll of profile -------------------------------------*/
+        /*----------------- Handle On Scroll of profile -------------------------------------*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                     // We take the last son in the scrollview
-                    stateListener.setScrollListener(scrollY,oldScrollY);
+                    stateListener.setScrollListener(scrollY, oldScrollY);
                 }
             });
         }
 
 
-/*-------------------------- Settings -------------------------------------------------------------------------*/
+        /*-------------------------- Settings -------------------------------------------------------------------------*/
         binding.profileLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,39 +299,39 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void openCustomTab(View v){
+    private void openCustomTab(View v) {
         String url = v.getContentDescription().toString();
 
         Intent intent = new Intent(getContext(), GetUrlBroadcastReceiver.class);
         intent.putExtra(Intent.EXTRA_SUBJECT, "url is ");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        if(url.equals("")){
-            switch (v.getTag().toString()){
+        if (url.equals("")) {
+            switch (v.getTag().toString()) {
                 case "Codechef link":
-                    url+="https://www.codechef.com/ratings/all?order=asc&sortBy=global_rank";
+                    url += "https://www.codechef.com/ratings/all?order=asc&sortBy=global_rank";
                     break;
                 case "LinkedIn link":
-                    url+="https://www.linkedin.com";
+                    url += "https://www.linkedin.com";
                     break;
                 case "Facebook link":
-                    url+="https://www.social-searcher.com/facebook-search/";
+                    url += "https://www.social-searcher.com/facebook-search/";
                     break;
                 case "Instagram link":
-                    url+="https://www.instagram.com/";
+                    url += "https://www.instagram.com/";
                     break;
                 case "Github link":
-                    url+="https://github.com/";
+                    url += "https://github.com/";
                     break;
 
                 default:
-                    url+="https://google.com";
+                    url += "https://google.com";
             }
         }
 
         if (!url.startsWith("https://")) url = "https://" + url;
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.addMenuItem("Set it as your "+v.getTag().toString(), pendingIntent);
+        builder.addMenuItem("Set it as your " + v.getTag().toString(), pendingIntent);
         CustomTabsIntent customTabsIntent = builder.build();
         customTabsIntent.launchUrl(getContext(), Uri.parse(url));
 
@@ -376,7 +373,7 @@ public class ProfileFragment extends Fragment {
          * inside the edit button and set their initial value
          */
         about = profileEditContainer.findViewById(R.id.edit_profile_about);
-        about.scrollTo(0,about.getBottom());
+        about.scrollTo(0, about.getBottom());
         name = profileEditContainer.findViewById(R.id.edit_profile_name);
         dob = profileEditContainer.findViewById(R.id.edit_profile_dob);
         club = profileEditContainer.findViewById(R.id.edit_profile_club);

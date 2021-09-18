@@ -8,12 +8,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.fragments.FragmentClickListener;
+import com.squareup.picasso.Picasso;
 
 public class Methods {
 
@@ -181,6 +184,27 @@ public class Methods {
                 currentAnimator = set;
             }
         });
+    }
+    public static void loadImage(ImageView clubLogo, String url) {
+        try {
+            Picasso.get().load(url).placeholder(R.drawable.ic_icon_user).into(clubLogo);
+        } catch (Exception e) {
+            Log.e(Constants.msg, e.getMessage().toString());
+        }
+    }
+
+    private static final long DURATION_IN_FADE_ID = 500;
+    public static void animateFadeIn(View view, int position) {
+        boolean not_first_item = position == -1;
+        position = position + 1;
+        view.setAlpha(0.f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator animatorAlpha = ObjectAnimator.ofFloat(view, "alpha", 0.f, 0.5f, 1.f);
+        ObjectAnimator.ofFloat(view, "alpha", 0.f).start();
+        animatorAlpha.setStartDelay(not_first_item ? DURATION_IN_FADE_ID / 2 : (position * DURATION_IN_FADE_ID / 3));
+        animatorAlpha.setDuration(DURATION_IN_FADE_ID);
+        animatorSet.play(animatorAlpha);
+        animatorSet.start();
     }
 
 }
