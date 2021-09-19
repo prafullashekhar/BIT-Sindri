@@ -189,7 +189,7 @@ public class Methods {
         try {
             Picasso.get().load(url).placeholder(placeholder).into(clubLogo);
         } catch (Exception e) {
-            Log.e(Constants.msg, e.getMessage().toString());
+            Log.e(Constants.msg, e.getMessage());
         }
     }
 

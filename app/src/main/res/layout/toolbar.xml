@@ -5,7 +5,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    app:navigationIcon="@drawable/ic_drawer"
+    app:navigationIcon="@drawable/ic__department_drawer"
     app:titleTextColor="@color/black"
     app:contentInsetStart="20dp"
     android:background="@color/white" />

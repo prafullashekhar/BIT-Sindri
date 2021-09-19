@@ -23,4 +23,20 @@ public class Constants {
     public static final String GITHUB = "Github";
     public static final String LINKEDIN = "LinkedIn";
     public static final String ABOUT = "About";
+
+    // club data
+    public static final String clubId = "clubId";
+    public static final String clubName = "clubName";
+    public static final String clubLogoUrl= "clubLogoUrl";
+    public static final String clubBackgroundUrl = "clubBackgroundUrl";
+    public static final String clubDescription = "clubDescription";
+    public static final String clubTags = "clubTags";
+    public static final String clubAchievements = "clubAchievements";
+    public static final String clubFacebook = "clubFacebook";
+    public static final String clubInstagram = "clubInstagram";
+    public static final String clubLinkedIn = "clubLinkedIn";
+    public static final String clubTwitter = "clubTwitter";
+    public static final String clubGmail = "clubGmail";
+    public static final String clubWebsite = "clubWebsite";
+
 }
