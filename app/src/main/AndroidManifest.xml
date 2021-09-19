@@ -19,6 +19,8 @@
       
         <activity
             android:name=".activity.HomeDepartmentActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:exported="true" />
       
         <activity
@@ -31,7 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <receiver android:name="com.bitsindri.bit.BroadcastReceiver.GetUrlBroadcastReceiver"
             android:enabled="true"/>

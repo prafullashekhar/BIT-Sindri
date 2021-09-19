@@ -7,6 +7,6 @@
         app:showAsAction="always"/>
     <item android:id="@+id/profile_setting"
         android:title="@string/settings"
-        android:icon="@drawable/ic_edit"
+        android:icon="@drawable/ic_settings"
         app:showAsAction="always"/>
 </menu>

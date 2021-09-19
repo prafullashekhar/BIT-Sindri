@@ -1,10 +1,15 @@
 package com.bitsindri.bit.Adapter;
 
 import static com.bitsindri.bit.methods.Methods.loadImage;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,20 +19,25 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitsindri.bit.R;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.Club;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> {
+public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> implements Filterable {
     private ArrayList<Club> clubs;
-    private Context context;
+    private ArrayList<Club> backupClubs;
+    private final Context context;
     private int lastPos = -1;
     private boolean onAttach = true;
 
     public ClubAdapter(Context context) {
         this.context = context;
-        clubs = new ArrayList<>();
+        backupClubs = new ArrayList<>();
+        clubs = new ArrayList<>(backupClubs);
     }
 
     @NonNull
@@ -46,16 +56,16 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> {
         setAnimation(holder.itemView,position);
     }
 
-
-
     @Override
     public int getItemCount() {
         return clubs.size();
     }
 
-    public void updateClubList(ArrayList<Club> clubs) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateClubList(ArrayList<Club> clubs_p) {
         this.clubs.clear();
-        this.clubs = clubs;
+        this.clubs = clubs_p;
+        backupClubs = new ArrayList<>(clubs_p);
         notifyDataSetChanged();
     }
 
@@ -66,7 +76,44 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> {
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    /*------------ implementing search --------------------------------------------------------------*/
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    Filter filter = new Filter() {
+
+        // it is running on background thread
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Club> filteredList = new ArrayList<>();
+
+            if(constraint.toString().isEmpty()){
+                filteredList.addAll(backupClubs);
+            }else{
+                Log.e(Constants.msg, "Searching for ");
+                for(Club cb : backupClubs){
+                    if(cb.getClubName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                        filteredList.add(cb);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            clubs.clear();
+            clubs.addAll((ArrayList<Club>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView clubName, clubDesc;
         AppCompatButton visitProfile;
         ImageView clubLogo, clubNotification;

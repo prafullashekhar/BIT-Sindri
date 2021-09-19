@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/club_search"
         android:title="search"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_icon_bottom_search"/>
+        android:icon="@drawable/ic_icon_bottom_search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
 </menu>
