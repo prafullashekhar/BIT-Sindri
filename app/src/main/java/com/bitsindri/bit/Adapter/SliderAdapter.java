@@ -42,7 +42,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder viewHolder, int position) {
-        loadImage(viewHolder.imageView,imagesList.get(position).getImgUrl());
+        loadImage(viewHolder.imageView,imagesList.get(position).getImgUrl(),R.drawable.ic_icon_user);
     }
 
     @Override

@@ -23,7 +23,4 @@ public class Constants {
     public static final String GITHUB = "Github";
     public static final String LINKEDIN = "LinkedIn";
     public static final String ABOUT = "About";
-
-
-
 }

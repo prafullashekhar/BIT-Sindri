@@ -21,7 +21,7 @@ public class ClubsDataRepository {
 
     private static volatile ClubsDataRepository INSTANCE;
     private FirebaseRemoteConfig remoteConfig;
-    private MutableLiveData<List<Club>> allClubsMutable;
+    private ArrayList<Club> allClubsMutable;
     private String JsonClubsData;
 
     public ClubsDataRepository(Application application) {
@@ -34,9 +34,9 @@ public class ClubsDataRepository {
         return INSTANCE;
     }
 
-    public MutableLiveData<List<Club>> getClubs(){
+    public ArrayList<Club> getClubs(){
         if(allClubsMutable == null){
-            allClubsMutable = new MutableLiveData<>();
+            allClubsMutable = new ArrayList<>();
         }
         fetchClubsFromRemote();
         return allClubsMutable;
@@ -60,7 +60,7 @@ public class ClubsDataRepository {
                     Gson gson = new Gson();
                     List<Club> allClubList = new ArrayList<>();
                     allClubList = gson.fromJson(JsonClubsData,new TypeToken<ArrayList<Club>>(){}.getType());
-                    allClubsMutable.setValue(allClubList);
+                    allClubsMutable = (ArrayList<Club>) allClubList;
                 }
             }
         });

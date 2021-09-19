@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -50,7 +52,7 @@ import java.lang.invoke.ConstantCallSite;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     private final int REQUEST_CODE = 18;
 
@@ -69,7 +71,6 @@ public class ProfileFragment extends Fragment {
     private CircleImageView normalProfileImage;
     private ImageView mediumExpandedImage;
     private ImageView fullSizeImage;
-    private ImageView showProfileEditContainer;
     private ProgressBar progressBar;
     private TextView headerUserName;
 
@@ -104,25 +105,16 @@ public class ProfileFragment extends Fragment {
                         getApplication())).get(ProfileSharedPreferencesViewModel.class);
 
         // assign everything with user model here
-        currentUser = viewModel.getUser().getValue();
+        currentUser = viewModel.user.getValue();
         assert currentUser != null;
-        viewModel.getUser().observe(getViewLifecycleOwner(), user -> initialiseProfileViews(user));
+        viewModel.user.observe(getViewLifecycleOwner(), this::initialiseProfileViews);
 
         /* ----------------- This section initialising the profile edit button -----------------*/
 
-        // Initialising the profile content edit button
-        showProfileEditContainer = binding.editProfileIcon;
-        showProfileEditContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Methods.showtoToggle(v, profileEditContainer, profileFragContainer, getContext());
-                initialiseEditProfile();
-                binding.textProfile.setVisibility(View.INVISIBLE);
-            }
-        });
         /* After clicking the showProfileEditContainer profile edit container will appear
          * Initialising the profile edit Container */
         profileEditContainer = binding.profileEditContainer.getRoot();
+        binding.profileToolbar.setOnMenuItemClickListener(this);
 
         /* Profile edit container contains a cancel button in next line of code
          * we initialise the cancel edit button
@@ -133,7 +125,6 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 // When user clicked on cancel button profile edit container will get closed.
                 profileEditContainer.performClick();
-                binding.textProfile.setVisibility(View.VISIBLE);
             }
         });
 
@@ -144,19 +135,17 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveEditProfile();
-                binding.textProfile.setVisibility(View.VISIBLE);
             }
         });
         ImageView saveButton = profileEditContainer.findViewById(R.id.save_profile_changes);
         saveButton.setOnClickListener(v -> {
             saveEditProfile();
-            binding.textProfile.setVisibility(View.VISIBLE);
         });
 
         /* ---------------------- This section initialising the profile picture -------------- */
 
         // Loading profile Picture
-        loadImage(binding.profileImage, currentUser.getProfilePic());
+        loadImage(binding.profileImage, currentUser.getProfilePic(),R.drawable.ic_icon_user);
 
         // Initialising progress bar
         progressBar = binding.progressBar;
@@ -188,7 +177,7 @@ public class ProfileFragment extends Fragment {
         if (currentUser.getProfilePic().equals(""))
             mediumExpandedImage.setImageDrawable(normalProfileImage.getDrawable());
         else
-            loadImage(mediumExpandedImage, currentUser.getProfilePic());
+            loadImage(mediumExpandedImage, currentUser.getProfilePic(),R.drawable.ic_icon_user);
         /* When user clicked the image view when medium profile image is opened
          * profile image will zoom to full size and get the profile image edit
          * button option.
@@ -215,7 +204,7 @@ public class ProfileFragment extends Fragment {
         fullSizeImage = fullSizeProfileViewer.findViewById(R.id.full_profile_image);
         if (currentUser.getProfilePic().equals(""))
             fullSizeImage.setImageDrawable(normalProfileImage.getDrawable());
-        else loadImage(fullSizeImage,currentUser.getProfilePic());
+        else loadImage(fullSizeImage,currentUser.getProfilePic(),R.drawable.ic_icon_user);
         /* When user clicked when image is on full size the full size profile will get closed */
         fullSizeProfileViewer.setOnClickListener(v -> {
             /* Methods.closeView() methods simply hide the current view
@@ -429,7 +418,7 @@ public class ProfileFragment extends Fragment {
         currentUser.setCodefrocesUrl(codeforcess);
 
         viewModel.updateUser(currentUser);
-        Methods.closeView(profileEditContainer, showProfileEditContainer, getContext());
+        Methods.closeView(profileEditContainer, binding.profileToolbar, getContext());
     }
 
     private void setProfilePic(boolean isGallery) {
@@ -520,4 +509,20 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.edit_profile_icon:{
+                try {
+                    Methods.showtoToggle(binding.profileToolbar, profileEditContainer, profileFragContainer, getContext());
+                    initialiseEditProfile();
+                }
+                catch (Exception e){
+                    Log.e("Nipun",e.getMessage().toString());
+                }
+                return false;
+            }
+        }
+        return false;
+    }
 }
