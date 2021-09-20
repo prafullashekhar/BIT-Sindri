@@ -7,6 +7,7 @@ public class Constants {
 
     // shared preferences
     public static final String SHARED_PREF_FILE = "com.bitsindri.bit"; /* shared preference name */
+    public static final String USER = "user";
     public static final String NAME = "Name";
     public static final String BATCH = "Batch";
     public static final String EMAIL = "Email";

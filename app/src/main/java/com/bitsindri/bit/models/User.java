@@ -5,18 +5,18 @@ import android.net.Uri;
 
 public class User {
 
-    String name;
-    String email;
-    String batch;
-    String branch;
-    String rollNo;
-    String regNo;
-    String profilePic;
-    String dob;
-    String club;
+    String name = "";
+    String email = "";
+    String batch = "";
+    String branch = "";
+    String rollNo = "";
+    String regNo = "";
+    String profilePic = "";
+    String dob = "";
+    String club = "";
 
-    String codechefUrl, linkedInUrl, facebookUrl, instaUrl, githubUrl, codefrocesUrl;
-    String about;
+    String codechefUrl = "", linkedInUrl = "", facebookUrl = "", instaUrl = "", githubUrl = "", codefrocesUrl = "";
+    String about = "";
 
     // empty constructor
     public User(){
