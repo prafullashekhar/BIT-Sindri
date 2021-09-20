@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.bitsindri.bit.Repository.StorageUtil;
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.ActivityMainBinding;
 import com.bitsindri.bit.fragments.ClubsFragment;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
 //
 //            }
 //        });
+
 
         binding.bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")

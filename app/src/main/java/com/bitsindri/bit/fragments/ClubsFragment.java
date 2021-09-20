@@ -1,6 +1,10 @@
 package com.bitsindri.bit.fragments;
 
+
 import android.annotation.SuppressLint;
+import static com.bitsindri.bit.methods.Status.LOADING;
+import static com.bitsindri.bit.methods.Status.SUCCESS;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +56,8 @@ public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         binding.rvAllClub.setLayoutManager(new LinearLayoutManager(requireContext()));
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
+
+        viewModel.getClub();
         viewModel.clubs.observe(getViewLifecycleOwner(),result ->{
             try {
                 switch (result.getStatus()){
@@ -59,7 +66,8 @@ public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                         break;
                     case SUCCESS:
                         binding.progressBar.setVisibility(View.GONE);
-                        adapter.updateClubList((ArrayList<Club>) result.getData());
+                        adapter.updateClubList(result.getData());
+                    }
                 }
             }
             catch (Exception e){

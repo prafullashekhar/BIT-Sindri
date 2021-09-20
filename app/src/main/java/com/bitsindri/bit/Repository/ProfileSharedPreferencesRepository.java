@@ -19,6 +19,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.methods.Methods;
+import com.bitsindri.bit.methods.Resource;
 import com.bitsindri.bit.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,14 +38,13 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ProfileSharedPreferencesRepository {
-
-    private final SharedPreferences sharedPreference;
-    private static MutableLiveData<User> mutableUser;
+    private static MutableLiveData<Resource<User>> mutableUser;
 
     @SuppressLint("StaticFieldLeak")
     private static volatile ProfileSharedPreferencesRepository INSTANCE;
     @SuppressLint("StaticFieldLeak")
     private static Context context;
+    private static StorageUtil storageUtil;
 
     public static ProfileSharedPreferencesRepository getInstance(Application application){
         if(INSTANCE == null){
@@ -55,61 +55,39 @@ public class ProfileSharedPreferencesRepository {
 
     public ProfileSharedPreferencesRepository(Application application){
         context = application;
-        sharedPreference = application.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
+        storageUtil = new StorageUtil(context);
     }
 
-    public MutableLiveData<User> getUser(){
+    public MutableLiveData<Resource<User>> getUser(){
         if(mutableUser == null){
-            mutableUser = new MutableLiveData<>();
+            mutableUser = new MutableLiveData<>(Resource.loading(new User()));
         }
-        if(sharedPreference.getString(Constants.NAME, "").equals(""))
+        if(storageUtil.getName().equals("")) {
             new getUserAsyncTask().execute();
-
-        User user = new User(
-                sharedPreference.getString(Constants.NAME, ""),
-                sharedPreference.getString(Constants.EMAIL, ""),
-                sharedPreference.getString(Constants.BATCH, ""),
-                sharedPreference.getString(Constants.BRANCH, ""),
-                sharedPreference.getString(Constants.ROLL, ""),
-                sharedPreference.getString(Constants.REG, ""),
-                sharedPreference.getString(Constants.ABOUT, ""),
-                sharedPreference.getString(Constants.CODECHEF, ""),
-                sharedPreference.getString(Constants.LINKEDIN, ""),
-                sharedPreference.getString(Constants.FACEBOOK, ""),
-                sharedPreference.getString(Constants.INSTAGRAM, ""),
-                sharedPreference.getString(Constants.GITHUB, ""),
-                sharedPreference.getString(Constants.CODEFORCES, ""),
-                sharedPreference.getString(Constants.PROFILE_PIC, ""),
-                sharedPreference.getString(Constants.DOB, ""),
-                sharedPreference.getString(Constants.CLUB, "")
-        );
-
-        mutableUser.setValue(user);
+        }
+        else {
+            mutableUser.setValue(Resource.success(storageUtil.getUser()));
+        }
         return mutableUser;
     }
 
     // updates the user date in shared preferences and updates it also in online database
     public void updateUser(User updatedUser){
+        mutableUser.setValue(Resource.loading(storageUtil.getUser()));
         new uploadUserAsyncTask().execute(updatedUser);
     }
 
     // clears the shared preference data
     public void clearLoginInfo() {
-        SharedPreferences.Editor editor = sharedPreference.edit();
-        editor.clear();
-        editor.apply();
+        mutableUser.setValue(Resource.loading(new User()));
+        storageUtil.clearLoginInfo();
     }
 
     @SuppressLint("StaticFieldLeak")
     static ImageView image;
-    @SuppressLint("StaticFieldLeak")
-    static ProgressBar progress;
-    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img , ProgressBar progressBar){
+    public void uploadProfilePicInStorage(Uri imageToBeUpload , ImageView img){
         image=img;
-        progress=progressBar;
         img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        progressBar.setVisibility(View.VISIBLE);
-
         new uploadProfilePicInFirebaseAndPreferences().execute(imageToBeUpload);
 
     }
@@ -120,7 +98,6 @@ public class ProfileSharedPreferencesRepository {
     private static class getUserAsyncTask extends AsyncTask<Void, Void, Void>
     {
         private DocumentReference reference;
-        private SharedPreferences sharedPreferences;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -130,8 +107,6 @@ public class ProfileSharedPreferencesRepository {
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             reference = db.collection("Users").document(currentUser.getUid());
-
-            sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
         }
 
         @Override
@@ -159,33 +134,16 @@ public class ProfileSharedPreferencesRepository {
                                 user.setInstaUrl(documentSnapshot.getString(Constants.INSTAGRAM));
                                 user.setAbout(documentSnapshot.getString(Constants.ABOUT));
 
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString(Constants.NAME, user.getName());
-                                editor.putString(Constants.BATCH, user.getBatch());
-                                editor.putString(Constants.EMAIL, user.getEmail());
-                                editor.putString(Constants.BRANCH, user.getBranch());
-                                editor.putString(Constants.DOB, user.getDob());
-                                editor.putString(Constants.ROLL, user.getRollNo());
-                                editor.putString(Constants.REG, user.getRegNo());
-                                editor.putString(Constants.PROFILE_PIC, user.getProfilePic());
-                                editor.putString(Constants.CLUB, user.getClub());
-                                editor.putString(Constants.CODECHEF, user.getCodechefUrl());
-                                editor.putString(Constants.CODEFORCES, user.getCodefrocesUrl());
-                                editor.putString(Constants.GITHUB, user.getGithubUrl());
-                                editor.putString(Constants.LINKEDIN, user.getLinkedInUrl());
-                                editor.putString(Constants.FACEBOOK, user.getFacebookUrl());
-                                editor.putString(Constants.INSTAGRAM, user.getInstaUrl());
-                                editor.putString(Constants.ABOUT, user.getAbout());
-                                editor.apply();
-                                mutableUser.setValue(user);
+                                mutableUser.setValue(Resource.success(user));
+                                storageUtil.storeUser(user);
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
-                          @Override
-                          public void onFailure(@NonNull Exception e) {
-                                Log.e(Constants.msg, "Unable to get user data "+e.toString());
-                          }
-                    });
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(Constants.msg, "Unable to get user data "+e.toString());
+                }
+            });
 
             return null;
         }
@@ -195,7 +153,6 @@ public class ProfileSharedPreferencesRepository {
     private static class uploadUserAsyncTask extends AsyncTask<User, Void, Void>
     {
         private DocumentReference reference;
-        private SharedPreferences sharedPreferences;
 
         @Override
         protected void onPreExecute() {
@@ -206,31 +163,11 @@ public class ProfileSharedPreferencesRepository {
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             reference = db.collection("Users").document(currentUser.getUid());
-            sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
         }
 
         @Override
         protected Void doInBackground(User... users) {
             User updatedUser = users[0];
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(Constants.NAME, updatedUser.getName());
-            editor.putString(Constants.BATCH, updatedUser.getBatch());
-            editor.putString(Constants.EMAIL, updatedUser.getEmail());
-            editor.putString(Constants.BRANCH, updatedUser.getBranch());
-            editor.putString(Constants.DOB, updatedUser.getDob());
-            editor.putString(Constants.ROLL, updatedUser.getRollNo());
-            editor.putString(Constants.REG, updatedUser.getRegNo());
-            editor.putString(Constants.PROFILE_PIC, updatedUser.getProfilePic());
-            editor.putString(Constants.CLUB, updatedUser.getClub());
-            editor.putString(Constants.CODECHEF, updatedUser.getCodechefUrl());
-            editor.putString(Constants.CODEFORCES, updatedUser.getCodefrocesUrl());
-            editor.putString(Constants.GITHUB, updatedUser.getGithubUrl());
-            editor.putString(Constants.LINKEDIN, updatedUser.getLinkedInUrl());
-            editor.putString(Constants.FACEBOOK, updatedUser.getFacebookUrl());
-            editor.putString(Constants.INSTAGRAM, updatedUser.getInstaUrl());
-            editor.putString(Constants.ABOUT, updatedUser.getAbout());
-            editor.apply();
 
             Map<String, Object> map = new HashMap<>();
             map.put(Constants.NAME, updatedUser.getName());
@@ -253,8 +190,9 @@ public class ProfileSharedPreferencesRepository {
             reference.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
+                    storageUtil.storeUser(updatedUser);
                     TastyToast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
-                    mutableUser.setValue(updatedUser);
+                    mutableUser.setValue(Resource.success(updatedUser));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -273,6 +211,7 @@ public class ProfileSharedPreferencesRepository {
         private StorageReference reference;
         private String profileDownloadUrl;
         private SharedPreferences sharedPreferences;
+        private User currentUser;
 
         @Override
         protected void onPreExecute() {
@@ -281,6 +220,8 @@ public class ProfileSharedPreferencesRepository {
             FirebaseStorage store = FirebaseStorage.getInstance();
             reference = store.getReference().child("profile pictures").child(Objects.requireNonNull(auth.getUid()));
             sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREF_FILE, Context.MODE_PRIVATE);
+            currentUser = storageUtil.getUser();
+            mutableUser.setValue(Resource.loading(currentUser));
         }
 
         @Override
@@ -297,15 +238,15 @@ public class ProfileSharedPreferencesRepository {
                             DocumentReference documentReference = mStore.collection("Users").document(auth.getUid());
                             Map<String, Object> user = new HashMap<>();
                             user.put("ProfilePic",profileDownloadUrl);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(Constants.PROFILE_PIC, profileDownloadUrl);
-                            editor.commit();
                             documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    progress.setVisibility(View.INVISIBLE);
+                                    currentUser.setProfilePic(profileDownloadUrl);
+                                    storageUtil.storeUser(currentUser);
+//                                    progress.setVisibility(View.INVISIBLE);
                                     image.setScaleType(ImageView.ScaleType.FIT_CENTER);
                                     TastyToast.makeText(context, "Profile Pic updated", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
+                                    mutableUser.setValue(Resource.success(currentUser));
                                 }
                             });
                         }
@@ -314,7 +255,7 @@ public class ProfileSharedPreferencesRepository {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    progress.setVisibility(View.INVISIBLE);
+//                    progress.setVisibility(View.INVISIBLE);
                     TastyToast.makeText(context, "Please try again", Toast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             });

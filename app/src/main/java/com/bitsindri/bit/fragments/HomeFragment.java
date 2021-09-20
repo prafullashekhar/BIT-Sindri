@@ -81,6 +81,7 @@ public class HomeFragment extends Fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         FragmentClickListener listener = ((FragmentClickListener) getContext());
 
+
 //-------------------------initiating sliding adapter  -----------------------------------------------------------------
         binding.imageSlider.setAutoCycle(true);
         binding.imageSlider.setIndicatorAnimation(IndicatorAnimationType.SLIDE);
@@ -93,14 +94,19 @@ public class HomeFragment extends Fragment
 //---------------------- initialising view moder for user ------------------------------------------------------------------------------------
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(ProfileSharedPreferencesViewModel.class);
-        User currentUser = viewModel.user.getValue();
+        User currentUser = viewModel.user.getValue().getData();
         assert currentUser != null;
         assignUserData(currentUser);
 
-        viewModel.user.observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                assignUserData(user);
+        viewModel.user.observe(getViewLifecycleOwner(),result ->{
+            switch (result.getStatus()){
+                case LOADING:
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    break;
+                case SUCCESS:
+                    binding.progressBar.setVisibility(View.GONE);
+                    assignUserData(result.getData());
+                    break;
             }
         });
 

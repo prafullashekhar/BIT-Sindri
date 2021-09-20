@@ -105,9 +105,19 @@ public class ProfileFragment extends Fragment implements Toolbar.OnMenuItemClick
                         getApplication())).get(ProfileSharedPreferencesViewModel.class);
 
         // assign everything with user model here
-        currentUser = viewModel.user.getValue();
+        currentUser = viewModel.user.getValue().getData();
         assert currentUser != null;
-        viewModel.user.observe(getViewLifecycleOwner(), this::initialiseProfileViews);
+        viewModel.user.observe(getViewLifecycleOwner(),result ->{
+            switch (result.getStatus()){
+                case LOADING:
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    break;
+                case SUCCESS:
+                    binding.progressBar.setVisibility(View.GONE);
+                    initialiseProfileViews(result.getData());
+                    break;
+            }
+        });
 
         /* ----------------- This section initialising the profile edit button -----------------*/
 
@@ -144,8 +154,6 @@ public class ProfileFragment extends Fragment implements Toolbar.OnMenuItemClick
 
         /* ---------------------- This section initialising the profile picture -------------- */
 
-        // Loading profile Picture
-        loadImage(binding.profileImage, currentUser.getProfilePic(),R.drawable.ic_icon_user);
 
         // Initialising progress bar
         progressBar = binding.progressBar;
@@ -174,10 +182,6 @@ public class ProfileFragment extends Fragment implements Toolbar.OnMenuItemClick
         /* medium profile viewer show the profile pic on half of the screen */
         mediumProfileViewer = binding.profileViewerContainer.getRoot();
         mediumExpandedImage = mediumProfileViewer.findViewById(R.id.expanded_profile_image);
-        if (currentUser.getProfilePic().equals(""))
-            mediumExpandedImage.setImageDrawable(normalProfileImage.getDrawable());
-        else
-            loadImage(mediumExpandedImage, currentUser.getProfilePic(),R.drawable.ic_icon_user);
         /* When user clicked the image view when medium profile image is opened
          * profile image will zoom to full size and get the profile image edit
          * button option.
@@ -202,9 +206,7 @@ public class ProfileFragment extends Fragment implements Toolbar.OnMenuItemClick
          */
         fullSizeProfileViewer = binding.fullSizeProfileViewer.getRoot();
         fullSizeImage = fullSizeProfileViewer.findViewById(R.id.full_profile_image);
-        if (currentUser.getProfilePic().equals(""))
-            fullSizeImage.setImageDrawable(normalProfileImage.getDrawable());
-        else loadImage(fullSizeImage,currentUser.getProfilePic(),R.drawable.ic_icon_user);
+        loadImage(fullSizeImage, currentUser.getProfilePic(),R.drawable.ic_icon_user);
         /* When user clicked when image is on full size the full size profile will get closed */
         fullSizeProfileViewer.setOnClickListener(v -> {
             /* Methods.closeView() methods simply hide the current view
@@ -348,6 +350,8 @@ public class ProfileFragment extends Fragment implements Toolbar.OnMenuItemClick
         binding.profileInstagram.setContentDescription(currentUser.getInstaUrl());
         binding.profileGithub.setContentDescription(currentUser.getGithubUrl());
         binding.profileCodeforces.setContentDescription(currentUser.getCodefrocesUrl());
+        loadImage(binding.profileImage, currentUser.getProfilePic(),R.drawable.ic_icon_user);
+        loadImage(mediumExpandedImage, currentUser.getProfilePic(),R.drawable.ic_icon_user);
         TextView mediumProfileText = mediumProfileViewer.findViewById(R.id.expanded_user_name),
                 fullSizeProfileText = fullSizeProfileViewer.findViewById(R.id.full_size_user_name);
         mediumProfileText.setText(currentUser.getName());
@@ -457,9 +461,7 @@ public class ProfileFragment extends Fragment implements Toolbar.OnMenuItemClick
         stateListener.setProfileFragmentState(fullSizeProfileViewer);
         assert data != null;
         Uri imageToBeUpload = data.getData();
-        viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage, progressBar);
-        normalProfileImage.setImageURI(imageToBeUpload);
-        mediumExpandedImage.setImageURI(imageToBeUpload);
+        viewModel.uploadProfilePicInStorage(imageToBeUpload, fullSizeImage);
         fullSizeImage.setImageURI(imageToBeUpload);
         fullSizeProfileViewer.setClickable(true);
     }

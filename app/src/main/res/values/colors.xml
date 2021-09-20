@@ -30,6 +30,7 @@
     <color name="grey_90">#263238</color>
 
     <color name="hint_black_bg">#F1E4E4</color>
+    <color name="shadow_color">#8A795D</color>
 
 
     <color name="overlay_dark_30">#4D000000</color>
