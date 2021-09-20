@@ -1,5 +1,7 @@
 package com.bitsindri.bit.fragments;
 
+
+import android.annotation.SuppressLint;
 import static com.bitsindri.bit.methods.Status.LOADING;
 import static com.bitsindri.bit.methods.Status.SUCCESS;
 
@@ -7,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,11 +29,12 @@ import com.bitsindri.bit.Adapter.ClubAdapter;
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentClubsBinding;
+import com.bitsindri.bit.methods.Constants;
 import com.bitsindri.bit.models.Club;
 
 import java.util.ArrayList;
 
-public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickListener{
 
     private ArrayList<Club> allClub;
     private FragmentClubsBinding binding;
@@ -44,8 +48,7 @@ public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//
+
         binding = FragmentClubsBinding.inflate(inflater, container, false);
         allClub = new ArrayList<>();
         adapter = new ClubAdapter(getContext());
@@ -58,31 +61,42 @@ public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         viewModel.clubs.observe(getViewLifecycleOwner(),result ->{
             try {
                 switch (result.getStatus()){
-                    case LOADING:{
+                    case LOADING:
                         binding.progressBar.setVisibility(View.VISIBLE);
                         break;
-                    }
-                    case SUCCESS:{
+                    case SUCCESS:
                         binding.progressBar.setVisibility(View.GONE);
                         adapter.updateClubList(result.getData());
                     }
                 }
             }
             catch (Exception e){
-                Log.e("Nipun",e.getMessage().toString());
+                Log.e("Nipun",e.getMessage());
             }
         });
         binding.clubToolbar.setOnMenuItemClickListener(this);
         return binding.getRoot();
     }
 
+    // implementing search in toolbar -------------------------------------------------------------------
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.club_search:
-                Toast.makeText(getContext(), "search clicked", Toast.LENGTH_SHORT).show();
-                return false;
-            default: return false;
+        if (item.getItemId() == R.id.club_search) {
+            SearchView searchView = (SearchView) item.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
         }
+        return false;
     }
 }
