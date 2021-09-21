@@ -2,12 +2,9 @@ package com.bitsindri.bit.fragments;
 
 
 import android.annotation.SuppressLint;
-import static com.bitsindri.bit.methods.Status.LOADING;
-import static com.bitsindri.bit.methods.Status.SUCCESS;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -16,16 +13,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bitsindri.bit.Adapter.ClubAdapter;
+import com.bitsindri.bit.fragments.viewprofile.ClubProfile;
 import com.bitsindri.bit.R;
 import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.FragmentClubsBinding;
@@ -43,6 +37,11 @@ public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
     public ClubsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -69,10 +68,14 @@ public class ClubsFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                         adapter.updateClubList(result.getData());
                     }
                 }
-            }
             catch (Exception e){
                 Log.e("Nipun",e.getMessage());
             }
+        });
+        adapter.setOnItemClickListener(club -> {
+            ClubProfile clubProfile = new ClubProfile(club);
+            clubProfile.startCustomFragment(binding.getRoot(),inflater,this);
+            Constants.isInsideFragment = true;
         });
         binding.clubToolbar.setOnMenuItemClickListener(this);
         return binding.getRoot();

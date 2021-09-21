@@ -7,6 +7,7 @@
     <dimen name="very_big_margin">80dp</dimen>
     <dimen name="corner_radius_container">40dp</dimen>
     <dimen name="big_text_size">24sp</dimen>
+    <dimen name="p2">20sp</dimen>
     <dimen name="medium_text_size">18sp</dimen>
     <dimen name="small_text_size">14sp</dimen>
     <dimen name="drawable_padding_edit_text">15dp</dimen>
