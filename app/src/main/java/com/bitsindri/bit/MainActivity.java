@@ -1,25 +1,14 @@
 package com.bitsindri.bit;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
-import com.bitsindri.bit.Repository.StorageUtil;
-import com.bitsindri.bit.ViewModel.ProfileSharedPreferencesViewModel;
 import com.bitsindri.bit.databinding.ActivityMainBinding;
 import com.bitsindri.bit.fragments.ClubsFragment;
 import com.bitsindri.bit.fragments.HomeFragment;
@@ -27,12 +16,9 @@ import com.bitsindri.bit.fragments.NotificationsFragment;
 import com.bitsindri.bit.fragments.ProfileFragment;
 import com.bitsindri.bit.fragments.FragmentClickListener;
 import com.bitsindri.bit.fragments.SearchFragment;
+import com.bitsindri.bit.fragments.viewprofile.ClubProfile;
 import com.bitsindri.bit.methods.Constants;
-import com.bitsindri.bit.models.Club;
-import com.bitsindri.bit.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FragmentClickListener {
 
@@ -50,10 +36,15 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
             profileState.performClick();
             profileState = null;
         }
+        else if(Constants.isInsideFragment){
+            binding.bottomNavigation.setSelectedItemId(binding.bottomNavigation.getSelectedItemId());
+            Constants.isInsideFragment = false;
+        }
         else {
             binding.bottomNavigation.setVisibility(View.VISIBLE);
             binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
         }
+
     }
 
     @Override
@@ -109,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
 
                 if(fragment != null){
                     getSupportFragmentManager().beginTransaction().replace(R.id.bottom_fragment_container, fragment).commit();
+                    Constants.isInsideFragment = false;
                 }
 
                 return true;
@@ -139,4 +131,9 @@ public class MainActivity extends AppCompatActivity implements FragmentClickList
         else binding.bottomNavigation.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void fragmentBackPressedListener() {
+        binding.bottomNavigation.setSelectedItemId(binding.bottomNavigation.getSelectedItemId());
+        Constants.isInsideFragment = false;
+    }
 }

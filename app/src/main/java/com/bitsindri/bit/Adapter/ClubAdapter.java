@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitsindri.bit.R;
@@ -24,7 +23,6 @@ import com.bitsindri.bit.methods.Methods;
 import com.bitsindri.bit.models.Club;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> implements Filterable {
@@ -33,6 +31,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> im
     private final Context context;
     private int lastPos = -1;
     private boolean onAttach = true;
+    private OnItemClickListener listener;
 
     public ClubAdapter(Context context) {
         this.context = context;
@@ -54,6 +53,9 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> im
         holder.clubDesc.setText(club.getClubDescription());
         loadImage(holder.clubLogo,club.getClubLogoUrl(),R.drawable.ic_icon_bottom_clubs);
         setAnimation(holder.itemView,position);
+        holder.visitProfile.setOnClickListener(view ->{
+            if(listener != null)listener.onItemClick(club);
+        });
     }
 
     @Override
@@ -128,5 +130,12 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder> im
             clubNotification = itemView.findViewById(R.id.club_notification);
 
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.listener = onItemClickListener;
+    }
+    public interface OnItemClickListener{
+        void onItemClick(Club club);
     }
 }

@@ -73,7 +73,6 @@ public class ProfileSharedPreferencesRepository {
 
     // updates the user date in shared preferences and updates it also in online database
     public void updateUser(User updatedUser){
-        mutableUser.setValue(Resource.loading(storageUtil.getUser()));
         new uploadUserAsyncTask().execute(updatedUser);
     }
 
@@ -243,7 +242,6 @@ public class ProfileSharedPreferencesRepository {
                                 public void onSuccess(Void unused) {
                                     currentUser.setProfilePic(profileDownloadUrl);
                                     storageUtil.storeUser(currentUser);
-//                                    progress.setVisibility(View.INVISIBLE);
                                     image.setScaleType(ImageView.ScaleType.FIT_CENTER);
                                     TastyToast.makeText(context, "Profile Pic updated", Toast.LENGTH_SHORT, TastyToast.SUCCESS);
                                     mutableUser.setValue(Resource.success(currentUser));
@@ -255,7 +253,6 @@ public class ProfileSharedPreferencesRepository {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-//                    progress.setVisibility(View.INVISIBLE);
                     TastyToast.makeText(context, "Please try again", Toast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             });
