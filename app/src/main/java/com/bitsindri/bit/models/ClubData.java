@@ -1,6 +1,7 @@
 package com.bitsindri.bit.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClubData {
 
@@ -9,7 +10,7 @@ public class ClubData {
     String clubLogoUrl;
     String clubBackgroundUrl;
     String clubDescription;
-    ArrayList<String> clubTags;
+    List<String> clubTags;
     String clubAchievements;
 
     String clubFacebook;
@@ -83,11 +84,11 @@ public class ClubData {
         this.clubDescription = clubDescription;
     }
 
-    public ArrayList<String> getClubTags() {
+    public List<String> getClubTags() {
         return clubTags;
     }
 
-    public void setClubTags(ArrayList<String> clubTags) {
+    public void setClubTags(List<String> clubTags) {
         this.clubTags = clubTags;
     }
 
